@@ -1,0 +1,45 @@
+2014-11-10 14:43:49 Error: [MissingControllerException] Controller class ArenaController could not be found.
+Exception Attributes: array (
+  'class' => 'ArenaController',
+  'plugin' => NULL,
+)
+Request URL: /WebArena/Arena/login
+Stack Trace:
+#0 /var/www/html/WebArena/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-11-10 14:44:15 Error: [MissingControllerException] Controller class ArenaController could not be found.
+Exception Attributes: array (
+  'class' => 'ArenaController',
+  'plugin' => NULL,
+)
+Request URL: /WebArena/Arena/login
+Stack Trace:
+#0 /var/www/html/WebArena/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-11-10 14:45:38 Error: [MissingControllerException] Controller class ArenaController could not be found.
+Exception Attributes: array (
+  'class' => 'ArenaController',
+  'plugin' => NULL,
+)
+Request URL: /WebArena/Arena/login
+Stack Trace:
+#0 /var/www/html/WebArena/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-11-10 14:45:39 Error: [MissingControllerException] Controller class ArenaController could not be found.
+Exception Attributes: array (
+  'class' => 'ArenaController',
+  'plugin' => NULL,
+)
+Request URL: /WebArena/Arena/login
+Stack Trace:
+#0 /var/www/html/WebArena/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-11-10 14:47:15 Error: [MissingControllerException] Controller class ArenaController could not be found.
+Exception Attributes: array (
+  'class' => 'ArenaController',
+  'plugin' => NULL,
+)
+Request URL: /WebArena/Arena/login
+Stack Trace:
+#0 /var/www/html/WebArena/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
