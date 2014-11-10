@@ -44,7 +44,6 @@ class ArenaController extends AppController
     {
         //die('test');
     }
-
 }
 
 ?>
