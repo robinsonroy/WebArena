@@ -1,2 +1,1 @@
-Page character
-test git dex
+<?php pr($raw); ?>
