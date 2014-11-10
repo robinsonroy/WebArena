@@ -15,6 +15,8 @@
 class ArenaController extends AppController
 {
 
+
+    public $uses = array('Player', 'Fighter', 'Event');
     /**
      * index method : first page
      *
@@ -27,12 +29,12 @@ class ArenaController extends AppController
 
     public function character()
     {
-        //die('test');
+        $this->set('raw',$this->Fighter->findById(1));
     }
 
     public function diary()
     {
-        //die('test');
+        $this->set('raw',$this->Event->find());
     }
 
     public function login()
