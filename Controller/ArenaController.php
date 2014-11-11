@@ -55,9 +55,39 @@ class ArenaController extends AppController
          $this->set('raw',$this->Fighter->find('all'));
          $this->Fighter->doMove(1, $this->request->data['Fightermove']['direction']);
 
-         $this->Fighter->doAttack($this->request->data['Fighterattack']['id'],$this->request->data['Fighterattack']['directionattack']);
+         $this->Fighter->doAttack($this->request->data['Fighterattack']['id'],$this->request->data['Fighterattack']['id2'],$this->request->data['Fighterattack']['direction']);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public function create()
     {
