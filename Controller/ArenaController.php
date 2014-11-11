@@ -41,8 +41,25 @@ class ArenaController extends AppController
 
     public function login()
     {
-        //die('test');
+
+    $this->Player->loginplayer($this->request->data['login']['Login'],$this->request['login']['password']);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function sight()
     {
@@ -89,7 +106,7 @@ class ArenaController extends AppController
 
 
 
-        public function create()
+        public function createchar()
     {
         //création
         if ($this->request->is('post'))
@@ -111,16 +128,29 @@ class ArenaController extends AppController
 
 
 
-
        if( $this->Fighter->save($data))
             { return $this->redirect('sight');
+            }
+
       //  $this->Fighter->creation($this->request->data['Createchar']['create_name'],$this->request->data['Createchar']['create_playerid'],$this->request->data['Createchar']['create_coordx'],$this->request->data['Createchar']['create_coordy'],$this->request->data['Createchar']['create_level'],$this->request->data['Createchar']['create_xp'],$this->request->data['Createchar']['create_skillsight'],$this->request->data['Createchar']['create_skillstrenght'],$this->request->data['Createchar']['create_skillhealth'],$this->request->data['Createchar']['create_current_health']);
+
+
+
+      // $this->Fighter->deletechar(); Test fonction delete, à refaire
+
 
         }
 
 
-    }
+
+
 
 }
+
+
+
+
+
+
 }
 ?>

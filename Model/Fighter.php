@@ -18,7 +18,7 @@
 
         );
 
-        function doMove($fighterId, $direction)
+        function doMove($fighterId, $direction) // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
         {
             // récupérer la position et fixer l'id de travail
             $datas = $this->read(null, $fighterId);
@@ -39,6 +39,21 @@
             $this->save();
             return true;
         }
+
+/* // TEST FONCTION DELETE
+        public function deletechar(){
+
+echo "deletechar ici";
+            if( $this->Fighter->deleteAll($this->request->data($this->requet->data['Delete']['delete'])))
+            {
+                echo "succes";
+            }else
+            {
+                echo"fail";
+            }
+
+
+        }*/
 
 
         function doAttack($id,$id2,$direction)
@@ -65,7 +80,7 @@
 
             }break;
                 case "west": {
-            if ($datas['Fighter']['coordinate_x']-1==$$datas2['Fighter']['coordinate_x'])
+            if ($datas['Fighter']['coordinate_x']-1==$datas2['Fighter']['coordinate_x'])
             {
             $this->set('current_health', $datas['Fighter']['current_health']-1);
                 echo "Succes";
@@ -78,7 +93,7 @@
                 break;
          //  $this->set('current_health', $datas['Fighter']['current_health']-1);
                 case "north" : {
-                    if ($datas['Fighter']['coordinate_y']+1==$$datas2['Fighter']['coordinate_y'])
+                    if ($datas['Fighter']['coordinate_y']+1==$datas2['Fighter']['coordinate_y'])
                     {
                         $this->set('current_health', $datas['Fighter']['current_health']-1);
                         echo "Succes";
@@ -116,6 +131,8 @@
 
 
         }
+
+
 
 
 
