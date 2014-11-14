@@ -67,11 +67,11 @@ class DATABASE_CONFIG {
 	public $default = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
-		'host' => 'sql-users.ece.fr',
-		'login' => 'roroy-rw',
-		'password' => 'AP4H7ncC',
-		'database' => 'roroy',
-        'port' => 3305,
+		'host' => 'localhost',
+		'login' => 'root',
+		//'password' => 'root',
+		'database' => 'sambres',
+        'port' => 3306,
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);

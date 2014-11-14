@@ -14,7 +14,7 @@
  */
 class ArenaController extends AppController
 {
-
+    public $uses = array('Player', 'Fighter', 'Event');
     /**
      * index method : first page
      *
@@ -32,6 +32,7 @@ class ArenaController extends AppController
 
     public function diary()
     {
+        $this->set('raw', $this->Event->find());
         //die('test');
     }
 
@@ -42,7 +43,13 @@ class ArenaController extends AppController
 
     public function sight()
     {
-        //die('test');
+        if($this->request->is('post'))
+        {
+            pr($this->request->data);
+            $this->Fighter->doMove(1,$this->request->data['Fightermove']['direction']);
+        }
+        
+        $this->set('raw', $this->Fighter->find('all'));
     }
 }
 
