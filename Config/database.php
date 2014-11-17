@@ -69,9 +69,9 @@ class DATABASE_CONFIG {
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'root',
-		//'password' => 'root',
-		'database' => 'sambres',
-        'port' => 3306,
+		'password' => 'root',
+		'database' => 'web_arena',
+        'port' => 3305,
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
