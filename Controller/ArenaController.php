@@ -15,6 +15,8 @@
 class ArenaController extends AppController
 {
 
+
+    public $uses = array('Player', 'Fighter', 'Event');
     /**
      * index method : first page
      *
@@ -27,12 +29,12 @@ class ArenaController extends AppController
 
     public function character()
     {
-        //die('test');
+        $this->set('raw',$this->Fighter->findById(1));
     }
 
     public function diary()
     {
-        //die('test');
+        $this->set('raw',$this->Event->find());
     }
 
     public function login()
@@ -42,8 +44,19 @@ class ArenaController extends AppController
 
     public function sight()
     {
-        //die('test');
+        if ($this->request->is('post')) {
+            pr($this->request->data);
+            if (isset($this->request->data['Fightermove']))
+            $this->Fighter->doMove(1, $this->request->data['Fightermove']['direction']);
+            if (isset($this->request->data['ChangeLevel']))
+            $this->Fighter->changeLevel(1, $this->request->data['ChangeLevel']['level']);
+        }
+
+        $this->set('raw',$this->Fighter->find('all'));
+
+
     }
+
 }
 
 ?>
