@@ -6,6 +6,7 @@
  * Time: 17:47
  */
 App::uses('AppController', 'Controller');
+
 /**
  * Main controller of our small application
  *
@@ -14,6 +15,7 @@ App::uses('AppController', 'Controller');
 class ArenaController extends AppController
 {
     public $uses = array('Player', 'Fighter', 'Event');
+
     /**
      * index method : first page
      *
@@ -23,18 +25,22 @@ class ArenaController extends AppController
     {
         //die('test');
     }
+
     public function character()
     {
         $this->set('raw', $this->Fighter->findById(1));
     }
+
     public function diary()
     {
         $this->set('raw', $this->Event->find());
     }
+
     public function login()
     {
         $this->Player->loginplayer($this->request->data['login']['Login'], $this->request['login']['password']);
     }
+
     public function sight()
     {
         if ($this->request->is('post')) {
@@ -47,7 +53,9 @@ class ArenaController extends AppController
                 $this->Fighter->doAttack($this->request->data['Fighterattack']['id'], $this->request->data['Fighterattack']['id2'], $this->request->data['Fighterattack']['direction']);
         }
         $this->set('raw', $this->Fighter->find('all'));
+        $this->Session->setFlash('Une action a été réalisée.');
     }
+
     public function chooseAvatar()
     {
         $fighterList = $this->Fighter->find('all', array('fields' => array('id', 'name')));
@@ -76,6 +84,7 @@ class ArenaController extends AppController
             }
         }
     }
+
     public function createchar()
     {
         //création
