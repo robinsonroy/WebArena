@@ -10,19 +10,13 @@ App::uses('AppModel', 'Model');
 
 class Player extends AppModel
 {
-
     public $displayField = 'name';
 
     public function loginplayer($login,$pas)
     {
-
-
         $result=$this->find('first',array('conditions'=>array('email'=>$login)));
         var_dump($result);
         echo $login;
         var_dump($login);
-
-
-
     }
 }

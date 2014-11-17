@@ -1,9 +1,5 @@
 <?php
-
-
 App::uses('AppModel', 'Model');
-
-
 class Fighter extends AppModel
 {
     public $displayField = 'name';
@@ -13,7 +9,6 @@ class Fighter extends AppModel
             'foreignKey' => 'player_id',
         ),
     );
-
     function doMove($fighterId, $direction) // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
     {
         // récupérer la position et fixer l'id de travail
@@ -44,7 +39,6 @@ class Fighter extends AppModel
                     echo"fail";
                 }
             }*/
-
     function doAttack($id, $id2, $direction)
     {
         // On recupe l'id du méchant.
@@ -99,7 +93,6 @@ class Fighter extends AppModel
         $this->save();
         return true;
     }
-
     public function changeLevel($fighterId, $level)
     {
         $this->id = $fighterId;
