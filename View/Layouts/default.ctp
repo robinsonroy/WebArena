@@ -42,6 +42,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
 			<?php echo $this->Html->link('Home', array('controller' => 'Arena', 'action' => '/')); ?>
 			<?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight')); ?>
+			<?php echo $this->Html->link('Personnage', array('controller' => 'Arena', 'action' => 'character')); ?>
 			<?php echo $this->Html->link('Avatar', array('controller' => 'Arena', 'action' => 'ChooseAvatar')); ?>
 		</div>
 		<div id="content">
