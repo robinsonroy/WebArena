@@ -6,7 +6,6 @@
  * Time: 17:47
  */
 App::uses('AppController', 'Controller');
-
 /**
  * Main controller of our small application
  *
@@ -14,11 +13,7 @@ App::uses('AppController', 'Controller');
  */
 class ArenaController extends AppController
 {
-
-
     public $uses = array('Player', 'Fighter', 'Event');
-
-
     /**
      * index method : first page
      *
@@ -28,27 +23,20 @@ class ArenaController extends AppController
     {
         //die('test');
     }
-
     public function character()
     {
         $this->set('raw', $this->Fighter->findById(1));
     }
-
     public function diary()
     {
         $this->set('raw', $this->Event->find());
     }
-
     public function login()
     {
-
         $this->Player->loginplayer($this->request->data['login']['Login'], $this->request['login']['password']);
     }
-
-
     public function sight()
     {
-
         if ($this->request->is('post')) {
             pr($this->request->data);
             if (isset($this->request->data['Fightermove']))
@@ -57,35 +45,25 @@ class ArenaController extends AppController
                 $this->Fighter->changeLevel(1, $this->request->data['ChangeLevel']['level']);
             if (isset($this->request->data['Fighterattack']))
                 $this->Fighter->doAttack($this->request->data['Fighterattack']['id'], $this->request->data['Fighterattack']['id2'], $this->request->data['Fighterattack']['direction']);
-
         }
-
         $this->set('raw', $this->Fighter->find('all'));
-
     }
-
     public function chooseAvatar()
     {
         $fighterList = $this->Fighter->find('all', array('fields' => array('id', 'name')));
-
         $choicelist = array();
         foreach ($fighterList as $key => $value) {
             $choicelist[$value['Fighter']['id']] = $value['Fighter']['name'];
         }
         $this->set('fighterList', $choicelist);
         $this->render('/Arena/fighter_choice');
-
         if ($this->request->is('post')) {
             $fighter_id = $this->request->data['Fighterchoice']['fighter_choice'];
             $this->set('id', $fighter_id);
-
             $this->render();
-
             if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
                 $imageName = $_FILES['avatar']['name'];
                 $this->set('imageName', $imageName);
-
-
                 if (move_uploaded_file(
                     $_FILES['avatar']['tmp_name'],
                     WWW_ROOT . 'img\\uploads\\avatar_' . $fighter_id . ".jpg"
@@ -94,13 +72,10 @@ class ArenaController extends AppController
                     echo "Le transfert s'est bien deroule";
                 } else
                     echo "erreur sur le transfert";
-
                 // store the filename in the array to be saved to the db
             }
         }
-
     }
-
     public function createchar()
     {
         //création
@@ -117,10 +92,7 @@ class ArenaController extends AppController
                     'skill_strength' => $this->request->data['Createchar']['create_skillstrength'],
                     'skill_health' => $this->request->data['Createchar']['create_skillhealth'],
                     'current_health' => $this->request->data['Createchar']['create_current_health']));
-
             $this->Fighter->create();
-
-
             if ($this->Fighter->save($data)) {
                 return $this->redirect('sight');
             }

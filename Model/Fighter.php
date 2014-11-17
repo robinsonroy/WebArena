@@ -1,24 +1,18 @@
 <?php
-
 App::uses('AppModel', 'Model');
-
 class Fighter extends AppModel
 {
-
     public $displayField = 'name';
-
     public $belongsTo = array(
         'Player' => array(
             'className' => 'Player',
             'foreignKey' => 'player_id',
         ),
     );
-
     function doMove($fighterId, $direction) // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
     {
         // récupérer la position et fixer l'id de travail
         $datas = $this->read(null, $fighterId);
-
         // falre la modif
         if ($direction == 'north')
             $this->set('coordinate_y', $datas['Fighter']['coordinate_y'] + 1);
@@ -30,15 +24,12 @@ class Fighter extends AppModel
             $this->set('coordinate_x', $datas['Fighter']['coordinate_x'] - 1);
         else
             return false;
-
         // sauver la modif
         $this->save();
         return true;
     }
-
     /* // TEST FONCTION DELETE
             public function deletechar(){
-
     echo "deletechar ici";
                 if( $this->Fighter->deleteAll($this->request->data($this->requet->data['Delete']['delete'])))
                 {
@@ -47,24 +38,17 @@ class Fighter extends AppModel
                 {
                     echo"fail";
                 }
-
-
             }*/
-
-
     function doAttack($id, $id2, $direction)
     {
         // On recupe l'id du méchant.
         $datas = $this->read(null, $id);
-
         $datas2 = $this->read(null, $id2);
-
         switch ($direction) { // tention
             case "east":
             {
                 echo $datas2['Fighter']['coordinate_x'];
                 echo $datas['Fighter']['coordinate_x'] + 1;
-
                 if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x'])
                 {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
@@ -95,7 +79,6 @@ class Fighter extends AppModel
                 }
             }
                 break;
-
             case "south" :
             {
                 if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
@@ -110,12 +93,10 @@ class Fighter extends AppModel
         $this->save();
         return true;
     }
-
     public function changeLevel($fighterId, $level)
     {
         $this->id = $fighterId;
         $this->saveField('level', $level);
-
         return true;
     }
 }
