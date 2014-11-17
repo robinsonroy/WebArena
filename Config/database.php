@@ -70,8 +70,13 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'root',
 		'password' => 'root',
+<<<<<<< HEAD
 		'database' => 'PROJETWEB',
    //     'port' => 3305,
+=======
+		'database' => 'web_arena',
+        'port' => 3305,
+>>>>>>> e19297bb4339db851a7c0ad7e7cef6899fb35aaa
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
