@@ -1,5 +1,5 @@
 <?php
-
+$this->assign('title', 'Choix avatar');
 pr($id); 
 
 echo $this->Form->create('Image', array('type' => 'file'));

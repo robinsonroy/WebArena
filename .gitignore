@@ -1,9 +1,29 @@
 # Created by https://www.gitignore.io
 
+### CakePHP ###
+tmp/*
+[Cc]onfig/core.php
+[Cc]onfig/database.php
+app/tmp/*
+app/[Cc]onfig/core.php
+app/[Cc]onfig/database.php
+!empty
+
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
-/*.iml
+*.iml
 
 ## Directory-based project format:
 .idea/
@@ -45,33 +65,6 @@ atlassian-ide-plugin.xml
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
 
-
-### CakePHP ###
-tmp/*
-app/tmp/*
-app/[Cc]onfig/core.php
-app/[Cc]onfig/database.php
-!empty
-/nbproject/private/
-
-# Created by https://www.gitignore.io
-
-### CakePHP ###
-tmp/*
-[Cc]onfig/core.php
-[Cc]onfig/database.php
-app/tmp/*
-app/[Cc]onfig/core.php
-app/[Cc]onfig/database.php
-!empty
-
-
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml

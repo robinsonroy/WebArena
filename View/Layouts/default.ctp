@@ -14,7 +14,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
+$cakeDescription = __d('cake_dev', 'WebArena videogames');
 $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 ?>
 <!DOCTYPE html>
@@ -52,6 +52,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 					'http://www.cakephp.org/',
 					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
 				);
+                   echo "WebArena : SI-4 | PORTIER,SAMBRES,RAOUL,ROY <br>";
+                   echo "GitHub : https://github.com/robinsonroy/WebArena";
 			?>
 			<p>
 				<?php echo $cakeVersion; ?>

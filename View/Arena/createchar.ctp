@@ -1,5 +1,7 @@
 <?php
+$this->assign('title', 'Création de personnage');
 
+echo $this->Html->link('Vision', array('controller' => 'Arenas', 'action' => 'sight'));
 echo $this->Form->create('Createchar');
 echo $this->Form->input('create_name');
 //echo $this->Form->input('create_playerid');
