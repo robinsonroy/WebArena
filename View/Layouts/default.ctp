@@ -40,6 +40,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
+<<<<<<< HEAD
             <?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight'));
                   echo " ";
                   echo $this->Html->link('Creation de personnage', array('controller' => 'Arena','action'=>'createchar'));
@@ -58,12 +59,17 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
             ?>
         </div>
+=======
+                        <?php echo $this->Html->link('Vision', array('controller' => 'Arenas', 'action' => 'sight')); ?>
+		</div>
+>>>>>>> 49dd7511f370a3a4a6ab76333334c4dd0c1b34d0
 		<div id="content">
 
 			<?php echo $this->Session->flash(); ?>
 
 			<?php echo $this->fetch('content'); ?>
 		</div>
+            
 		<div id="footer">
 			<?php echo $this->Html->link(
 					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
