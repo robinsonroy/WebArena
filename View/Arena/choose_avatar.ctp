@@ -12,8 +12,8 @@ echo $this->Form->end('Choose');
 
 //image dsplay
 if (isset($imageName)) {
-    echo $this->Html->image(WWW_ROOT . 'img\\upload\\' . $imageName, array('alt' => 'uploaded image'));
-    echo WWW_ROOT . 'img\\upload\\' . $imageName;
+    echo $this->Html->image('uploads/' . $imageName, array('alt' => 'uploaded image'));
+
 }
 ?>
 

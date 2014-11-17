@@ -73,7 +73,7 @@ class ArenaController extends AppController {
             $fighter_id = $this->request->data['avatar']['fighter_choice'];
 
             if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {   
-                $imageName = $_FILES['avatar']['name'];
+                $imageName = "avatar_".$fighter_id.".jpg";
                 $this->set('imageName', $imageName);
 
                 //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
