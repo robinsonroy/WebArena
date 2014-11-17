@@ -25,48 +25,70 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<?php echo $cakeDescription ?>:
 		<?php echo $this->fetch('title'); ?>
 	</title>
-	<?php
+
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+
+    <?php
+
 		echo $this->Html->meta('icon');
-		echo $this->Html->css('bootstrap');
-        echo $this->Html->css('cake.generic');
+		echo $this->Html->css('webarena');
 
+        echo $this->fetch('meta');
+    //	echo $this->fetch('css');
+     //   echo $this->Html->script('bootstrap.min');
+//		echo $this->fetch('script');
 
-    echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
 	?>
 </head>
 <body>
 	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-<<<<<<< HEAD
-            <?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight'));
-                  echo " ";
-                  echo $this->Html->link('Creation de personnage', array('controller' => 'Arena','action'=>'createchar'));
-                  echo " ";
-                  echo $this->Html->link('Vos personnages',array('controller'=>'Arena','action'=>'character'));
-                  echo " ";
-                  echo $this->Html->link('Evenements',array('controller'=>'Arena','action'=>'diary'));
-                  echo " ";
-                  echo $this->Html->link('Login',array('controller'=>'Arena','action'=>'login'));
-                  echo " ";
-                  echo $this->Html->link('Choisir avatar',array('controller'=>'Arena','action'=>'chooseAvatar'));
-                  echo " ";
-                  echo $this->Html->link('Accueil', "/");
+
+            <p class="navbar-text">Signed in as Mark Otto</p>
 
 
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">WebArena</a>
+                    </div>
 
-            ?>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight')); ?><span class="sr-only">(current)</span></a></li>
+                            <li><?php echo $this->Html->link('Creation de personnage', array('controller' => 'Arena','action'=>'createchar')); ?></a></li>
+                            <li><?php echo $this->Html->link('Vos personnages',array('controller'=>'Arena','action'=>'character')); ?></li>
+                            <li><?php echo $this->Html->link('Evenements',array('controller'=>'Arena','action'=>'diary')); ?></li>
+                            <li><?php echo $this->Html->link('Choisir avatar',array('controller'=>'Arena','action'=>'chooseAvatar'));                            ?></li>
+                            <li><?php echo $this->Html->link('Login',array('controller'=>'Arena','action'=>'login')); ?></li>
+
+                        </ul>
+
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+
         </div>
-=======
-                        <?php echo $this->Html->link('Vision', array('controller' => 'Arenas', 'action' => 'sight')); ?>
 		</div>
->>>>>>> 49dd7511f370a3a4a6ab76333334c4dd0c1b34d0
 		<div id="content">
-
 			<?php echo $this->Session->flash(); ?>
-
 			<?php echo $this->fetch('content'); ?>
 		</div>
             
