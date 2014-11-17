@@ -72,9 +72,7 @@ class ArenaController extends AppController {
             //Récupération du résultat du formulaire
             $fighter_id = $this->request->data['avatar']['fighter_choice'];
 
-            if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
-
-                //pr("id : ".$fighter_id);    
+            if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {   
                 $imageName = $_FILES['avatar']['name'];
                 $this->set('imageName', $imageName);
 
