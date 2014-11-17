@@ -24,6 +24,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<title>
 		<?php echo $cakeDescription ?>:
 		<?php echo $this->fetch('title'); ?>
+
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
@@ -39,6 +40,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
+			<?php echo $this->Html->link('Home', array('controller' => 'Arena', 'action' => '/')); ?>
+			<?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight')); ?>
+			<?php echo $this->Html->link('Avatar', array('controller' => 'Arena', 'action' => 'ChooseAvatar')); ?>
 		</div>
 		<div id="content">
 
@@ -52,7 +56,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 					'http://www.cakephp.org/',
 					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
 				);
-                   echo "WebArena : SI-4 | PORTIER,SAMBRES,RAOUL,ROY <br>";
+                   echo "WebArena : SI4-O8-CF | PORTIER,SAMBRES,RAUBER,ROY <br>";
                    echo "GitHub : https://github.com/robinsonroy/WebArena";
 			?>
 			<p>
