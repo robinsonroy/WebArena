@@ -27,10 +27,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
+		echo $this->Html->css('bootstrap');
+        echo $this->Html->css('cake.generic');
 
-		echo $this->Html->css('cake.generic');
 
-		echo $this->fetch('meta');
+    echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
@@ -39,8 +40,29 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
+<<<<<<< HEAD
+            <?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight'));
+                  echo " ";
+                  echo $this->Html->link('Creation de personnage', array('controller' => 'Arena','action'=>'createchar'));
+                  echo " ";
+                  echo $this->Html->link('Vos personnages',array('controller'=>'Arena','action'=>'character'));
+                  echo " ";
+                  echo $this->Html->link('Evenements',array('controller'=>'Arena','action'=>'diary'));
+                  echo " ";
+                  echo $this->Html->link('Login',array('controller'=>'Arena','action'=>'login'));
+                  echo " ";
+                  echo $this->Html->link('Choisir avatar',array('controller'=>'Arena','action'=>'chooseAvatar'));
+                  echo " ";
+                  echo $this->Html->link('Accueil', "/");
+
+
+
+            ?>
+        </div>
+=======
                         <?php echo $this->Html->link('Vision', array('controller' => 'Arenas', 'action' => 'sight')); ?>
 		</div>
+>>>>>>> 49dd7511f370a3a4a6ab76333334c4dd0c1b34d0
 		<div id="content">
 
 			<?php echo $this->Session->flash(); ?>
