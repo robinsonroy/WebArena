@@ -38,6 +38,9 @@ class ArenaController extends AppController
     public function sight()
     {
         if ($this->request->is('post')) {
+
+            $this->Session->setFlash('Une action a été réalisée.');
+
             pr($this->request->data);
             if (isset($this->request->data['Fightermove']))
                 $this->Fighter->doMove(1, $this->request->data['Fightermove']['direction']);
