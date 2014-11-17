@@ -50,29 +50,49 @@ class ArenaController extends AppController
     }
     public function chooseAvatar()
     {
+        //Récupère la liste des fighters, avec les champs id et name
         $fighterList = $this->Fighter->find('all', array('fields' => array('id', 'name')));
+        
+        //crée un tableau qui serviras à remplir les options du formulaire de choix de fighter
         $choicelist = array();
+        
+        //pour tout les fighters de la bdd
         foreach ($fighterList as $key => $value) {
+            //on met dans la liste du choix du formulaire le nom du fighter, avec pour key son id
             $choicelist[$value['Fighter']['id']] = $value['Fighter']['name'];
         }
+        
+        //on passe la liste de choix de fighter à la vue
         $this->set('fighterList', $choicelist);
+        
+        //on affiche la vue du choix de fighter
         $this->render('/Arena/fighter_choice');
+        
+        //si le formulaire a été rempli
         if ($this->request->is('post')) {
+            //Récupération du résultat du formulaire
             $fighter_id = $this->request->data['Fighterchoice']['fighter_choice'];
+            
+            //envoie de l'id a la vue pour le test
             $this->set('id', $fighter_id);
             $this->render();
+            
             if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                
+               // pr("id : ".$fighter_id);    
                 $imageName = $_FILES['avatar']['name'];
                 $this->set('imageName', $imageName);
+                
+                //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
+                //avec le nom avatar_id.jpg
                 if (move_uploaded_file(
                     $_FILES['avatar']['tmp_name'],
-                    WWW_ROOT . 'img\\uploads\\avatar_' . $fighter_id . ".jpg"
+                    WWW_ROOT . 'img\\uploads\\avatar_' /*. $fighter_id */. ".jpg"
                 )
                 ) {
                     echo "Le transfert s'est bien deroule";
                 } else
                     echo "erreur sur le transfert";
-                // store the filename in the array to be saved to the db
             }
         }
     }
