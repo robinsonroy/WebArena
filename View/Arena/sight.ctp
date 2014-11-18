@@ -17,12 +17,125 @@
 
     </div>
     <div class="col-md-6">
-        <div class="panel panel-default">
+        <?php
 
-     <?php pr($raw);?>
+       echo "<table id='map' class='table table-striped'>";
+        for($i=0;$i<12;$i++)
+        { echo "<tr>";
+            for ($y=0;$y<12;$y++)
+            {
+                echo "<td id='$i $y'> X </td>";
+            }
+            echo "</tr>";
+        }
+    echo "</table>";
+        ?>
 
-        </div>
-    </div>
+
+      <!-- <table class="table table-striped">
+            <tr>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+
+            </tr>
+            <tr>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+
+            </tr>
+            <tr>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+
+            </tr>
+            <tr>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+
+            </tr>
+            <tr>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+
+            </tr>
+            <tr>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+
+            </tr>
+
+
+            <tr>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+                <td> X </td>
+            </tr>
+        </table> -->
+
+</div>
+
     <div class="col-md-3">
         <div class="panel panel-default">
         <?php echo $this->Form->create('Fighterattack');
