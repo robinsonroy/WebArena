@@ -39,6 +39,7 @@ class ArenaController extends AppController {
     }
 
     public function sight() {
+        $this->set('raw',$this->Event->findById(1));
         if ($this->request->is('post')) {
 
             $this->Session->setFlash('Une action a ete realise.');
@@ -51,7 +52,6 @@ class ArenaController extends AppController {
             if (isset($this->request->data['Fighterattack']))
                 $this->Fighter->doAttack($this->request->data['Fighterattack']['id'], $this->request->data['Fighterattack']['id2'], $this->request->data['Fighterattack']['direction']);
         }
-        $this->set('raw', $this->Fighter->find('all'));
     }
 
     public function chooseAvatar() {

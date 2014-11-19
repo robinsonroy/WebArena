@@ -6,7 +6,7 @@
 
 .levelup{
 
-    margin-top : -200px;
+    margin-top : -150px;
 
 }
 
@@ -17,6 +17,7 @@
 #gauche
 {
     background-color: gray;
+    border-width: 0px;
 }
 
 .backcontainer
@@ -49,15 +50,29 @@
 
 #FightermoveSightForm
 {
-    margin-right:150px;
+    margin-right:100px;
 }
 
 #ChangeLevelSightForm
 {
-    margin-right:150px;
+    margin-right:100px;
 }
 
 #FighterattackSightForm
 {
     margin-right:150px;
+}
+
+.navbar.navbar-default
+{
+    color :black;
+}
+
+body{
+    background-color: gray;
+}
+
+footer
+{
+    background-color: white;
 }
