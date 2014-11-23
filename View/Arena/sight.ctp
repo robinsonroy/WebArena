@@ -71,7 +71,7 @@
 <div class ="row">
     <div class="col-md-3">
 
-
+      <?php  var_dump($this->Session->read('Auth.User')); ?>
     </div>
 
 <div class ="col-md-6">

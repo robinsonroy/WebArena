@@ -27,19 +27,24 @@ class ArenaController extends AppController {
     }
 
     public function character() {
-        $this->set('raw', $this->Fighter->findById(1));
-    }
+$this->set('raw',$this->Fighter->find());
+}
+
+
+
 
     public function diary() {
         $this->set('raw', $this->Event->find());
     }
 
     public function login() {
-        $this->Player->loginplayer($this->request->data['login']['Login'], $this->request['login']['password']);
+        if ($this->request->is('post')){
+        $this->Player->loginplayer($this->request->data['sub']['login'], $this->request['sub']['password']);
+    }
     }
 
     public function sight() {
-        $this->set('raw',$this->Event->findById(1));
+        $this->set('raw',$this->Fighter->findById(1));
         if ($this->request->is('post')) {
 
             $this->Session->setFlash('Une action a ete realise.');

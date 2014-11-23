@@ -74,7 +74,17 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             <li><?php echo $this->Html->link('Vos personnages',array('controller'=>'Arena','action'=>'character')); ?></li>
                             <li><?php echo $this->Html->link('Evenements',array('controller'=>'Arena','action'=>'diary')); ?></li>
                             <li><?php echo $this->Html->link('Choisir avatar',array('controller'=>'Arena','action'=>'chooseAvatar'));                            ?></li>
-                            <li><?php echo $this->Html->link('Login',array('controller'=>'Arena','action'=>'login')); ?></li>
+
+
+
+                      <?php if($this->Session->read('Auth.User')){ ?>
+                          <li><?php echo $this->Html->link('Mon compte',array('controller'=>'Arena','action'=>'account')); ?></li>
+
+                          <li><?php echo $this->Html->link('Deconnexion',array('controller'=>'Users','action'=>'logout')); ?></li>
+                      <?php }else{ ?>
+                            <li><?php echo $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add')); ?></li>
+                            <li><?php echo $this->Html->link('Identification',array('controller'=>'Users','action'=>'login')); ?></li>
+                        <?php } ?>
 
                         </ul>
 
