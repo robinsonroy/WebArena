@@ -59,7 +59,7 @@
         ?>
         <input type="submit" class="btn btn-danger" value="Attack">
         <?php
-                echo $this->Form->end(); // A REFAIRE NE FONCTIONNE PAS
+                echo $this->Form->end(); // A REFAIRE NE FONCTIONNE PAS BIEN
         ?>
         </div>
 
@@ -71,7 +71,10 @@
 <div class ="row">
     <div class="col-md-3">
 
-      <?php  var_dump($this->Session->read('Auth.User')); ?>
+      <?php  var_dump($this->Session->read('Auth.User'));
+
+
+      ?>
     </div>
 
 <div class ="col-md-6">

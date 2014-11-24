@@ -28,7 +28,7 @@ class UsersController extends AppController {
             )
         );
     }
-
+// MAIL AUTO
     public function sendEmail($mail_dest)
     {
         $mail = new CakeEmail('gmail');
@@ -39,7 +39,7 @@ class UsersController extends AppController {
         $mail->send();
 
     }
-
+ // LOGI?
     public function login() {
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
@@ -72,10 +72,14 @@ class UsersController extends AppController {
 
     }
 
+
+    // REGISTER
     public function add() {
         if ($this->request->is('post')) {
             $email=$this->request->data['User']['email'];
-            if ($this->sendEmail($email)){echo "gg";}
+
+            // Envoie mail auto
+            if ($this->sendEmail($email)){echo "Email send";}
 
             $this->User->create();
             if ($this->User->save($this->request->data)) {

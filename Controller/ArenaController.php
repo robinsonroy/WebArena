@@ -103,15 +103,15 @@ $this->set('raw',$this->Fighter->find());
             $data = array(
                 'Fighter' => array(
                     'name' => $this->request->data['Createchar']['create_name'],
-                    'player_id' => '545f827c-576c-4dc5-ab6d-27c33186dc3e',
-                    'coordinate_x' => $this->request->data['Createchar']['create_coordx'],
-                    'coordinate_y' => $this->request->data['Createchar']['create_coordy'],
-                    'level' => $this->request->data['Createchar']['create_level'],
-                    'xp' => $this->request->data['Createchar']['create_xp'],
-                    'skill_sight' => $this->request->data['Createchar']['create_skillsight'],
-                    'skill_strength' => $this->request->data['Createchar']['create_skillstrength'],
-                    'skill_health' => $this->request->data['Createchar']['create_skillhealth'],
-                    'current_health' => $this->request->data['Createchar']['create_current_health']));
+                    'player_id' => $this->Session->read('Auth.User.id'),
+                    'coordinate_x' => '1',
+                    'coordinate_y' => '1',
+                    'level' => '1',
+                    'xp' => '1',
+                    'skill_sight' => '0',
+                    'skill_strength' => '1',
+                    'skill_health' => '1',
+                    'current_health' => '1'));
             $this->Fighter->create();
             if ($this->Fighter->save($data)) {
                 return $this->redirect('sight');
