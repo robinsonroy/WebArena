@@ -39,21 +39,25 @@
  */
 class EmailConfig {
 
-	public $default = array(
-		'transport' => 'Mail',
-		'from' => 'you@localhost',
+	public $gmail = array(
+        'host' => 'ssl://smtp.gmail.com',
+		'transport' => 'Smtp',
+        'port' => 465,
+        'username' => 'grportier@gmail.com',
+        'password' => "pw");
+
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
-	);
+
 
 	public $smtp = array(
 		'transport' => 'Smtp',
 		'from' => array('site@localhost' => 'My Site'),
-		'host' => 'localhost',
-		'port' => 25,
+		'host' => 'ssl://smtp.gmail.com',
+		'port' => 465,
 		'timeout' => 30,
-		'username' => 'user',
-		'password' => 'secret',
+		'username' => 'grportier@gmail.com',
+		'password' => 'GreGGus10.',
 		'client' => null,
 		'log' => false,
 		//'charset' => 'utf-8',

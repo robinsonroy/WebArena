@@ -3,3 +3,76 @@
 .centered{
     text-align: center;
 }
+
+.levelup{
+
+    margin-top : -150px;
+
+}
+
+.backcontent
+{
+}
+
+#gauche
+{
+    background-color: gray;
+    border-width: 0px;
+}
+
+.backcontainer
+{
+    background-image : url('../img/ninja-chars.png');
+}
+
+.backcontent
+{
+    background-color: gray;
+}
+#h1top
+{
+   margin-top:0px;
+   margin-bottom: 120px;
+   background-image : url('../img/ninja-chars.png');
+   color: #ff925d;
+}
+
+#titrecolor
+{
+    color : white;
+    font-family: cursive;
+}
+
+#map
+{
+    background-color: white;
+}
+
+#FightermoveSightForm
+{
+    margin-right:100px;
+}
+
+#ChangeLevelSightForm
+{
+    margin-right:100px;
+}
+
+#FighterattackSightForm
+{
+    margin-right:150px;
+}
+
+.navbar.navbar-default
+{
+    color :black;
+}
+
+body{
+    background-color: gray;
+}
+
+footer
+{
+    background-color: white;
+}
