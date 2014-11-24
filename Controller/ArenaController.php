@@ -27,7 +27,9 @@ class ArenaController extends AppController {
     }
 
     public function character() {
-$this->set('raw',$this->Fighter->find());
+
+        // On recherche que les personnages qui ont un ID commun avec les USER pour les afficher.
+$this->set('raw',$this->Fighter->find('all',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
 }
 
 
@@ -44,19 +46,30 @@ $this->set('raw',$this->Fighter->find());
     }
 
     public function sight() {
-        $this->set('raw',$this->Fighter->findById(1));
+    //check la map dans map
+    //  $this->set('map',$this->Fighter->create_map());
+
         if ($this->request->is('post')) {
 
             $this->Session->setFlash('Une action a ete realise.');
+            var_dump($this->Session->read('Auth.User.id'));
+           // on recupere le fighter du joueur
+                $firrst=$this->Fighter->find('first',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id"))));
 
-            pr($this->request->data);
+           // pr($this->request->data);
             if (isset($this->request->data['Fightermove']))
-                $this->Fighter->doMove(1, $this->request->data['Fightermove']['direction']);
+                $this->Fighter->doMove(
+                    $firrst['Fighter']['id'],
+                    $this->request->data['Fightermove']['direction']);
             if (isset($this->request->data['ChangeLevel']))
-                $this->Fighter->changeLevel(1, $this->request->data['ChangeLevel']['level']);
+                $this->Fighter->changeLevel
+                    (1, $this->request->data['ChangeLevel']['level']);
             if (isset($this->request->data['Fighterattack']))
-                $this->Fighter->doAttack($this->request->data['Fighterattack']['id'], $this->request->data['Fighterattack']['id2'], $this->request->data['Fighterattack']['direction']);
+                $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
         }
+        $this->set('Fighters',$this->Fighter->find('all'));
+        $this->set('Fighter',$this->Fighter->find('first',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
+
     }
 
     public function chooseAvatar() {

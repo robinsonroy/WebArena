@@ -26,7 +26,6 @@ class Fighter extends AppModel
             return false;
         // sauver la modif
         $this->save();
-        return true;
     }
     /* // TEST FONCTION DELETE
             public function deletechar(){
@@ -47,11 +46,11 @@ class Fighter extends AppModel
         switch ($direction) { // tention
             case "east":
             {
-                echo $datas2['Fighter']['coordinate_x'];
-                echo $datas['Fighter']['coordinate_x'] + 1;
                 if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x'])
                 {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                    $this->set('xp',$datas['Fighter']['xp']+1);
+
                     echo "Succes";
                 } else {
                     echo "Raté";
@@ -90,6 +89,7 @@ class Fighter extends AppModel
             }
                 break;
         }
+
         $this->save();
         return true;
     }
@@ -99,4 +99,29 @@ class Fighter extends AppModel
         $this->saveField('level', $level);
         return true;
     }
+
+/*
+     public function create_map()
+     {
+       // $map=array(array());
+        //parcours de la liste des perssonnages
+        //test collision:il ne faut pas qu'il y ait déja qqh sur la case
+        // $map=array[$i][$j];
+    echo   "<table id='map' class='table table-striped'>";
+
+    for($i=0;$i<12;$i++)
+        {
+
+            echo "<tr>";
+            for ($y=0;$y<12;$y++)
+            {
+                //echo "<td id='$map[$i][$y]'> X </td>"
+                echo "<td id='$i $y'> X </td>";
+            }
+            echo "</tr>";
+    }
+         echo "</table>";
+
+     }
+*/
 }
