@@ -43,20 +43,18 @@ foreach( $Fighter as $Fight)
         </div>
 
     </div>
-    <div class="col-md-6"    id="map">
+
+<!--C'EST LE BORDEL LA DEDANS-->
+ <div class="col-md-6"    id="map">
 
 
-
-<table id="char" class="table">
-    <th>Entités</th>
-    <th>CoordXY</th>
-    <th>HP</th>
-    <tr>
-        <!-- All fighter -->
 
 
 
         <table id="char" class="table">
+        <th> Entités</th>
+        <th> CoordXY</th>
+        <th> Point de vie</th>
             <tr>
          <?php foreach($Fighters as $fighter)
             { ?> <td> <?php
@@ -70,17 +68,31 @@ foreach( $Fighter as $Fight)
 
 </table>
 
- <table id="tools" class="table">
-<th>Items</th>
-<th>PosXY</th>
-<th>Bonus</th>
-     <td> <?php ?> yo</td>
- </table>
-            </tr>
-            <tr>
 
+<table id="char" class="table">
+    <th>Type</th>
+    <th>CoordXY</th>
+    <th>Bonus</th>
+
+        <table id="char" class="table">
+            <tr>
+                <?php foreach($Tools as $tool)
+                { ?> <td> <?php
+                    echo $tool['Tool']['type'];?></td><td><?php
+                    ?>  x :<?php echo $tool['Tool']['coordinate_x']; ?>
+                    y: <?php echo $tool['Tool']['coordinate_y'];?></td><td>
+                    Bonus :<?php echo $tool['Tool']['bonus']; ?>
+                </td><tr><?php
+                } ?>
             </tr>
+
         </table>
+    </table>
+
+
+
+
+
 
 
     </div>
