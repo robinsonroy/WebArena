@@ -29,47 +29,72 @@ class ArenaController extends AppController {
     public function character() {
 
         // On recherche que les personnages qui ont un ID commun avec les USER pour les afficher.
-$this->set('raw',$this->Fighter->find('all',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
-}
+        $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
+        $this->set('raw', $user_fighter);
+        
+        //Recherche du level
+        $level_possible= $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
+        $this->set('choix_level',$level_possible);
+        
+        if ($this->request->is('post')) {
+            
+            if (isset($this->request->data['ChangeLevel']))
+            {
+                $this->Fighter->changerNiveau($level_possible, $user_fighter[0]['Fighter']);                        
+            }
+            
+            //Récupération du résultat du formulaire
+            $fighter_id = $user_fighter[0]['Fighter']['id'];
+            if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                $imageName = "avatar_" . $fighter_id . ".jpg";
+                $this->set('imageName', $imageName);
 
-
-
+                //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
+                //avec le nom avatar_id.jpg
+                if (move_uploaded_file(
+                                $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img\\uploads\\avatar_' . $fighter_id . ".jpg"
+                        )
+                ) {
+                    echo "Le transfert s'est bien deroule";
+                } else
+                    echo "erreur sur le transfert";
+            }
+        }
+    }
 
     public function diary() {
         $this->set('raw', $this->Event->find());
     }
 
     public function login() {
-        if ($this->request->is('post')){
-        $this->Player->loginplayer($this->request->data['sub']['login'], $this->request['sub']['password']);
-    }
+        if ($this->request->is('post')) {
+            $this->Player->loginplayer($this->request->data['sub']['login'], $this->request['sub']['password']);
+        }
     }
 
     public function sight() {
-    //check la map dans map
-    //  $this->set('map',$this->Fighter->create_map());
+        //check la map dans map
+        //  $this->set('map',$this->Fighter->create_map());
 
         if ($this->request->is('post')) {
 
             $this->Session->setFlash('Une action a ete realise.');
             var_dump($this->Session->read('Auth.User.id'));
-           // on recupere le fighter du joueur
-                $firrst=$this->Fighter->find('first',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id"))));
+            // on recupere le fighter du joueur
+            $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
-           // pr($this->request->data);
+            // pr($this->request->data);
             if (isset($this->request->data['Fightermove']))
                 $this->Fighter->doMove(
-                    $firrst['Fighter']['id'],
-                    $this->request->data['Fightermove']['direction']);
+                        $firrst['Fighter']['id'], $this->request->data['Fightermove']['direction']);
             if (isset($this->request->data['ChangeLevel']))
                 $this->Fighter->changeLevel
-                    (1, $this->request->data['ChangeLevel']['level']);
+                        (1, $this->request->data['ChangeLevel']['level']);
             if (isset($this->request->data['Fighterattack']))
                 $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
         }
-        $this->set('Fighters',$this->Fighter->find('all'));
-        $this->set('Fighter',$this->Fighter->find('first',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
-
+        $this->set('Fighters', $this->Fighter->find('all'));
+        $this->set('Fighter', $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
     }
 
     public function chooseAvatar() {
@@ -93,8 +118,8 @@ $this->set('raw',$this->Fighter->find('all',array('conditions'=> array('Fighter.
             //Récupération du résultat du formulaire
             $fighter_id = $this->request->data['avatar']['fighter_choice'];
 
-            if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {   
-                $imageName = "avatar_".$fighter_id.".jpg";
+            if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                $imageName = "avatar_" . $fighter_id . ".jpg";
                 $this->set('imageName', $imageName);
 
                 //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/

@@ -27,6 +27,25 @@ class Fighter extends AppModel
         // sauver la modif
         $this->save();
     }
+    
+    //Renvoie le niveau auquel peut passer le perssonnage si c'est possible,
+    //0 sinon
+    function determinerNiveau($fighter)
+    {
+        $niveau_actuel = $fighter['level'];
+        
+        //tous les 4pts d'xp, le fighter monte de niveau
+        $niveau_possible = $fighter['xp'] / 4;
+        
+        //si le player a plus d'expérience que de niveau
+        if($niveau_actuel < $niveau_possible)
+        {
+            return ($niveau_actuel+1);
+        }
+        else
+            return 0;
+        
+    }
     /* // TEST FONCTION DELETE
             public function deletechar(){
     echo "deletechar ici";
