@@ -1,5 +1,6 @@
 <?php if($this->Session->read('Auth.User'))
 {
+
 $this->assign('title', 'WebArena : Game'); ?>
 
 <!--1ER ROW -->
@@ -29,7 +30,9 @@ $this->assign('title', 'WebArena : Game'); ?>
            <!-- Info personnages -->
 <?php foreach( $Fighter as $fight)
 {
-        ?>Nom : <?php     echo $fight['Fighter']['name']; ?> </br>
+        ?>Nom : <?php     echo $fight['Fighter']['name'];
+          echo "<a href='<?php ?>'>Utiliser</a>";
+    ?> </br>
         PV : <?php echo $fight['Fighter']['current_health']; ?> </br>
        CoordX : <?php echo $fight['Fighter']['coordinate_x'];?></br>
         CoordY : <?php echo $fight['Fighter']['coordinate_y'];?> </br><?php } ?>

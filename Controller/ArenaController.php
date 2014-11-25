@@ -28,7 +28,9 @@ class ArenaController extends AppController {
 
     public function character() {
         // On recherche que les personnages qui ont un ID commun avec les USER pour les afficher.
-$this->set('fighters',$this->Fighter->find('all',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
+
+
+        $this->set('fighters',$this->Fighter->find('all',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
 }
 
 
@@ -46,29 +48,49 @@ $this->set('fighters',$this->Fighter->find('all',array('conditions'=> array('Fig
 
     public function sight() {
     //check la map dans map
-    //  $this->set('map',$this->Fighter->create_map());
+        $time=4;
 
+        //  $this->set('map',$this->Fighter->create_map());
         if ($this->request->is('post')) {
+
+            // Il faut un form pour choisir le héro
+            // Recuperer l'id dans un $
+            // Utiliser cette idée pour faire les events.
 
             $this->Session->setFlash('Une action a ete realise.');
             var_dump($this->Session->read('Auth.User.id'));
            // on recupere le fighter du joueur
-                $firrst=$this->Fighter->find('first',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id"))));
+            $first2=$this->Fighter->find('first',array('conditions'=>array('Fighter.player_id'=>$this->Session->read("Auth.User.id"),'Fighter.id'=>$varglob)));
 
-           // pr($this->request->data);
+
+
+            //$this->set('super', $time2);
+
+            // pr($this->request->data);
             if (isset($this->request->data['Fightermove']))
+              if($time>0)
+              {
                 $this->Fighter->doMove(
                     $firrst['Fighter']['id'],
                     $this->request->data['Fightermove']['direction']);
+                    $time=$this->Fighter->timeManager($time);
+
+              }else
+              {echo "non";}
             if (isset($this->request->data['ChangeLevel']))
+                if($time>0)
                 $this->Fighter->changeLevel
                     (1, $this->request->data['ChangeLevel']['level']);
             if (isset($this->request->data['Fighterattack']))
+                if($time>0)
                 $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
+
+
         }
+        var_dump($time);
+
         $this->set('Fighters',$this->Fighter->find('all'));
         $this->set('Fighter',$this->Fighter->find('all',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
-
     }
 
     public function chooseAvatar() {
