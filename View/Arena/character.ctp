@@ -1,7 +1,20 @@
 <?php
 
 $this->assign('title', 'Votre personnage');
-if($this->Session->read('Auth.User'))
+if(!($this->Session->read('Auth.User')))
+{
+    //Si l'utilisateur n'est pas enregistré
+    echo "Veuillez vous connecter <br>";
+    echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
+}
+else if($raw[0]['Fighter']['current_health'] == 0)
+{
+    //Si le fighter n'as plus de vie
+    echo "Votre personnage est mort!<br>";
+    echo  $this->Html->link("Creation d'un personnage",array('controller'=>'Arena','action'=>'createchar'));
+
+}
+else
 {
  ?>
 <!--1ER ROW -->
@@ -47,12 +60,9 @@ if (isset($imageName)) {
            }
            else echo "Pas assez d'expérience pour changer de niveau";
            ?> 
-           
+
     </div>
 </div>
 <?php
-}else{
-echo "Veuillez vous connecter <br>";
-echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
 }
 ?>
