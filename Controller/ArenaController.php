@@ -102,31 +102,35 @@ class ArenaController extends AppController {
             // on recupere le fighter du joueur
             $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
-            // pr($this->request->data);
             if (isset($this->request->data['Fightermove']))
-              if($time>0)
-              {
-                $this->Fighter->doMove(
+            //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
+                 if($this->checkHealth($firrst['Fighter']['id']))
+                 {
+                  $this->Fighter->doMove(
                     $firrst['Fighter']['id'],
                     $this->request->data['Fightermove']['direction']);
-                    $time=$this->Fighter->timeManager($time);
+                 }else {
+                     $this->Session->setFlash('Personnage mort et supprimé');
+                 }
 
-              }else
-              {echo "non";}
+
             if (isset($this->request->data['ChangeLevel']))
-                if($time>0)
+
                 $this->Fighter->changeLevel
                         (1, $this->request->data['ChangeLevel']['level']);
             if (isset($this->request->data['Fighterattack']))
-                if($time>0)
+                if($this->checkHealth($firrst['Fighter']['id']))
+                {
                 $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
-
-
+        }else{
+                    $this->Session->setFlash('Personnage mort et supprimé');
+            }
         }
-        var_dump($time);
 
         $this->set('Fighters', $this->Fighter->find('all'));
-        $this->set('Fighter', $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
+        $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
+
+
     }
 
     public function chooseAvatar() {
@@ -189,6 +193,31 @@ class ArenaController extends AppController {
             //  $this->Fighter->creation($this->request->data['Createchar']['create_name'],$this->request->data['Createchar']['create_playerid'],$this->request->data['Createchar']['create_coordx'],$this->request->data['Createchar']['create_coordy'],$this->request->data['Createchar']['create_level'],$this->request->data['Createchar']['create_xp'],$this->request->data['Createchar']['create_skillsight'],$this->request->data['Createchar']['create_skillstrenght'],$this->request->data['Createchar']['create_skillhealth'],$this->request->data['Createchar']['create_current_health']);
             // $this->Fighter->deletechar(); Test fonction delete, à refaire
         }
+    }
+
+    public function checkHealth($id)
+    {
+        echo $id;
+        $fighters=$this->Fighter->findById($id);
+
+
+        echo $fighters['Fighter']['current_health'];
+        if($fighters['Fighter']['current_health']<=0)
+        {
+            //$this->query(" DELETE  FROM `fighters`  WHERE `id`=".$id.";");
+           // $fighters->delete();
+           // $this->Fighter->id=$id;
+           // $this->Fighter->delete();
+
+           $this->Fighter->delete($fighters['Fighter']['id']);
+            echo "Il est mort";
+            return false;
+
+        }else{
+            echo "Ilestenvie";
+            return true;
+        }
+
     }
 
 }

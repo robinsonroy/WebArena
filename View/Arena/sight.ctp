@@ -29,28 +29,21 @@ $this->assign('title', 'WebArena : Game'); ?>
            ?>
 
            <!-- Info personnages -->
-<?php foreach( $Fighter as $fight)
+<?php
+foreach( $Fighter as $Fight)
 {
-        ?>Nom : <?php     echo $fight['Fighter']['name'];
-          echo "<a href='<?php ?>'>Utiliser</a>";
+        ?>   Nom : <?php     echo $Fight['Fighter']['name'];
     ?> </br>
-        PV : <?php echo $fight['Fighter']['current_health']; ?> </br>
-       CoordX : <?php echo $fight['Fighter']['coordinate_x'];?></br>
-        CoordY : <?php echo $fight['Fighter']['coordinate_y'];?> </br><?php } ?>
+        PV : <?php echo $Fight['Fighter']['current_health'];?> </br>
+       CoordX : <?php echo $Fight['Fighter']['coordinate_x'];?> </br>
+        CoordY : <?php echo $Fight['Fighter']['coordinate_y'];?></br><?php } ?>
 <!-- VU PERSONNAGE PAS BEAU -->
 
-
-            <!-- VU PERSONNAGE PAS BEAU -->
-            <p> Nom :  <?php echo $Fighter['Fighter']['name']; ?> </br>
-                CoordX : <?php echo $Fighter['Fighter']['coordinate_x'];  ?> </br>
-                CoordY : <?php echo $Fighter['Fighter']['coordinate_y']; ?>
-
-            </p>
 
         </div>
 
     </div>
-    <div class="col-md-6" id="map">
+    <div class="col-md-6"    id="map">
 
 
 
@@ -60,16 +53,8 @@ $this->assign('title', 'WebArena : Game'); ?>
     <th>HP</th>
     <tr>
         <!-- All fighter -->
-        <table id="mob" class="table">
-            <tr>
-                <td> Monstre</td>
-                <td> Position</td>
-                <td> HP</td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-        </table>
+
+
 
         <table id="char" class="table">
             <tr>
@@ -86,20 +71,17 @@ $this->assign('title', 'WebArena : Game'); ?>
 </table>
 
  <table id="tools" class="table">
-<tr>Items</tr>
+<th>Items</th>
+<th>PosXY</th>
+<th>Bonus</th>
      <td> <?php ?> yo</td>
  </table>
             </tr>
             <tr>
-                <td> Perso2</td>
-                <td> Lieu</td>
-                <td> HP</td>
+
             </tr>
         </table>
-        <table id="tools" class="table">
-            <tr>Items</tr>
-            <td> <?php ?> yo</td>
-        </table>
+
 
     </div>
 
