@@ -44,7 +44,7 @@ class EmailConfig {
 		'transport' => 'Smtp',
         'port' => 465,
         'username' => 'grportier@gmail.com',
-        'password' => "GreGGus10.");
+        'password' => "");
 
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
@@ -57,7 +57,7 @@ class EmailConfig {
 		'port' => 465,
 		'timeout' => 30,
 		'username' => 'grportier@gmail.com',
-		'password' => 'GreGGus10.',
+		'password' => '',
 		'client' => null,
 		'log' => false,
 		//'charset' => 'utf-8',

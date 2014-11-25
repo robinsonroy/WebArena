@@ -1,4 +1,6 @@
-<?php
+<?php if($this->Session->read('Auth.User'))
+{
+
 
 $this->assign('title', 'WebArena : Game'); ?>
 
@@ -26,6 +28,18 @@ $this->assign('title', 'WebArena : Game'); ?>
            echo $this->Form->end();
            ?>
 
+           <!-- Info personnages -->
+<?php foreach( $Fighter as $fight)
+{
+        ?>Nom : <?php     echo $fight['Fighter']['name'];
+          echo "<a href='<?php ?>'>Utiliser</a>";
+    ?> </br>
+        PV : <?php echo $fight['Fighter']['current_health']; ?> </br>
+       CoordX : <?php echo $fight['Fighter']['coordinate_x'];?></br>
+        CoordY : <?php echo $fight['Fighter']['coordinate_y'];?> </br><?php } ?>
+<!-- VU PERSONNAGE PAS BEAU -->
+
+
             <!-- VU PERSONNAGE PAS BEAU -->
             <p> Nom :  <?php echo $Fighter['Fighter']['name']; ?> </br>
                 CoordX : <?php echo $Fighter['Fighter']['coordinate_x'];  ?> </br>
@@ -38,6 +52,14 @@ $this->assign('title', 'WebArena : Game'); ?>
     </div>
     <div class="col-md-6" id="map">
 
+
+
+<table id="char" class="table">
+    <th>Entités</th>
+    <th>CoordXY</th>
+    <th>HP</th>
+    <tr>
+        <!-- All fighter -->
         <table id="mob" class="table">
             <tr>
                 <td> Monstre</td>
@@ -59,6 +81,14 @@ $this->assign('title', 'WebArena : Game'); ?>
                     pv :<?php echo $fighter['Fighter']['current_health']; ?>
                 </td><tr><?php
             } ?>
+        </tr>
+
+</table>
+
+ <table id="tools" class="table">
+<tr>Items</tr>
+     <td> <?php ?> yo</td>
+ </table>
             </tr>
             <tr>
                 <td> Perso2</td>
@@ -71,19 +101,11 @@ $this->assign('title', 'WebArena : Game'); ?>
             <td> <?php ?> yo</td>
         </table>
 
-        <!-- VU PERSONNAGE PAS BEAU -->
-        Nom :    <?php echo $Fighter['Fighter']['name']; ?> </br>
-        CoordX : <?php echo $Fighter['Fighter']['coordinate_x'];  ?> </br>
-        CoordY : <?php echo $Fighter['Fighter']['coordinate_y']; ?>
-
-
-
     </div>
 
     <div class="col-md-3">
         <div class="panel panel-default" id="gauche">
         <?php echo $this->Form->create('Fighterattack');
-            echo $this->Form->input('Votre ID',array('div'=>'form-group','class'=>'form-control'));
             echo $this->Form->input('EnnemiID',array('div'=>'form-group','class'=>'form-control'));
             echo $this->Form->input('direction',array('options' => array('north'=>'north','east'=>'east','south'=>'south','west'=>'west'),'div' => 'form-group','class'=>'form-control','default' => 'east'));
 
@@ -102,12 +124,22 @@ $this->assign('title', 'WebArena : Game'); ?>
 <div class ="row">
     <div class="col-md-3">
 
-      <?php  var_dump($this->Session->read('Auth.User'));
 
-
-      ?>
     </div>
 
+<div class ="col-md-6">
+    <p> <?php  var_dump($this->Session->read('Auth.User'));
+        }else{
+            ?> <div class="row">
+        <div class="col-md-6 col-md-offset-3 centered">
+            <?php
+            echo "Veuillez vous connecter <br>";
+            echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
+
+        }
+
+        ?> </p></div></div>
+</div>
     <div class ="col-md-6">
         <p> </p>
     </div>

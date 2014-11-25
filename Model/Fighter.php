@@ -123,6 +123,12 @@ class Fighter extends AppModel
         return true;
     }
 
+    public function timeManager($time)
+    {
+        $time=$time-1;
+        return $time;
+    }
+
 /*
      public function create_map()
      {
@@ -147,4 +153,10 @@ class Fighter extends AppModel
 
      }
 */
+
+    public function checkHealth()
+    {
+        
+
+    }
 }

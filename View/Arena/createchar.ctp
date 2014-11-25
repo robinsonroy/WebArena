@@ -33,8 +33,10 @@ echo $this->Form->input('create_name');
 echo $this->Form->end('Create');
 
 }else{
-    echo"Veuillez vous connecter";
-}
+
+        echo "Veuillez vous connecter <br>";
+        echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
+    }
     ?>
         </div>
 
