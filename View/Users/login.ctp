@@ -1,4 +1,6 @@
 
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 centered">
 
 <div class="users form">
     <?php echo $this->Form->create('User');?>
@@ -16,3 +18,5 @@
 
 
 </div>
+        </div>
+    </div>

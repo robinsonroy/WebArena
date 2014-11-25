@@ -27,9 +27,8 @@ class ArenaController extends AppController {
     }
 
     public function character() {
-
         // On recherche que les personnages qui ont un ID commun avec les USER pour les afficher.
-$this->set('raw',$this->Fighter->find('all',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
+$this->set('fighters',$this->Fighter->find('all',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
 }
 
 
@@ -68,7 +67,7 @@ $this->set('raw',$this->Fighter->find('all',array('conditions'=> array('Fighter.
                 $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
         }
         $this->set('Fighters',$this->Fighter->find('all'));
-        $this->set('Fighter',$this->Fighter->find('first',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
+        $this->set('Fighter',$this->Fighter->find('all',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
 
     }
 
