@@ -52,7 +52,7 @@ class ArenaController extends AppController {
                 //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
                 //avec le nom avatar_id.jpg
                 if (move_uploaded_file(
-                                $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img\\uploads\\avatar_' . $fighter_id . ".jpg"
+                                $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img/uploads/avatar_' . $fighter_id . ".jpg"
                         )
                 ) {
                     echo "Le transfert s'est bien deroule";
@@ -125,7 +125,7 @@ class ArenaController extends AppController {
                 //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
                 //avec le nom avatar_id.jpg
                 if (move_uploaded_file(
-                                $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img\\uploads\\avatar_' . $fighter_id . ".jpg"
+                                $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img/uploads/avatar_' . $fighter_id . ".jpg"
                         )
                 ) {
                     echo "Le transfert s'est bien deroule";

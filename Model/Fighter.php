@@ -43,7 +43,11 @@ class Fighter extends AppModel
             return ($niveau_actuel+1);
         }
         else
-            return 0;
+            return 0;   
+    }
+    
+    function changerNiveau($level_possible, $user_fighter)
+    {
         
     }
     /* // TEST FONCTION DELETE
