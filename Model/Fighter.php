@@ -154,9 +154,5 @@ class Fighter extends AppModel
      }
 */
 
-    public function checkHealth()
-    {
-        
 
-    }
 }

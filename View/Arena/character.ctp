@@ -24,7 +24,6 @@ echo $this->Form->end('Choose');
         echo"<br>";
 
     }
-pr( $fighters);
 
 //image dsplay
 if (isset($imageName)) {
