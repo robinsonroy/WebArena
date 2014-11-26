@@ -1,3 +1,5 @@
+
+
 <?php
 
 $this->assign('title', 'Votre personnage');
@@ -26,6 +28,16 @@ echo $this->Form->input('avatar_image', array('type' => 'file', 'name' => 'avata
 //echo $this->Form->input('fighter_choice', array('options' => $fighterList));
 echo $this->Form->end('Choose');
 
+?> Veuillez choisir un personnage <br><?php
+
+    foreach ($fighters as $fight)
+    {
+        echo $fight['Fighter']['name'];
+        echo "<a href='' >Utiliser</a>";
+        echo"<br>";
+
+    }
+
 //image dsplay
 if (isset($imageName)) {
     echo "<img >".$this->Html->image('uploads/' . $imageName, array('alt' => 'uploaded image'))."</img>";
@@ -36,17 +48,19 @@ if (isset($imageName)) {
     <div class="col-md-6" >
         <h3>Informations du perssonage</h3>
         <ul>
-            <li>Id du perssonage : <?php echo $raw[0]['Fighter']['id'] ; ?> 
-            <li>Nom du personage: <?php echo $raw[0]['Fighter']['name'];?></li> 
-            <li>Coordonnée X: <?php echo $raw[0]['Fighter']['coordinate_x'];?></li>
-            <li>Coordonnée Y <?php echo $raw[0]['Fighter']['coordinate_y'];?></li>
-            <li>Niveau: <?php echo $raw[0]['Fighter']['level'];?></li>
-            <li>Expérience: <?php echo $raw[0]['Fighter']['xp'];?></li>
-            <li>Compétence Vue: <?php echo $raw[0]['Fighter']['skill_sight'];?> </li>
-            <li>Compétence Force: <?php echo $raw[0]['Fighter']['skill_strength'];?></li>
-            <li>Points de vie: <?php echo $raw[0]['Fighter']['skill_health'];?></li>
-            <li>Vie actuelle: <?php echo $raw[0]['Fighter']['current_health'];?></li>
-        </ul>
+            <?php  foreach ($raw as $raws)
+            { ?>
+            <li>Id du perssonage : <?php echo $raws['Fighter']['id'] ; ?>
+            <li>Nom du personage: <?php echo $raws['Fighter']['name'];?></li>
+            <li>Coordonnée X: <?php echo $raws['Fighter']['coordinate_x'];?></li>
+            <li>Coordonnée Y <?php echo $raws['Fighter']['coordinate_y'];?></li>
+            <li>Niveau: <?php echo $raws['Fighter']['level'];?></li>
+            <li>Expérience: <?php echo $raws['Fighter']['xp'];?></li>
+            <li>Compétence Vue: <?php echo $raws['Fighter']['skill_sight'];?> </li>
+            <li>Compétence Force: <?php echo $raws['Fighter']['skill_strength'];?></li>
+            <li>Points de vie: <?php echo $raws['Fighter']['skill_health'];?></li>
+            <li>Vie actuelle: <?php echo $raws['Fighter']['current_health'];?></li><br><br>
+       <?php } ?> </ul>
     </div>
     <!--Changer de niveau-->
     <div class="col-mod-3">
@@ -66,3 +80,5 @@ if (isset($imageName)) {
 <?php
 }
 ?>
+</div>
+    </div>

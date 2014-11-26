@@ -1,5 +1,7 @@
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 centered">
 
-<div class="users form">
+    <div class="users form">
     <?php echo $this->Form->create('User');?>
     <fieldset>
         <legend><?php echo __('Ajouter User'); ?></legend>
@@ -9,3 +11,5 @@
     </fieldset>
     <?php echo $this->Form->end(__('Ajouter'));?>
 </div>
+        </div>
+    </div>

@@ -104,14 +104,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             <footer class="footer">
                 <div class="container">
                     <p class="text-muted">
-                        <?php echo $this->Html->link(
-                            $this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-                            'http://www.cakephp.org/',
-                            array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-                        );
-                        echo "WebArena : SI-4 | PORTIER,SAMBRES,RAOUL,ROY <br>";
-                        echo "GitHub : https://github.com/robinsonroy/WebArena";
-                        ?></p>
+                        <p> WebArena : SI-4 | PORTIER,SAMBRES,RAOUL,ROY </p>
+                        <a href="https://github.com/robinsonroy/WebArena"  > Repo GitHub</a>
+                        </p>
                 </div>
             </footer>
 
