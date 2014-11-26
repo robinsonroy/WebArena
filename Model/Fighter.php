@@ -61,6 +61,24 @@ class Fighter extends AppModel
                     echo"fail";
                 }
             }*/
+    
+    //En cas de la création d'un nouveau personnage,
+    //il faut supprimer l'ancien personnage mort de l'utilisateur
+    function removeOldFighter($user_id)
+    {
+        $fighterList = $this->find('all', array('fields' => array('player_id', 'id')));
+        
+        pr($fighterList);
+        foreach($fighterList as $fighter)
+        {
+            if($fighter['Fighter']['player_id'] == $user_id)
+            {
+                $this->id = $fighter['Fighter']['id'];
+                $this->saveField('player_id', 0);
+            }
+        }
+    }
+    
     function doAttack($id, $id2, $direction)
     {
         // On recupe l'id du méchant.

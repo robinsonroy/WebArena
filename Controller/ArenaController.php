@@ -31,18 +31,17 @@ class ArenaController extends AppController {
         // On recherche que les personnages qui ont un ID commun avec les USER pour les afficher.
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
         $this->set('raw', $user_fighter);
-        
+
         //Recherche du level
-        $level_possible= $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
-        $this->set('choix_level',$level_possible);
-        
+        $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
+        $this->set('choix_level', $level_possible);
+
         if ($this->request->is('post')) {
-            
-            if (isset($this->request->data['ChangeLevel']))
-            {
-                $this->Fighter->changerNiveau($level_possible, $user_fighter[0]['Fighter']);                        
+
+            if (isset($this->request->data['ChangeLevel'])) {
+                $this->Fighter->changerNiveau($level_possible, $user_fighter[0]['Fighter']);
             }
-            
+
             //Récupération du résultat du formulaire
             $fighter_id = $user_fighter[0]['Fighter']['id'];
             if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
@@ -125,7 +124,7 @@ class ArenaController extends AppController {
                 //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
                 //avec le nom avatar_id.jpg
                 if (move_uploaded_file(
-                                $_FILES['avatar']['tmp_name'],  'img/uploads/avatar_' . $fighter_id . ".jpg"
+                                $_FILES['avatar']['tmp_name'], 'img/uploads/avatar_' . $fighter_id . ".jpg"
                         )
                 ) {
                     echo "Le transfert s'est bien deroule";
@@ -138,6 +137,8 @@ class ArenaController extends AppController {
     public function createchar() {
         //création
         if ($this->request->is('post')) {
+            //Supprime l'ancien personage de l'utilisateur qi il existe
+            $this->Fighter->removeOldFighter($this->Session->read('Auth.User.id'));
             $data = array(
                 'Fighter' => array(
                     'name' => $this->request->data['Createchar']['create_name'],

@@ -1,4 +1,5 @@
 <?php
+
 $this->assign('title', 'Création de personnage');
 ?>
 <div class="row">
@@ -14,8 +15,6 @@ if($this->Session->read('Auth.User'))
 var_dump($this->Session->read('Auth.User'));
 // RECUPERATION ID SESSION CO.
     echo $this->Session->read('Auth.User.id');
-
-
 
 
 
@@ -36,6 +35,6 @@ echo $this->Form->end('Create');
     echo"Veuillez vous connecter";
 }
     ?>
-        </div>
+    </div>
 
 </div>
