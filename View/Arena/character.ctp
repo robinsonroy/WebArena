@@ -3,35 +3,51 @@
 <?php
 
 $this->assign('title', 'Votre personnage');
-if($this->Session->read('Auth.User'))
+if(!($this->Session->read('Auth.User')))
+{
+    //Si l'utilisateur n'est pas enregistré
+    echo "Veuillez vous connecter <br>";
+    echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
+}
+else if($raw[0]['Fighter']['current_health'] == 0)
+{
+    //Si le fighter n'as plus de vie
+    echo "Votre personnage est mort!<br>";
+    echo  $this->Html->link("Creation d'un personnage",array('controller'=>'Arena','action'=>'createchar'));
+
+}
+else
 {
  ?>
 <!--1ER ROW -->
 <div class="row">
     <!--Choix Avatar-->
     <div class="col-md-3">
-        <?php echo $this->Form->create('avatar', array('type' => 'file'));
-echo $this->Form->input('avatar_image', array('type' => 'file', 'name' => 'avatar'));
-//echo $this->Form->input('fighter_choice', array('options' => $fighterList));
-echo $this->Form->end('Choose');
+        <?php 
+        echo $this->Form->create('avatar', array('type' => 'file'));
+        echo $this->Form->input('avatar_image', array('type' => 'file', 'name' => 'avatar'));
+        //echo $this->Form->input('fighter_choice', array('options' => $fighterList));
+        echo $this->Form->end('Choose');
+        ?> 
+        Veuillez choisir un personnage <br>
+        <?php
 
-?> Veuillez choisir un personnage <br><?php
+        foreach ($fighters as $fight)
+        {
+            echo $fight['Fighter']['name'];
+            echo "<a href='' >Utiliser</a>";
+            echo"<br>";
 
-    foreach ($fighters as $fight)
-    {
-        echo $fight['Fighter']['name'];
-        echo "<a href='' >Utiliser</a>";
-        echo"<br>";
+        }
 
-    }
+        //image dsplay
+        if (isset($imageName)) {
+            echo "<img >".$this->Html->image('uploads/' . $imageName, array('alt' => 'uploaded image'))."</img>";
 
-//image dsplay
-if (isset($imageName)) {
-    echo "<img >".$this->Html->image('uploads/' . $imageName, array('alt' => 'uploaded image'))."</img>";
-
-}
-?>
+        }
+        ?>
     </div>
+
     <div class="col-md-6" >
         <h3>Informations du perssonage</h3>
         <ul>
@@ -49,26 +65,25 @@ if (isset($imageName)) {
             <li>Vie actuelle: <?php echo $raws['Fighter']['current_health'];?></li><br><br>
        <?php } ?> </ul>
     </div>
+
     <!--Changer de niveau-->
-    <div class="col-mod-3">
-        <h3>Level UP</h3>
+    <div class="col-md-3">
+            <h3>Level UP</h3>
            <?php 
            if($choix_level != 0)
            {
                 echo $this->Form->create('ChangeLevel'); 
-                echo '<input type="submit" class="btn btn-danger" value="Level UP">';
-                //echo $this->Form->end();
+                echo $this->Form->input('skill',array('options' => array(1=>'Force',2=>'Vue',3=>'Santé'),'div'=>'form-group','class'=>'form-control'));
+           ?>
+            <input type="submit" class="btn btn-danger" value="Level UP">
+            <?php    
+            echo $this->Form->end();
            }
            else echo "Pas assez d'expérience pour changer de niveau";
            ?> 
-           
+        
     </div>
 </div>
 <?php
-}else{
-echo "Veuillez vous connecter <br>";
-echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
 }
 ?>
-</div>
-    </div>

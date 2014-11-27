@@ -79,7 +79,7 @@ class UsersController extends AppController {
             $email=$this->request->data['User']['email'];
 
             // Envoie mail auto
-            if ($this->sendEmail($email)){echo "Email send";}
+            if ($this->sendEmail($email)){echo "Email sent";}
 
             $this->User->create();
             if ($this->User->save($this->request->data)) {
