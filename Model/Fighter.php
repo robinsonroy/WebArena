@@ -67,9 +67,7 @@ class Fighter extends AppModel
     {
         // On recupe l'id du méchant.
         $datas = $this->findById($id);
-        pr($datas);
         $datas2 = $this->findById($id2);
-        pr($datas2);
 
         $this->id=$id;
 
@@ -77,8 +75,8 @@ class Fighter extends AppModel
             case "east":
             {
                 if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
-                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                    $this->saveField('xp', $datas['Fighter']['xp'] + 1);
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
+                  //  $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     echo "Succes";
                 } else {
                     echo "Raté";
@@ -88,7 +86,7 @@ class Fighter extends AppModel
             case "west":
             {
                 if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
-                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                   // $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
@@ -100,7 +98,7 @@ class Fighter extends AppModel
             case "north" :
             {
                 if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
-                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                   // $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
@@ -112,7 +110,7 @@ class Fighter extends AppModel
             case "south" :
             {
                 if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
-                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                  //  $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
@@ -122,6 +120,68 @@ class Fighter extends AppModel
             }
                 break;
         }
+        $this->save();
+
+
+            $this->id=$id2;
+
+
+        switch ($direction) {
+            case "east":
+            {
+                if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
+                    //$this->set('xp', $datas['Fighter']['xp'] + 1);
+                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                    echo "Succes";
+                } else {
+                    echo "Raté";
+                }
+            }
+                break;
+            case "west":
+            {
+                if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
+                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                   // $this->set('xp', $datas['Fighter']['xp'] + 1);
+
+                    echo "Succes";
+                } else {
+                    echo "Raté";
+                }
+            }
+                break;
+            case "north" :
+            {
+                if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
+                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                 //   $this->set('xp', $datas['Fighter']['xp'] + 1);
+
+                    echo "Succes";
+                } else {
+                    echo "Raté";
+                }
+            }
+                break;
+            case "south" :
+            {
+                if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
+                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                 //   $this->set('xp', $datas['Fighter']['xp'] + 1);
+
+                    echo "Succes";
+                } else {
+                    echo "Raté";
+                }
+            }
+                break;
+        }
+
+
+
+
+
+
+
 
         $this->save();
         return true;
