@@ -47,10 +47,6 @@ foreach( $Fighter as $Fight)
 <!--C'EST LE BORDEL LA DEDANS-->
  <div class="col-md-6"    id="map">
 
-
-
-
-
         <table id="char" class="table">
         <th> Entités</th>
         <th> CoordXY</th>
@@ -66,6 +62,32 @@ foreach( $Fighter as $Fight)
             } ?>
         </tr>
 
+<!--Jvais recup les donné de tout -->
+        <?php  //pr($charAll); ?>
+        <table =id"mapmap" class="table">
+            <?php
+            for ($i=0;$i<15;$i++)
+            {
+                 echo "<tr>";
+            for($y=0;$y<15;$y++)
+                {
+
+                    foreach ($charAll as $char)
+                 if($char['Fighter']['coordinate_x']==$i && $char['Fighter']['coordinate_y']==$y)
+             {
+                     echo "<td> O </td>";
+             }
+                     if($char['Fighter']['coordinate_x']!=$i)
+                     {
+
+                         echo "<td>X</td>";
+                     }
+
+
+                }
+             echo "</tr>";
+            }
+?>
 </table>
 
 

@@ -86,7 +86,7 @@ class ArenaController extends AppController
         $time = 4;
         //check la map dans map
         //  $this->set('map',$this->Fighter->create_map());
-
+            $this->set('charAll',$this->Fighter->find('all'));
         //  $this->set('map',$this->Fighter->create_map());
         if ($this->request->is('post')) {
 
