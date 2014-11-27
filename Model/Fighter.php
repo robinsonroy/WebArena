@@ -66,8 +66,10 @@ class Fighter extends AppModel
     function doAttack($id, $id2, $direction)
     {
         // On recupe l'id du méchant.
-        $datas = $this->read(null, $id);
-        $datas2 = $this->read(null, $id2);
+        $datas = $this->findById($id);
+        pr($datas);
+        $datas2 = $this->findById($id2);
+        pr($datas2);
 
         $this->id=$id;
 
@@ -87,7 +89,7 @@ class Fighter extends AppModel
             {
                 if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                    $this->saveField('xp', $datas['Fighter']['xp'] + 1);
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
                 } else {
@@ -95,12 +97,11 @@ class Fighter extends AppModel
                 }
             }
                 break;
-            //  $this->set('current_health', $datas['Fighter']['current_health']-1);
             case "north" :
             {
                 if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                    $this->saveField('xp', $datas['Fighter']['xp'] + 1);
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
                 } else {
@@ -112,7 +113,7 @@ class Fighter extends AppModel
             {
                 if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                    $this->saveField('xp', $datas['Fighter']['xp'] + 1);
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
                 } else {

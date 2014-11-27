@@ -100,7 +100,8 @@ class ArenaController extends AppController
 
             if (isset($this->request->data['Fightermove']))
                 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
-                if ($this->checkHealth($firrst['Fighter']['id'])) {
+                if ($this->checkHealth($firrst['Fighter']['id']))
+                {
                     $this->Fighter->doMove(
                         $firrst['Fighter']['id'],
                         $this->request->data['Fightermove']['direction']);
@@ -196,23 +197,19 @@ class ArenaController extends AppController
 
     public function checkHealth($id)
     {
-        echo $id;
         $fighters = $this->Fighter->findById($id);
+        $Fighterss=$this->Fighter->find('all');
 
 
-        echo $fighters['Fighter']['current_health'];
-        if ($fighters['Fighter']['current_health'] <= 0) {
-            //$this->query(" DELETE  FROM `fighters`  WHERE `id`=".$id.";");
-            // $fighters->delete();
-            // $this->Fighter->id=$id;
-            // $this->Fighter->delete();
-
-            $this->Fighter->delete($fighters['Fighter']['id']);
-            echo "Il est mort";
+       // echo $fighters['Fighter']['current_health'];
+        foreach ($Fighterss as $fight)
+        if ($fight['Fighter']['current_health'] <= 0) {
+            $this->Fighter->delete($fight['Fighter']['id']);
+                echo "Il est mort";
             return false;
 
         } else {
-            echo "Ilestenvie";
+            echo "Il est en vie";
             return true;
         }
 
