@@ -13,41 +13,62 @@ App::uses('AppController', 'Controller');
  *
  * @author ...
  */
-class ArenaController extends AppController {
+class ArenaController extends AppController
+{
 
-    public $uses = array('Player', 'Fighter', 'Event');
+    public $uses = array('Player', 'Fighter', 'Event','Tool');
 
     /**
      * index method : first page
      *
      * @return void
      */
-    public function index() {
+    public function index()
+    {
         //die('test');
     }
 
-    public function character() {
+    public function character()
+    {
         // On recherche que les personnages qui ont un ID commun avec les USER pour les afficher.
+<<<<<<< HEAD
         $this->set('fighters', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
+=======
+
+
+        $this->set('fighters', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
+
+>>>>>>> LAB3Greg
 
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
         $this->set('raw', $user_fighter);
 
+<<<<<<< HEAD
         if (!empty($user_fighter)) {
             //Recherche du level
             $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
             $this->set('choix_level', $level_possible);
         }
+=======
+        //Recherche du level
+        $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
+        $this->set('choix_level', $level_possible);
+>>>>>>> LAB3Greg
 
         if ($this->request->is('post')) {
 
             if (isset($this->request->data['ChangeLevel'])) {
+<<<<<<< HEAD
                 $this->Fighter->changeLevel($level_possible, $user_fighter[0]['Fighter']['id'], $this->request->data['ChangeLevel']['skill']);
+=======
+                $this->Fighter->changerNiveau($level_possible, $user_fighter[0]['Fighter']);
+>>>>>>> LAB3Greg
             }
 
             //Récupération du résultat du formulaire
             $fighter_id = $user_fighter[0]['Fighter']['id'];
 
+<<<<<<< HEAD
             if (isset($this->request->data['avatar'])) {
                 if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
                     $imageName = "avatar_" . $fighter_id . ".jpg";
@@ -63,20 +84,34 @@ class ArenaController extends AppController {
                     } else
                         echo "erreur sur le transfert";
                 }
+=======
+                //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
+                //avec le nom avatar_id.jpg
+                if (move_uploaded_file(
+                    $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img/uploads/avatar_' . $fighter_id . ".jpg"
+                )
+                ) {
+                    echo "Le transfert s'est bien deroule";
+                } else
+                    echo "erreur sur le transfert";
+>>>>>>> LAB3Greg
             }
         }
     }
 
-    public function diary() {
+    public function diary()
+    {
         $this->set('raw', $this->Event->find());
     }
 
-    public function login() {
+    public function login()
+    {
         if ($this->request->is('post')) {
             $this->Player->loginplayer($this->request->data['sub']['login'], $this->request['sub']['password']);
         }
     }
 
+<<<<<<< HEAD
     public function sight() {
         //check la map dans map
         $time = 4;
@@ -88,6 +123,11 @@ class ArenaController extends AppController {
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
        
         
+=======
+    public function sight()
+    {
+            $this->set('charAll',$this->Fighter->find('all'));
+>>>>>>> LAB3Greg
         if ($this->request->is('post')) {
 
             // Il faut un form pour choisir le héro
@@ -97,12 +137,19 @@ class ArenaController extends AppController {
             $this->Session->setFlash('Une action a ete realise.');
             var_dump($this->Session->read('Auth.User.id'));
             // on recupere le fighter du joueur
+<<<<<<< HEAD
             //  $first2=$this->Fighter->find('first',array('conditions'=>array('Fighter.player_id'=>$this->Session->read("Auth.User.id"),'Fighter.id'=>$varglob)));
             //$this->set('super', $time2);
+=======
+
+
+
+>>>>>>> LAB3Greg
             // on recupere le fighter du joueur
             $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
             if (isset($this->request->data['Fightermove']))
+<<<<<<< HEAD
             {
                 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
                 if ($this->checkHealth($firrst['Fighter']['id'])) {
@@ -123,16 +170,39 @@ class ArenaController extends AppController {
                     $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
                     $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'],$firrst['Fighter']['coordinate_y']);
                     
+=======
+                //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
+                if ($this->checkHealth($firrst['Fighter']['id'])) {
+                    $this->Fighter->doMove(
+                        $firrst['Fighter']['id'],
+                        $this->request->data['Fightermove']['direction']);
+                } else {
+                    $this->Session->setFlash('Personnage mort et supprimé');
+                }
+
+
+            if (isset($this->request->data['ChangeLevel']))
+
+                $this->Fighter->changeLevel
+                    (1, $this->request->data['ChangeLevel']['level']);
+            if (isset($this->request->data['Fighterattack']))
+                if ($this->checkHealth($firrst['Fighter']['id'])) {
+                    $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
+>>>>>>> LAB3Greg
                 } else {
                     $this->Session->setFlash('Personnage mort et supprimé');
                 }
         }
 
         $this->set('Fighters', $this->Fighter->find('all'));
+
+        $this->set('Tools',$this->Tool->find('all'));
+
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
     }
 
-    public function chooseAvatar() {
+    public function chooseAvatar()
+    {
         //Récupère la liste des fighters, avec les champs id et name
         $fighterList = $this->Fighter->find('all', array('fields' => array('id', 'name')));
 
@@ -160,8 +230,13 @@ class ArenaController extends AppController {
                 //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
                 //avec le nom avatar_id.jpg
                 if (move_uploaded_file(
+<<<<<<< HEAD
                                 $_FILES['avatar']['tmp_name'], 'img/uploads/avatar_' . $fighter_id . ".jpg"
                         )
+=======
+                    $_FILES['avatar']['tmp_name'], 'img/uploads/avatar_' . $fighter_id . ".jpg"
+                )
+>>>>>>> LAB3Greg
                 ) {
                     echo "Le transfert s'est bien deroule";
                 } else
@@ -170,7 +245,8 @@ class ArenaController extends AppController {
         }
     }
 
-    public function createchar() {
+    public function createchar()
+    {
         //création
         if ($this->request->is('post')) {
             //Supprime l'ancien personage de l'utilisateur qi il existe
@@ -211,6 +287,10 @@ class ArenaController extends AppController {
             $this->Fighter->delete($fighters['Fighter']['id']);
             echo "Il est mort";
             return false;
+<<<<<<< HEAD
+=======
+
+>>>>>>> LAB3Greg
         } else {
             echo "Ilestenvie";
             return true;

@@ -38,29 +38,24 @@ foreach( $Fighter as $Fight)
 {
         ?>   Nom : <?php     echo $Fight['Fighter']['name'];
     ?> </br>
-        PV : <?php echo $Fight['Fighter']['current_health'];?> </br>
+        PV :    <?php echo $Fight['Fighter']['current_health'];?> </br>
        CoordX : <?php echo $Fight['Fighter']['coordinate_x'];?> </br>
-        CoordY : <?php echo $Fight['Fighter']['coordinate_y'];?></br><?php } ?>
+        CoordY : <?php echo $Fight['Fighter']['coordinate_y'];?></br>
+        XP :     <?php echo $Fight['Fighter']['xp']; ?><?php } ?>
 <!-- VU PERSONNAGE PAS BEAU -->
 
 
         </div>
 
     </div>
-    <div class="col-md-6"    id="map">
 
-
-
-<table id="char" class="table">
-    <th>Entités</th>
-    <th>CoordXY</th>
-    <th>HP</th>
-    <tr>
-        <!-- All fighter -->
-
-
+<!--C'EST LE BORDEL LA DEDANS-->
+ <div class="col-md-6"    id="map">
 
         <table id="char" class="table">
+        <th> Entités</th>
+        <th> CoordXY</th>
+        <th> Point de vie</th>
             <tr>
          <?php foreach($Fighters as $fighter)
             { ?> <td> <?php
@@ -72,19 +67,59 @@ foreach( $Fighter as $Fight)
             } ?>
         </tr>
 
+<!--Jvais recup les donné de tout -->
+        <?php  //pr($charAll); ?>
+        <table =id"mapmap" class="table">
+            <?php
+            for ($i=0;$i<15;$i++)
+            {
+                 echo "<tr>";
+            for($y=0;$y<15;$y++)
+                {
+
+                    foreach ($charAll as $char)
+                 if($char['Fighter']['coordinate_x']==$i && $char['Fighter']['coordinate_y']==$y)
+             {
+                     echo "<td> O </td>";
+             }
+                     if($char['Fighter']['coordinate_x']!=$i)
+                     {
+
+                         echo "<td>X</td>";
+                     }
+
+
+                }
+             echo "</tr>";
+            }
+?>
 </table>
 
- <table id="tools" class="table">
-<th>Items</th>
-<th>PosXY</th>
-<th>Bonus</th>
-     <td> <?php ?> yo</td>
- </table>
-            </tr>
-            <tr>
 
+<table id="char" class="table">
+    <th>Type</th>
+    <th>CoordXY</th>
+    <th>Bonus</th>
+
+        <table id="char" class="table">
+            <tr>
+                <?php foreach($Tools as $tool)
+                { ?> <td> <?php
+                    echo $tool['Tool']['type'];?></td><td><?php
+                    ?>  x :<?php echo $tool['Tool']['coordinate_x']; ?>
+                    y: <?php echo $tool['Tool']['coordinate_y'];?></td><td>
+                    Bonus :<?php echo $tool['Tool']['bonus']; ?>
+                </td><tr><?php
+                } ?>
             </tr>
+
         </table>
+    </table>
+
+
+
+
+
 
 
     </div>

@@ -47,20 +47,5 @@ class User extends AppModel
 
 
 
-    public function loginplayer($login,$pas)
-    {
 
-
-
-        $result=$this->find('all',array('conditions'=>array('email'=>$login)));
-        pr ($result);
-        if ($result == NULL)
-        {
-            echo "succes";
-        }
-        else
-        {
-            echo "Fail";
-        }
-    }
 }
