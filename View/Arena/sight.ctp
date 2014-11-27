@@ -14,8 +14,12 @@ $this->assign('title', 'WebArena : Game'); ?>
            <?php
            echo $this->Form->create('Fightermove');
            echo $this->Form->input('direction',array('options' => array('north'=>'north','east'=>'east','south'=>'south','west'=>'west'),'div'=>'form-group','class'=>'form-control','default' => 'east'));
+           
            ?>
             <input type="submit" class="btn btn-danger" value="Go">
+           <?php
+           echo $this->Form->end();
+           ?>
             <h3>Level UP</h3>
            <?php
            echo $this->Form->create('ChangeLevel');

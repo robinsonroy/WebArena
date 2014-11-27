@@ -28,40 +28,41 @@ class ArenaController extends AppController {
 
     public function character() {
         // On recherche que les personnages qui ont un ID commun avec les USER pour les afficher.
-
-
-        $this->set('fighters',$this->Fighter->find('all',array('conditions'=> array('Fighter.player_id'=>$this->Session->read("Auth.User.id")))));
-
-
+        $this->set('fighters', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
 
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
         $this->set('raw', $user_fighter);
 
-        //Recherche du level
-        $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
-        $this->set('choix_level', $level_possible);
+        if (!empty($user_fighter)) {
+            //Recherche du level
+            $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
+            $this->set('choix_level', $level_possible);
+        }
 
         if ($this->request->is('post')) {
 
             if (isset($this->request->data['ChangeLevel'])) {
-                $this->Fighter->changerNiveau($level_possible, $user_fighter[0]['Fighter']);
+                $this->Fighter->changeLevel($level_possible, $user_fighter[0]['Fighter']['id'], $this->request->data['ChangeLevel']['skill']);
             }
 
             //Récupération du résultat du formulaire
             $fighter_id = $user_fighter[0]['Fighter']['id'];
-            if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
-                $imageName = "avatar_" . $fighter_id . ".jpg";
-                $this->set('imageName', $imageName);
 
-                //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
-                //avec le nom avatar_id.jpg
-                if (move_uploaded_file(
-                                $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img/uploads/avatar_' . $fighter_id . ".jpg"
-                        )
-                ) {
-                    echo "Le transfert s'est bien deroule";
-                } else
-                    echo "erreur sur le transfert";
+            if (isset($this->request->data['avatar'])) {
+                if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                    $imageName = "avatar_" . $fighter_id . ".jpg";
+                    $this->set('imageName', $imageName);
+
+                    //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
+                    //avec le nom avatar_id.jpg
+                    if (move_uploaded_file(
+                                    $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img/uploads/avatar_' . $fighter_id . ".jpg"
+                            )
+                    ) {
+                        echo "Le transfert s'est bien deroule";
+                    } else
+                        echo "erreur sur le transfert";
+                }
             }
         }
     }
@@ -77,12 +78,16 @@ class ArenaController extends AppController {
     }
 
     public function sight() {
-    //check la map dans map
-        $time=4;
+        //check la map dans map
+        $time = 4;
         //check la map dans map
         //  $this->set('map',$this->Fighter->create_map());
-
         //  $this->set('map',$this->Fighter->create_map());
+        
+        //Récupération du personnage de l'utilisateur
+        $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
+       
+        
         if ($this->request->is('post')) {
 
             // Il faut un form pour choisir le héro
@@ -91,45 +96,38 @@ class ArenaController extends AppController {
 
             $this->Session->setFlash('Une action a ete realise.');
             var_dump($this->Session->read('Auth.User.id'));
-           // on recupere le fighter du joueur
-          //  $first2=$this->Fighter->find('first',array('conditions'=>array('Fighter.player_id'=>$this->Session->read("Auth.User.id"),'Fighter.id'=>$varglob)));
-
-
-
+            // on recupere le fighter du joueur
+            //  $first2=$this->Fighter->find('first',array('conditions'=>array('Fighter.player_id'=>$this->Session->read("Auth.User.id"),'Fighter.id'=>$varglob)));
             //$this->set('super', $time2);
-
             // on recupere le fighter du joueur
             $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
             if (isset($this->request->data['Fightermove']))
-            //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
-                 if($this->checkHealth($firrst['Fighter']['id']))
-                 {
-                  $this->Fighter->doMove(
-                    $firrst['Fighter']['id'],
-                    $this->request->data['Fightermove']['direction']);
-                 }else {
-                     $this->Session->setFlash('Personnage mort et supprimé');
-                 }
+            {
+                //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
+                if ($this->checkHealth($firrst['Fighter']['id'])) {
+                    $this->Fighter->doMove(
+                            $firrst['Fighter']['id'], $this->request->data['Fightermove']['direction']);
+                    $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'],$firrst['Fighter']['coordinate_y']);
+                } else {
+                    $this->Session->setFlash('Personnage mort et supprimé');
+                }
+            }
 
 
             if (isset($this->request->data['ChangeLevel']))
-
-                $this->Fighter->changeLevel
-                        (1, $this->request->data['ChangeLevel']['level']);
+                $this->Fighter->changeLevel(1, $this->request->data['ChangeLevel']['level']);
+            
             if (isset($this->request->data['Fighterattack']))
-                if($this->checkHealth($firrst['Fighter']['id']))
-                {
-                $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
-        }else{
+                if ($this->checkHealth($firrst['Fighter']['id'])) {
+                    $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
+                } else {
                     $this->Session->setFlash('Personnage mort et supprimé');
-            }
+                }
         }
 
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
-
-
     }
 
     public function chooseAvatar() {
@@ -196,29 +194,25 @@ class ArenaController extends AppController {
         }
     }
 
-    public function checkHealth($id)
-    {
+    public function checkHealth($id) {
         echo $id;
-        $fighters=$this->Fighter->findById($id);
+        $fighters = $this->Fighter->findById($id);
 
 
         echo $fighters['Fighter']['current_health'];
-        if($fighters['Fighter']['current_health']<=0)
-        {
+        if ($fighters['Fighter']['current_health'] <= 0) {
             //$this->query(" DELETE  FROM `fighters`  WHERE `id`=".$id.";");
-           // $fighters->delete();
-           // $this->Fighter->id=$id;
-           // $this->Fighter->delete();
+            // $fighters->delete();
+            // $this->Fighter->id=$id;
+            // $this->Fighter->delete();
 
-           $this->Fighter->delete($fighters['Fighter']['id']);
+            $this->Fighter->delete($fighters['Fighter']['id']);
             echo "Il est mort";
             return false;
-
-        }else{
+        } else {
             echo "Ilestenvie";
             return true;
         }
-
     }
 
 }

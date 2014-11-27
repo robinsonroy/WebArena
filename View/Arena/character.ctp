@@ -23,28 +23,31 @@ else
 <div class="row">
     <!--Choix Avatar-->
     <div class="col-md-3">
-        <?php echo $this->Form->create('avatar', array('type' => 'file'));
-echo $this->Form->input('avatar_image', array('type' => 'file', 'name' => 'avatar'));
-//echo $this->Form->input('fighter_choice', array('options' => $fighterList));
-echo $this->Form->end('Choose');
+        <?php 
+        echo $this->Form->create('avatar', array('type' => 'file'));
+        echo $this->Form->input('avatar_image', array('type' => 'file', 'name' => 'avatar'));
+        //echo $this->Form->input('fighter_choice', array('options' => $fighterList));
+        echo $this->Form->end('Choose');
+        ?> 
+        Veuillez choisir un personnage <br>
+        <?php
 
-?> Veuillez choisir un personnage <br><?php
+        foreach ($fighters as $fight)
+        {
+            echo $fight['Fighter']['name'];
+            echo "<a href='' >Utiliser</a>";
+            echo"<br>";
 
-    foreach ($fighters as $fight)
-    {
-        echo $fight['Fighter']['name'];
-        echo "<a href='' >Utiliser</a>";
-        echo"<br>";
+        }
 
-    }
+        //image dsplay
+        if (isset($imageName)) {
+            echo "<img >".$this->Html->image('uploads/' . $imageName, array('alt' => 'uploaded image'))."</img>";
 
-//image dsplay
-if (isset($imageName)) {
-    echo "<img >".$this->Html->image('uploads/' . $imageName, array('alt' => 'uploaded image'))."</img>";
-
-}
-?>
+        }
+        ?>
     </div>
+    
     <div class="col-md-6" >
         <h3>Informations du perssonage</h3>
         <ul>
@@ -62,23 +65,28 @@ if (isset($imageName)) {
             <li>Vie actuelle: <?php echo $raws['Fighter']['current_health'];?></li><br><br>
        <?php } ?> </ul>
     </div>
+    
     <!--Changer de niveau-->
     <div class="col-mod-3">
+        <div class="panel panel-default" id="gauche">
         <h3>Level UP</h3>
            <?php 
            if($choix_level != 0)
            {
                 echo $this->Form->create('ChangeLevel'); 
+                echo $this->Form->input('skill',array('options' => array(1=>'Force',2=>'Vue',3=>'Santé'),'div'=>'form-group','class'=>'form-control'));
+                
+           //echo $this->Form->input('direction',array('options' => array('north'=>'north','east'=>'east','south'=>'south','west'=>'west'),'div'=>'form-group','class'=>'form-control','default' => 'east'));
+           
                 echo '<input type="submit" class="btn btn-danger" value="Level UP">';
-                //echo $this->Form->end();
+                echo $this->Form->end();
            }
            else echo "Pas assez d'expérience pour changer de niveau";
            ?> 
+        </div>
 
     </div>
 </div>
 <?php
 }
 ?>
-</div>
-    </div>

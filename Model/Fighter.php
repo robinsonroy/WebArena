@@ -9,6 +9,12 @@ class Fighter extends AppModel
             'foreignKey' => 'player_id',
         ),
     );
+    
+    //maximum de points d'action, définis en global dans le modèle
+    public $PA_max = 3;
+    public $PA_recup = 10;
+    private $PA_actuel = 3;
+    
     function doMove($fighterId, $direction) // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
     {
         // récupérer la position et fixer l'id de travail
@@ -26,6 +32,8 @@ class Fighter extends AppModel
             return false;
         // sauver la modif
         $this->save();
+        
+        
     }
     
     //Renvoie le niveau auquel peut passer le perssonnage si c'est possible,
@@ -46,10 +54,6 @@ class Fighter extends AppModel
             return 0;   
     }
     
-    function changerNiveau($level_possible, $user_fighter)
-    {
-        
-    }
     /* // TEST FONCTION DELETE
             public function deletechar(){
     echo "deletechar ici";
@@ -75,6 +79,7 @@ class Fighter extends AppModel
             {
                 $this->id = $fighter['Fighter']['id'];
                 $this->saveField('player_id', 0);
+                break;
             }
         }
     }
@@ -107,6 +112,7 @@ class Fighter extends AppModel
                     echo "Raté";
                 }
             }
+            
                 break;
             //  $this->set('current_health', $datas['Fighter']['current_health']-1);
             case "north" :
@@ -134,12 +140,47 @@ class Fighter extends AppModel
         $this->save();
         return true;
     }
-    public function changeLevel($fighterId, $level)
+    
+    function changeLevel($level, $fighterId, $skill)
     {
+        
+        $datas = $this->read(null, $fighterId);
+       
         $this->id = $fighterId;
+        
+        $datas['Fighter']['level'] = $level;
+        
+    //application de l'amélioraation des compétences
+        switch($skill)
+        {
+            //Amélioration de la compétence Force
+            case 1: 
+                $this->saveField('skill_strength', $datas['Fighter']['skill_strength'] + 1);
+                break;
+            //Amélioration de la compétence Vue
+            case 2 : 
+                $this->saveField('skill_sight', $datas['Fighter']['skill_sight'] + 1);
+                break;
+            //Amélioration de la compétence Santé
+            case 3:
+                $this->saveField('skill_health', $datas['Fighter']['skill_health'] + 1);
+                break;
+        }
+        
         $this->saveField('level', $level);
-        return true;
+        $this->saveField('current_health', $datas['Fighter']['skill_health']);
+   
     }
+    
+//    function enregistrerAction($user_fighter, $action)
+//    {
+//        
+//        switch($action)
+//        {
+//            case 'Move':
+//                break;
+//        }
+//    }
 
     public function timeManager($time)
     {
