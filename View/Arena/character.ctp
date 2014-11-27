@@ -47,7 +47,7 @@ else
         }
         ?>
     </div>
-    
+
     <div class="col-md-6" >
         <h3>Informations du perssonage</h3>
         <ul>
@@ -65,26 +65,23 @@ else
             <li>Vie actuelle: <?php echo $raws['Fighter']['current_health'];?></li><br><br>
        <?php } ?> </ul>
     </div>
-    
+
     <!--Changer de niveau-->
-    <div class="col-mod-3">
-        <div class="panel panel-default" id="gauche">
-        <h3>Level UP</h3>
+    <div class="col-md-3">
+            <h3>Level UP</h3>
            <?php 
            if($choix_level != 0)
            {
                 echo $this->Form->create('ChangeLevel'); 
                 echo $this->Form->input('skill',array('options' => array(1=>'Force',2=>'Vue',3=>'Santé'),'div'=>'form-group','class'=>'form-control'));
-                
-           //echo $this->Form->input('direction',array('options' => array('north'=>'north','east'=>'east','south'=>'south','west'=>'west'),'div'=>'form-group','class'=>'form-control','default' => 'east'));
-           
-                echo '<input type="submit" class="btn btn-danger" value="Level UP">';
-                echo $this->Form->end();
+           ?>
+            <input type="submit" class="btn btn-danger" value="Level UP">
+            <?php    
+            echo $this->Form->end();
            }
            else echo "Pas assez d'expérience pour changer de niveau";
            ?> 
-        </div>
-
+        
     </div>
 </div>
 <?php
