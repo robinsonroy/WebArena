@@ -30,7 +30,10 @@ class Fighter extends AppModel
             $this->set('coordinate_x', $datas['Fighter']['coordinate_x'] - 1);
         else
             return false;
-        // sauver la modif
+        
+        //on sauvegarde le temps du dernier event
+        $this->set('next_action_time', date("Y-m-d h:i:s.u"));
+// sauver la modif
         $this->save();
         
         
@@ -98,8 +101,10 @@ class Fighter extends AppModel
                     $this->set('xp',$datas['Fighter']['xp']+1);
 
                     echo "Succes";
+                    $attaque_touche = true;
                 } else {
                     echo "Raté";
+                    $attaque_touche = false;
                 }
             }
                 break;
@@ -108,8 +113,10 @@ class Fighter extends AppModel
                 if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     echo "Succes";
+                    $attaque_touche = true;
                 } else {
                     echo "Raté";
+                    $attaque_touche = false;
                 }
             }
             
@@ -120,8 +127,10 @@ class Fighter extends AppModel
                 if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     echo "Succes";
+                    $attaque_touche = true;
                 } else {
                     echo "Raté";
+                    $attaque_touche = false;
                 }
             }
                 break;
@@ -130,15 +139,25 @@ class Fighter extends AppModel
                 if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     echo "Succes";
+                    $attaque_touche = true;
                 } else {
                     echo "Raté";
+                    $attaque_touche = false;
                 }
             }
                 break;
         }
-
         $this->save();
-        return true;
+        
+        $result = array(
+            'nom_attaquant' => $datas['Fighter']['name'],
+            'direction' => $direction,
+            'attaque_touche' => $attaque_touche,
+            'nom_attaque' => $datas2['Fighter']['name'],
+            'attaque_reussi' => true
+        );
+        
+        return $result;
     }
     
     function changeLevel($level, $fighterId, $skill)
