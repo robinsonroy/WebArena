@@ -82,12 +82,7 @@ class ArenaController extends AppController
 
     public function sight()
     {
-        //check la map dans map
-        $time = 4;
-        //check la map dans map
-        //  $this->set('map',$this->Fighter->create_map());
             $this->set('charAll',$this->Fighter->find('all'));
-        //  $this->set('map',$this->Fighter->create_map());
         if ($this->request->is('post')) {
 
             // Il faut un form pour choisir le héro
@@ -97,10 +92,8 @@ class ArenaController extends AppController
             $this->Session->setFlash('Une action a ete realise.');
             var_dump($this->Session->read('Auth.User.id'));
             // on recupere le fighter du joueur
-            //  $first2=$this->Fighter->find('first',array('conditions'=>array('Fighter.player_id'=>$this->Session->read("Auth.User.id"),'Fighter.id'=>$varglob)));
 
 
-            //$this->set('super', $time2);
 
             // on recupere le fighter du joueur
             $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));

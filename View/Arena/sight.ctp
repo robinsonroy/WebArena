@@ -34,9 +34,10 @@ foreach( $Fighter as $Fight)
 {
         ?>   Nom : <?php     echo $Fight['Fighter']['name'];
     ?> </br>
-        PV : <?php echo $Fight['Fighter']['current_health'];?> </br>
+        PV :    <?php echo $Fight['Fighter']['current_health'];?> </br>
        CoordX : <?php echo $Fight['Fighter']['coordinate_x'];?> </br>
-        CoordY : <?php echo $Fight['Fighter']['coordinate_y'];?></br><?php } ?>
+        CoordY : <?php echo $Fight['Fighter']['coordinate_y'];?></br>
+        XP :     <?php echo $Fight['Fighter']['xp']; ?><?php } ?>
 <!-- VU PERSONNAGE PAS BEAU -->
 
 
