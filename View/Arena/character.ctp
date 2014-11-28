@@ -68,7 +68,7 @@ else
             <li>Compétence Force: <?php echo $raws['Fighter']['skill_strength'];?></li>
             <li>Points de vie: <?php echo $raws['Fighter']['skill_health'];?></li>
             <li>Vie actuelle: <?php echo $raws['Fighter']['current_health'];?></li><br><br>
-       <?php } ?> </ul>
+       <?php }  ?> </ul>
     </div>
 
     <!--Changer de niveau-->

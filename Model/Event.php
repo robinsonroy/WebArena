@@ -110,7 +110,7 @@ class Event extends AppModel{
         //yaneh elle est plus récente que 3*le délai d'attente
         //il y a eu trop d'actions, donc l'utilisateur doit attendre
         
-        $action_possible;
+        $action_possible=null;
         if(count($event_fighter) >= $this->PA_max )
         {
             $delai_attente = date("Y-m-d h:i:s.u", time() - $this->PA_max*$this->PA_recup);
