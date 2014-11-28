@@ -47,8 +47,10 @@ class ArenaController extends AppController {
 
             //Récupération du résultat du formulaire
             $fighter_id = $user_fighter[0]['Fighter']['id'];
-
-            if (isset($this->request->data['avatar'])) {
+            
+            
+            if (isset($_FILES['avatar'])) {
+                pr($_FILES['avatar']);
                 if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
                     $imageName = "avatar_" . $fighter_id . ".jpg";
                     $this->set('imageName', $imageName);
@@ -62,6 +64,8 @@ class ArenaController extends AppController {
                         echo "Le transfert s'est bien deroule";
                     } else
                         echo "erreur sur le transfert";
+
+                    pr($this->request->data['avatar']);
                 }
             }
         }
@@ -137,7 +141,7 @@ class ArenaController extends AppController {
         $this->set('Tools', $this->Tool->find('all'));
 
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
-        
+
         //Actualisation de la vue   //ça marche aps
         $this->render();
     }

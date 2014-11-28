@@ -19,18 +19,43 @@ class Fighter extends AppModel
     {
         // récupérer la position et fixer l'id de travail
         $datas = $this->read(null, $fighterId);
+        $x = $datas['Fighter']['coordinate_x'];
+        $y = $datas['Fighter']['coordinate_y'];
         // falre la modif
-        if ($direction == 'north')
-            $this->set('coordinate_y', $datas['Fighter']['coordinate_y'] + 1);
-        elseif ($direction == 'south')
-            $this->set('coordinate_y', $datas['Fighter']['coordinate_y'] - 1);
-        elseif ($direction == 'east')
-            $this->set('coordinate_x', $datas['Fighter']['coordinate_x'] + 1);
-        elseif ($direction == 'west')
-            $this->set('coordinate_x', $datas['Fighter']['coordinate_x'] - 1);
-        else
-            return false;
+        switch($direction)
+        {
+            case 'north':
+                $y++;
+                break;
+            case 'south':
+                $y--;
+                break;
+            case 'east':
+                $x++;
+                break;
+            case 'west':
+                $x--;
+                break;
+        }
         
+        $listeChar = $this->find('all');
+        
+        //Tests limite map
+        if($x > 15 || $y > 10 || $x<1 || $y<1)
+        {
+            return false;
+        }
+        //Test case occupée
+        foreach($listeChar as $char)
+        {
+            if($char['Fighter']['id'] != $fighterId && $char['Fighter']['coordinate_x'] == $x && $char['Fighter']['coordinate_y']==$y)
+            {
+                return false;
+            }
+        }
+        
+        $this->set('coordinate_x', $x);
+        $this->set('coordinate_y', $y);
         //on sauvegarde le temps du dernier event
         $this->set('next_action_time', date("Y-m-d h:i:s.u"));
 // sauver la modif
@@ -52,19 +77,6 @@ class Fighter extends AppModel
         } else
             return 0;
     }
-    
-    /* // TEST FONCTION DELETE
-            public function deletechar(){
-    echo "deletechar ici";
-                if( $this->Fighter->deleteAll($this->request->data($this->requet->data['Delete']['delete'])))
-                {
-                    echo "succes";
-                }else
-                {
-                    echo"fail";
-
-                }
-            }*/
     
     //En cas de la création d'un nouveau personnage,
     //il faut supprimer l'ancien personnage mort de l'utilisateur
@@ -194,16 +206,6 @@ class Fighter extends AppModel
         $this->saveField('current_health', $datas['Fighter']['skill_health']);
    
     }
-    
-//    function enregistrerAction($user_fighter, $action)
-//    {
-//        
-//        switch($action)
-//        {
-//            case 'Move':
-//                break;
-//        }
-//    }
 
     public function timeManager($time)
     {
