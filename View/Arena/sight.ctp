@@ -1,4 +1,6 @@
-<?php if($this->Session->read('Auth.User'))
+<?php
+
+if($this->Session->read('Auth.User'))
 {
 
 
@@ -19,6 +21,8 @@ $this->assign('title', 'WebArena : Game'); ?>
             <input type="submit" class="btn btn-danger" value="Go">
            <?php
            echo $this->Form->end();
+           if(!$action_possible)
+                    echo "Pas assez de points d'actions!";
            ?>
             <h3>Level UP</h3>
            <?php
@@ -32,30 +36,30 @@ $this->assign('title', 'WebArena : Game'); ?>
            echo $this->Form->end();
            ?>
 
-           <!-- Info personnages -->
+            <!-- Info personnages -->
 <?php
 foreach( $Fighter as $Fight)
 {
         ?>   Nom : <?php     echo $Fight['Fighter']['name'];
     ?> </br>
-        PV :    <?php echo $Fight['Fighter']['current_health'];?> </br>
-       CoordX : <?php echo $Fight['Fighter']['coordinate_x'];?> </br>
-        CoordY : <?php echo $Fight['Fighter']['coordinate_y'];?></br>
-        XP :     <?php echo $Fight['Fighter']['xp']; ?><?php } ?>
-<!-- VU PERSONNAGE PAS BEAU -->
+            PV :    <?php echo $Fight['Fighter']['current_health'];?> </br>
+            CoordX : <?php echo $Fight['Fighter']['coordinate_x'];?> </br>
+            CoordY : <?php echo $Fight['Fighter']['coordinate_y'];?></br>
+            XP :     <?php echo $Fight['Fighter']['xp']; ?><?php } ?>
+            <!-- VU PERSONNAGE PAS BEAU -->
 
 
         </div>
 
     </div>
 
-<!--C'EST LE BORDEL LA DEDANS-->
- <div class="col-md-6"    id="map">
+    <!--C'EST LE BORDEL LA DEDANS-->
+    <div class="col-md-6"    id="map">
 
         <table id="char" class="table">
-        <th> Entités</th>
-        <th> CoordXY</th>
-        <th> Point de vie</th>
+            <th> Entités</th>
+            <th> CoordXY</th>
+            <th> Point de vie</th>
             <tr>
          <?php foreach($Fighters as $fighter)
             { ?> <td> <?php
@@ -65,56 +69,58 @@ foreach( $Fighter as $Fight)
                     pv :<?php echo $fighter['Fighter']['current_health']; ?>
                 </td><tr><?php
             } ?>
-        </tr>
+            </tr>
 
-<!--Jvais recup les donné de tout -->
+            <!--Jvais recup les donné de tout -->
         <?php  //pr($charAll); ?>
-        <table id="mapmap" class="table">
+            <table id="mapmap" class="table">
             <?php
             for ($i=0;$i<15;$i++)
             {
-                 echo "<tr>";
-            for($y=0;$y<15;$y++)
+                echo "<tr>";
+                for($y=0;$y<10;$y++)
                 {
-
+                    $perssonage_place = false;
                     foreach ($charAll as $char)
-                 if($char['Fighter']['coordinate_x']==$i && $char['Fighter']['coordinate_y']==$y)
-             {
-                     echo "<td> O </td>";
-             }
-                     if($char['Fighter']['coordinate_x']!=$i)
-                     {
-
-                         echo "<td>X</td>";
-                     }
-
-
+                    {
+                        if($char['Fighter']['coordinate_x']==$i && $char['Fighter']['coordinate_y']==$y)
+                        {
+                            echo "<td> O </td>";
+                            $perssonage_place = true;
+                            break;
+                        }
+                    }
+                    if($perssonage_place == false)
+                    {
+                        echo "<td>X</td>";
+                    }
+                        
                 }
-             echo "</tr>";
+                echo "</tr>";
             }
 ?>
-</table>
+            </table>
 
 
-<table id="char" class="table">
-    <th>Type</th>
-    <th>CoordXY</th>
-    <th>Bonus</th>
+            <table id="char" class="table">
+                <th>Type</th>
+                <th>CoordXY</th>
+                <th>Bonus</th>
 
-        <table id="char" class="table">
-            <tr>
+                <table id="char" class="table">
+                    <tr>
                 <?php foreach($Tools as $tool)
                 { ?> <td> <?php
                     echo $tool['Tool']['type'];?></td><td><?php
                     ?>  x :<?php echo $tool['Tool']['coordinate_x']; ?>
-                    y: <?php echo $tool['Tool']['coordinate_y'];?></td><td>
-                    Bonus :<?php echo $tool['Tool']['bonus']; ?>
-                </td><tr><?php
+                            y: <?php echo $tool['Tool']['coordinate_y'];?></td><td>
+                            Bonus :<?php echo $tool['Tool']['bonus']; ?>
+                        </td><tr><?php
                 } ?>
-            </tr>
+                    </tr>
 
-        </table>
-    </table>
+                </table>
+            </table>
 
     </div>
 
@@ -145,11 +151,11 @@ foreach( $Fighter as $Fight)
 
     </div>
 
-<div class ="col-md-6">
-    <p> <?php  var_dump($this->Session->read('Auth.User'));
+    <div class ="col-md-6">
+        <p> <?php  var_dump($this->Session->read('Auth.User'));
         }else{
             ?> <div class="row">
-        <div class="col-md-6 col-md-offset-3 centered">
+            <div class="col-md-6 col-md-offset-3 centered">
             <?php
             echo "Veuillez vous connecter <br>";
             echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
@@ -157,7 +163,7 @@ foreach( $Fighter as $Fight)
         }
 
         ?> </p></div></div>
-</div>
+    </div>
     <div class ="col-md-6">
         <p> </p>
     </div>
