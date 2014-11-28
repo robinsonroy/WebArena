@@ -47,6 +47,7 @@ class Fighter extends AppModel
 
         //tous les 4pts d'xp, le fighter monte de niveau
         $niveau_possible = $fighter['xp'] / 4;
+        echo $niveau_possible;
 
         //si le player a plus d'expérience que de niveau
         if ($niveau_actuel < $niveau_possible) {

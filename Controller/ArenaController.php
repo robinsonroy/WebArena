@@ -31,9 +31,6 @@ class ArenaController extends AppController {
         $this->set('fighters', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
 
 
-        $this->set('fighters', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
-
-        $this->set('fighters', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
 
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
         $this->set('raw', $user_fighter);
@@ -42,21 +39,16 @@ class ArenaController extends AppController {
         if (!empty($user_fighter)) {
             //Recherche du level
             $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
+            echo $level_possible;
             $this->set('choix_level', $level_possible);
         }
 
-        //Recherche du level
-        $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
-        $this->set('choix_level', $level_possible);
+
 
 
         if ($this->request->is('post')) {
 
             if (isset($this->request->data['ChangeLevel'])) {
-
-                $this->Fighter->changeLevel($level_possible, $user_fighter[0]['Fighter']['id'], $this->request->data['ChangeLevel']['skill']);
-
-                $this->Fighter->changerNiveau($level_possible, $user_fighter[0]['Fighter']);
 
                 $this->Fighter->changeLevel($level_possible, $user_fighter[0]['Fighter']['id'], $this->request->data['ChangeLevel']['skill']);
             }
@@ -91,6 +83,7 @@ class ArenaController extends AppController {
                     echo "erreur sur le transfert";
             }
         }
+
     }
 
     public function diary() {
@@ -111,8 +104,8 @@ class ArenaController extends AppController {
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
         //Test si le joueur a assez de PA pour jouer
-        $action_possible = $this->Event->actionPossible($firrst['Fighter']);
-        $this->set('action_possible', $action_possible);
+       $action_possible = $this->Event->actionPossible($firrst['Fighter']);
+       $this->set('action_possible', $action_possible);
 
         if ($this->request->is('post')) {
 
