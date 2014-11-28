@@ -24,6 +24,8 @@ $this->assign('title', 'WebArena : Game'); ?>
            if(!$action_possible['action_possible'])
                     echo "Pas assez de points d'actions!";
            ?>
+
+            <!--PA-->
             <h3>Points d'Actions</h3>
             <?php
             echo $action_possible['PA'];
@@ -66,14 +68,16 @@ foreach( $Fighter as $Fight)
             <th> CoordXY</th>
             <th> Point de vie</th>
             <tr>
-         <?php foreach($Fighters as $fighter)
+         <?php
+         // Fighters vide ?
+         foreach($Fighters as $fighter)
             { ?> <td> <?php
                 echo $fighter['Fighter']['name'];?></td><td><?php
                 ?>   x :<?php echo $fighter['Fighter']['coordinate_x']; ?>
                     y: <?php echo $fighter['Fighter']['coordinate_y'];?></td><td>
                     pv :<?php echo $fighter['Fighter']['current_health']; ?>
                 </td><tr><?php
-            } ?>
+            } pr($action_possible);?>
             </tr>
 
             <!--Jvais recup les donné de tout -->

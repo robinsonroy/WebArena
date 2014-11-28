@@ -10,11 +10,13 @@ class Fighter extends AppModel
             'foreignKey' => 'player_id',
         ),
     );
+
     
     //maximum de points d'action, définis en global dans le modèle
     public $PA_max = 3;
     public $PA_recup = 10;
     
+
     function doMove($fighterId, $direction) // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
     {
         // récupérer la position et fixer l'id de travail
@@ -45,6 +47,7 @@ class Fighter extends AppModel
 
         //tous les 4pts d'xp, le fighter monte de niveau
         $niveau_possible = $fighter['xp'] / 4;
+        echo $niveau_possible;
 
         //si le player a plus d'expérience que de niveau
         if ($niveau_actuel < $niveau_possible) {
@@ -52,7 +55,14 @@ class Fighter extends AppModel
         } else
             return 0;
     }
-    
+
+
+    function changerNiveau($level_possible, $user_fighter)
+    {
+
+    }
+
+
     /* // TEST FONCTION DELETE
             public function deletechar(){
     echo "deletechar ici";
@@ -86,24 +96,85 @@ class Fighter extends AppModel
     
     function doAttack($id, $id2, $direction)
     {
+        echo "salut";
         // On recupe l'id du méchant.
         $datas = $this->findById($id);
-        pr($datas);
         $datas2 = $this->findById($id2);
-        pr($datas2);
+        $direction2=$direction;
 
+        //on fixe l'ID sur l'attaquant pour les changements.
         $this->id=$id;
 
         switch ($direction) {
             case "east":
             {
                 if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
-                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     $this->set('xp',$datas['Fighter']['xp']+1);
-
                     $attaque_touche = true;
                 } else {
                     $attaque_touche = false;
+                    echo "raté";
+                }
+            }
+                break;
+            case "west":
+            {
+                if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
+                    $attaque_touche = true;
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
+
+                    echo "Succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
+                }
+            }
+            
+                break;
+            case "north" :
+            {
+                if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
+                    $attaque_touche = true;
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
+
+                    echo "Succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
+                }
+            }
+                break;
+            case "south" :
+            {
+                if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
+                    $attaque_touche = true;
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
+
+                    echo "Succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
+                }
+            }
+                break;
+        }
+        $this->save();
+
+
+
+        $this->id=$id2;
+
+
+        switch ($direction2) {
+            case "east":
+            {
+                if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
+                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                    $attaque_touche = true;
+                    echo "succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
                 }
             }
                 break;
@@ -112,25 +183,25 @@ class Fighter extends AppModel
                 if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     $attaque_touche = true;
-                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
                 } else {
                     $attaque_touche = false;
+                    echo "raté";
                 }
             }
-            
+
                 break;
             case "north" :
             {
                 if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     $attaque_touche = true;
-                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
                 } else {
                     $attaque_touche = false;
+                    echo "raté";
                 }
             }
                 break;
@@ -139,11 +210,10 @@ class Fighter extends AppModel
                 if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
                     $attaque_touche = true;
-                    $this->set('xp', $datas['Fighter']['xp'] + 1);
-
                     echo "Succes";
                 } else {
                     $attaque_touche = false;
+                    echo "Raté";
                 }
             }
                 break;
@@ -163,7 +233,9 @@ class Fighter extends AppModel
         
         return $result;
     }
-    
+
+
+
     function changeLevel($level, $fighterId, $skill)
     {
         
