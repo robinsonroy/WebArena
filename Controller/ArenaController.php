@@ -105,7 +105,6 @@ class ArenaController extends AppController {
 
         //Test si le joueur a assez de PA pour jouer
        $action_possible = $this->Event->actionPossible($firrst['Fighter']);
-       $this->set('action_possible', $action_possible);
 
         if ($this->request->is('post')) {
 
@@ -126,14 +125,15 @@ class ArenaController extends AppController {
 //            $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
 
-            if (isset($this->request->data['Fightermove']))
-            {
+
             if (isset($this->request->data['Fightermove'])) {
                 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
                 if ($action_possible) {
                     if ($this->checkHealth($firrst['Fighter']['id'])) {
                         $this->Fighter->doMove(
                                 $firrst['Fighter']['id'], $this->request->data['Fightermove']['direction']);
+                        // ici on retire un PA apres l'action.
+                        $action_possible['PA']=$action_possible['PA']-1;
                         $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     } else {
                         $this->Session->setFlash('Personnage mort et supprimé');
@@ -146,27 +146,30 @@ class ArenaController extends AppController {
 
             //Attaque
             if (isset($this->request->data['Fighterattack']))
-                if ($this->checkHealth($firrst['Fighter']['id'])) {
-                    $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
-
+                // Si le perso est encore vivant
+                if ($this->checkHealth($firrst['Fighter']['id']))
+                {   // faire l'attaque
                     if ($action_possible) {
+
                         $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
                         $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     }
                 } else {
                     $this->Session->setFlash('Personnage mort et supprimé');
                 }
-        }
 
+
+
+    }
         $this->set('Fighters', $this->Fighter->find('all'));
-
         $this->set('Tools', $this->Tool->find('all'));
+        echo $action_possible['PA'];
+        $this->set('action_possible', $action_possible);
 
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
-        
+
         //Actualisation de la vue   //ça marche aps
-        $this->render();
-    }
+       $this->render();
     }
 
     public function chooseAvatar() {    //A VIRER
