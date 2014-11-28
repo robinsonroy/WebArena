@@ -9,6 +9,12 @@ if(!($this->Session->read('Auth.User')))
     echo "Veuillez vous connecter <br>";
     echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
 }
+else if(empty($raw))
+{
+    echo "Vous n'avez pas de perssonnage<br> Creez en un !";
+    echo  $this->Html->link("Creation d'un personnage",array('controller'=>'Arena','action'=>'createchar'));
+    
+}
 else if($raw[0]['Fighter']['current_health'] == 0)
 {
     //Si le fighter n'as plus de vie
@@ -16,6 +22,7 @@ else if($raw[0]['Fighter']['current_health'] == 0)
     echo  $this->Html->link("Creation d'un personnage",array('controller'=>'Arena','action'=>'createchar'));
 
 }
+
 else
 {
  ?>
