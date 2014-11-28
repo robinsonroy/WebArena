@@ -117,7 +117,6 @@ class ArenaController extends AppController {
                 }
             }
 
-
             if (isset($this->request->data['ChangeLevel']))
                 $this->Fighter->changeLevel(1, $this->request->data['ChangeLevel']['level']);
 
@@ -138,9 +137,12 @@ class ArenaController extends AppController {
         $this->set('Tools', $this->Tool->find('all'));
 
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
+        
+        //Actualisation de la vue   //ça marche aps
+        $this->render();
     }
 
-    public function chooseAvatar() {
+    public function chooseAvatar() {    //A VIRER
         //Récupère la liste des fighters, avec les champs id et name
         $fighterList = $this->Fighter->find('all', array('fields' => array('id', 'name')));
 

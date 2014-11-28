@@ -21,9 +21,14 @@ $this->assign('title', 'WebArena : Game'); ?>
             <input type="submit" class="btn btn-danger" value="Go">
            <?php
            echo $this->Form->end();
-           if(!$action_possible)
+           if(!$action_possible['action_possible'])
                     echo "Pas assez de points d'actions!";
            ?>
+            <h3>Points d'Actions</h3>
+            <?php
+            echo $action_possible['PA'];
+            ?>
+            
             <h3>Level UP</h3>
            <?php
            echo $this->Form->create('ChangeLevel');
@@ -75,10 +80,10 @@ foreach( $Fighter as $Fight)
         <?php  //pr($charAll); ?>
             <table id="mapmap" class="table">
             <?php
-            for ($i=0;$i<15;$i++)
+            for($y=15;$y>0;$y--)
             {
                 echo "<tr>";
-                for($y=0;$y<10;$y++)
+                for ($i=1;$i<=15;$i++)
                 {
                     $perssonage_place = false;
                     foreach ($charAll as $char)
@@ -135,7 +140,7 @@ foreach( $Fighter as $Fight)
         <?php
                 echo $this->Form->end(); // A REFAIRE NE FONCTIONNE PAS BIEN
                 //Si pas assez de PA
-                if(!$action_possible)
+                if(!$action_possible['action_possible'])
                     echo "Pas assez de points d'actions!";
         ?>
         </div>
