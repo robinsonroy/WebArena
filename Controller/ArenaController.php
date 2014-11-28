@@ -113,7 +113,7 @@ class ArenaController extends AppController {
         //Test si le joueur a assez de PA pour jouer
         $action_possible = $this->Event->actionPossible($firrst['Fighter']);
         $this->set('action_possible', $action_possible);
-        var_dump($action_possible);
+
         if ($this->request->is('post')) {
 
             // Il faut un form pour choisir le héro
@@ -137,12 +137,14 @@ class ArenaController extends AppController {
             {
             if (isset($this->request->data['Fightermove'])) {
                 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
-                if ($this->checkHealth($firrst['Fighter']['id'])) {
-                    $this->Fighter->doMove(
-                            $firrst['Fighter']['id'], $this->request->data['Fightermove']['direction']);
-                    $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
-                } else {
-                    $this->Session->setFlash('Personnage mort et supprimé');
+                if ($action_possible) {
+                    if ($this->checkHealth($firrst['Fighter']['id'])) {
+                        $this->Fighter->doMove(
+                                $firrst['Fighter']['id'], $this->request->data['Fightermove']['direction']);
+                        $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                    } else {
+                        $this->Session->setFlash('Personnage mort et supprimé');
+                    }
                 }
             }
 
