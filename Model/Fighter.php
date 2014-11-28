@@ -51,24 +51,14 @@ class Fighter extends AppModel
 
     }
 
-    /* // TEST FONCTION DELETE
-            public function deletechar(){
-    echo "deletechar ici";
-                if( $this->Fighter->deleteAll($this->request->data($this->requet->data['Delete']['delete'])))
-                {
-                    echo "succes";
-                }else
-                {
-                    echo"fail";
 
-                }
-            }*/
     function doAttack($id, $id2, $direction)
     {
         // On recupe l'id du méchant.
         $datas = $this->findById($id);
         $datas2 = $this->findById($id2);
 
+        //ID DE L'ATTAQUANT.
         $this->id=$id;
 
         switch ($direction) {
@@ -123,6 +113,7 @@ class Fighter extends AppModel
         $this->save();
 
 
+        // On change l'ID pour modif sur l'attaqué.
             $this->id=$id2;
 
 
@@ -166,7 +157,6 @@ class Fighter extends AppModel
             {
                 if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                 //   $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
                 } else {
