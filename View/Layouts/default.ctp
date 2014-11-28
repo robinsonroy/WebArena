@@ -106,6 +106,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                     <p class="text-muted">
                         <p> WebArena : SI-4 | PORTIER,SAMBRES,RAOUL,ROY </p>
                         <a href="https://github.com/robinsonroy/WebArena"  > Repo GitHub</a>
+                        <a href="http://c6244f3fcd.url-de-test.ws/Arena/character">Notre Site en ligne</a>
                         </p>
                 </div>
             </footer>
