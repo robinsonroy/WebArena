@@ -11,11 +11,10 @@ class Fighter extends AppModel
         ),
     );
 
-
+    
     //maximum de points d'action, définis en global dans le modèle
     public $PA_max = 3;
     public $PA_recup = 10;
-    private $PA_actuel = 3;
     
 
     function doMove($fighterId, $direction) // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
@@ -38,8 +37,6 @@ class Fighter extends AppModel
         $this->set('next_action_time', date("Y-m-d h:i:s.u"));
 // sauver la modif
         $this->save();
-        
-        
     }
 
     //Renvoie le niveau auquel peut passer le perssonnage si c'est possible,
@@ -63,6 +60,7 @@ class Fighter extends AppModel
     {
 
     }
+
 
     /* // TEST FONCTION DELETE
             public function deletechar(){
@@ -98,8 +96,10 @@ class Fighter extends AppModel
     function doAttack($id, $id2, $direction)
     {
         // On recupe l'id du méchant.
-        $datas = $this->read(null, $id);
-        $datas2 = $this->read(null, $id2);
+        $datas = $this->findById($id);
+        pr($datas);
+        $datas2 = $this->findById($id2);
+        pr($datas2);
 
         $this->id=$id;
 
@@ -108,11 +108,10 @@ class Fighter extends AppModel
             {
                 if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                    $this->saveField('xp', $datas['Fighter']['xp'] + 1);
-                    echo "Succes";
+                    $this->set('xp',$datas['Fighter']['xp']+1);
+
                     $attaque_touche = true;
                 } else {
-                    echo "Raté";
                     $attaque_touche = false;
                 }
             }
@@ -121,28 +120,25 @@ class Fighter extends AppModel
             {
                 if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                    $this->saveField('xp', $datas['Fighter']['xp'] + 1);
+                    $attaque_touche = true;
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
-                    $attaque_touche = true;
                 } else {
-                    echo "Raté";
                     $attaque_touche = false;
                 }
             }
             
                 break;
-            //  $this->set('current_health', $datas['Fighter']['current_health']-1);
             case "north" :
             {
                 if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                    $this->saveField('xp', $datas['Fighter']['xp'] + 1);
+                    $attaque_touche = true;
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
-                    $attaque_touche = true;
                 } else {
-                    echo "Raté";
                     $attaque_touche = false;
                 }
             }
@@ -151,12 +147,11 @@ class Fighter extends AppModel
             {
                 if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
                     $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                    $this->saveField('xp', $datas['Fighter']['xp'] + 1);
+                    $attaque_touche = true;
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
                     echo "Succes";
-                    $attaque_touche = true;
                 } else {
-                    echo "Raté";
                     $attaque_touche = false;
                 }
             }
@@ -164,6 +159,9 @@ class Fighter extends AppModel
         }
         $this->save();
         
+        pr($this->PA_actuel);
+        
+        $this->PA_actuel--;
         $result = array(
             'nom_attaquant' => $datas['Fighter']['name'],
             'direction' => $direction,
@@ -176,7 +174,8 @@ class Fighter extends AppModel
     }
 
 
-    public function changeLevel($fighterId, $level,$skill)
+
+    function changeLevel($level, $fighterId, $skill)
     {
         
         $datas = $this->read(null, $fighterId);

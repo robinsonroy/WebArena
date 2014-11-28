@@ -69,7 +69,7 @@ foreach( $Fighter as $Fight)
 
 <!--Jvais recup les donné de tout -->
         <?php  //pr($charAll); ?>
-        <table =id"mapmap" class="table">
+        <table id="mapmap" class="table">
             <?php
             for ($i=0;$i<15;$i++)
             {
@@ -116,12 +116,6 @@ foreach( $Fighter as $Fight)
         </table>
     </table>
 
-
-
-
-
-
-
     </div>
 
     <div class="col-md-3">
@@ -134,6 +128,9 @@ foreach( $Fighter as $Fight)
             <input type="submit" class="btn btn-danger" value="Attack">
         <?php
                 echo $this->Form->end(); // A REFAIRE NE FONCTIONNE PAS BIEN
+                //Si pas assez de PA
+                if(!$action_possible)
+                    echo "Pas assez de points d'actions!";
         ?>
         </div>
 
