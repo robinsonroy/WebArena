@@ -9,12 +9,12 @@ if(!($this->Session->read('Auth.User')))
     echo "Veuillez vous connecter <br>";
     echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
 }
-else if(empty($raw))
+else if(empty($fighter))
 {
     echo "Vous n'avez pas de perssonnage<br> Creez en un !";
     echo  $this->Html->link("Creation d'un personnage",array('controller'=>'Arena','action'=>'createchar'));
 }
-else if($raw[0]['Fighter']['current_health'] == 0)
+else if($fighter[0]['Fighter']['current_health'] == 0)
 {
     //Si le fighter n'as plus de vie
     echo "Votre personnage est mort!<br>";
@@ -27,11 +27,14 @@ else
 <div class="row">
     <!--Choix Avatar-->
     <div class="col-md-3">
+        <h3>Choix de l'Avatar</h3>
         <?php 
+       
         echo $this->Form->create('avatar', array('type' => 'file'));
-        echo $this->Form->input('avatar_image', array('type' => 'file', 'name' => 'avatar'));
+        echo $this->Form->input('image_avatar', array('type' => 'file', 'name' => 'avatar'));
         //echo $this->Form->input('fighter_choice', array('options' => $fighterList));
         echo $this->Form->end('Choose');
+        
         ?> 
         Veuillez choisir un personnage <br>
         <?php
@@ -43,20 +46,13 @@ else
             echo"<br>";
 
         }
-
-        //image dsplay
-        if (isset($imageName)) {
-            pr($imageName);
-            $this->Html->image('uploads/' . $imageName, array('class' => "img-responsive", 'alt' => 'uploaded image'));
-
-        }
         ?>
     </div>
 
-    <div class="col-md-6" >
+    <div class="col-md-3" >
         <h3>Informations du perssonage</h3>
         <ul>
-            <?php  foreach ($raw as $raws)
+            <?php  foreach ($fighter as $raws)
             { ?>
             <li>Id du perssonage : <?php echo $raws['Fighter']['id'] ; ?>
             <li>Nom du personage: <?php echo $raws['Fighter']['name'];?></li>
@@ -70,23 +66,33 @@ else
             <li>Vie actuelle: <?php echo $raws['Fighter']['current_health'];?></li><br><br>
        <?php }  ?> </ul>
     </div>
+        <div class="col-md-3">
+        <?php 
+       
+        if (isset($imageName)) 
+        {
+            echo $this->Html->image('uploads/' . $imageName, array('class' => "img-responsive", 'alt' => 'uploaded image'));
+        }
+        ?> 
+        
+    </div>
 
     <!--Changer de niveau-->
     <div class="col-md-3">
-            <h3>Level UP</h3>
+        <h3>Level UP</h3>
            <?php 
            if($choix_level != 0)
            {
                 echo $this->Form->create('ChangeLevel'); 
                 echo $this->Form->input('skill',array('options' => array(1=>'Force',2=>'Vue',3=>'Santé'),'div'=>'form-group','class'=>'form-control'));
            ?>
-            <input type="submit" class="btn btn-danger" value="Level UP">
+        <input type="submit" class="btn btn-danger" value="Level UP">
             <?php    
             echo $this->Form->end();
            }
            else echo "Pas assez d'expérience pour changer de niveau";
            ?> 
-        
+
     </div>
 </div>
 <?php

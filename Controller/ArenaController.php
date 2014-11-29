@@ -29,22 +29,16 @@ class ArenaController extends AppController {
     public function character() {
         // On recherche que les personnages qui ont un ID commun avec les USER pour les afficher.
         $this->set('fighters', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
-
-
-
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
-        $this->set('raw', $user_fighter);
-
-
+        
+        $this->set('fighter', $user_fighter);
         if (!empty($user_fighter)) {
             //Recherche du level
             $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
-            echo $level_possible;
             $this->set('choix_level', $level_possible);
+            
+            $this->set('imageName',$this->Fighter->chercherAvatar($user_fighter[0]['Fighter']['id']));
         }
-
-
-
 
         if ($this->request->is('post')) {
 
@@ -55,10 +49,9 @@ class ArenaController extends AppController {
 
             //Récupération du résultat du formulaire
             $fighter_id = $user_fighter[0]['Fighter']['id'];
-            
-            
+
             if (isset($_FILES['avatar'])) {
-                pr($_FILES['avatar']);
+                
                 if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
                     $imageName = "avatar_" . $fighter_id . ".jpg";
                     $this->set('imageName', $imageName);
@@ -72,22 +65,9 @@ class ArenaController extends AppController {
                         echo "Le transfert s'est bien deroule";
                     } else
                         echo "erreur sur le transfert";
-
-                    pr($this->request->data['avatar']);
                 }
-
-                //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
-                //avec le nom avatar_id.jpg
-                if (move_uploaded_file(
-                    $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img/uploads/avatar_' . $fighter_id . ".jpg"
-                )
-                ) {
-                    echo "Le transfert s'est bien deroule";
-                } else
-                    echo "erreur sur le transfert";
             }
         }
-
     }
 
     public function diary() {
@@ -100,15 +80,22 @@ class ArenaController extends AppController {
         }
     }
 
-
-    public function sight()
-    {
+    public function sight() {
         $this->set('charAll', $this->Fighter->find('all'));
         $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
+        //création de la map
+        $map = $this->Fighter->creerMap($user_fighter);
+        $this->set('map', $map);
+        
         //Test si le joueur a assez de PA pour jouer
-       $action_possible = $this->Event->actionPossible($firrst['Fighter']);
+        if(!empty($user_fighter))
+        {
+            $action_possible = $this->Event->actionPossible($firrst['Fighter']);
+            $this->set('action_possible', $action_possible);
+        }
+            
 
         if ($this->request->is('post')) {
 
@@ -121,9 +108,6 @@ class ArenaController extends AppController {
             // on recupere le fighter du joueur
             //  $first2=$this->Fighter->find('first',array('conditions'=>array('Fighter.player_id'=>$this->Session->read("Auth.User.id"),'Fighter.id'=>$varglob)));
             //$this->set('super', $time2);
-
-
-
             //var_dump($this->Session->read('Auth.User.id'));
             // on recupere le fighter du joueur
 //            $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
@@ -132,12 +116,12 @@ class ArenaController extends AppController {
 
             if (isset($this->request->data['Fightermove'])) {
                 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
-                if ($action_possible) {
+                if ($action_possible['action_possible']) {
                     if ($this->checkHealth($firrst['Fighter']['id'])) {
                         $this->Fighter->doMove(
                                 $firrst['Fighter']['id'], $this->request->data['Fightermove']['direction']);
                         // ici on retire un PA apres l'action.
-                        $action_possible['PA']=$action_possible['PA']-1;
+                        $action_possible['PA'] = $action_possible['PA'] - 1;
                         $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     } else {
                         $this->Session->setFlash('Personnage mort et supprimé');
@@ -150,10 +134,9 @@ class ArenaController extends AppController {
 
             //Attaque
             if (isset($this->request->data['Fighterattack']))
-                // Si le perso est encore vivant
-                if ($this->checkHealth($firrst['Fighter']['id']))
-                {   // faire l'attaque
-                    if ($action_possible) {
+            // Si le perso est encore vivant
+                if ($this->checkHealth($firrst['Fighter']['id'])) {   // faire l'attaque
+                    if ($action_possible['action_possible']) {
 
                         $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
                         $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
@@ -161,19 +144,13 @@ class ArenaController extends AppController {
                 } else {
                     $this->Session->setFlash('Personnage mort et supprimé');
                 }
-
-
-
-    }
+        }
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Tools', $this->Tool->find('all'));
-        echo $action_possible['PA'];
-        $this->set('action_possible', $action_possible);
+        
 
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
 
-        //Actualisation de la vue   //ça marche aps
-       $this->render();
     }
 
     public function chooseAvatar() {    //A VIRER
@@ -200,11 +177,11 @@ class ArenaController extends AppController {
             if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
                 $imageName = "avatar_" . $fighter_id . ".jpg";
                 $this->set('imageName', $imageName);
-            //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
+                //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
                 //avec le nom avatar_id.jpg
                 if (move_uploaded_file(
-                    $_FILES['avatar']['tmp_name'], 'img/uploads/avatar_' . $fighter_id . ".jpg"
-                )
+                                $_FILES['avatar']['tmp_name'], 'img/uploads/avatar_' . $fighter_id . ".jpg"
+                        )
                 ) {
                     echo "Le transfert s'est bien deroule";
                 } else
@@ -253,8 +230,6 @@ class ArenaController extends AppController {
             $this->Fighter->delete($fighters['Fighter']['id']);
             echo "Il est mort";
             return false;
-
-
         } else {
             echo "Ilestenvie";
             return true;

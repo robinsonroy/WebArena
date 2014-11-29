@@ -1,7 +1,27 @@
 <?php
 
-if($this->Session->read('Auth.User'))
+if(!($this->Session->read('Auth.User')))
 {
+    //Si l'utilisateur n'est pas enregistré
+    echo "Veuillez vous connecter <br>";
+    echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
+    
+            ?> <div class="row">
+            <div class="col-md-6 col-md-offset-3 centered">
+            <?php
+            echo "Veuillez vous connecter <br>";
+            echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
+            ?>
+            </div>
+            </div> 
+<?php
+}
+else if(empty($Fighter))
+{
+    echo "Vous n'avez pas de perssonnage<br> Creez en un !<br>";
+    echo  $this->Html->link("Creation d'un personnage",array('controller'=>'Arena','action'=>'createchar'));
+}
+else {
 
 
 $this->assign('title', 'WebArena : Game'); ?>
@@ -84,25 +104,17 @@ foreach( $Fighter as $Fight)
         <?php  //pr($charAll); ?>
             <table id="mapmap" class="table">
             <?php
+            
             for($y=15;$y>0;$y--)
             {
                 echo "<tr>";
                 for ($i=1;$i<=15;$i++)
                 {
-                    $perssonage_place = false;
-                    foreach ($charAll as $char)
-                    {
-                        if($char['Fighter']['coordinate_x']==$i && $char['Fighter']['coordinate_y']==$y)
-                        {
-                            echo "<td> O </td>";
-                            $perssonage_place = true;
-                            break;
-                        }
-                    }
-                    if($perssonage_place == false)
-                    {
-                        echo "<td>X</td>";
-                    }
+                    
+                    echo "<td>";
+                    echo $this->Html->image($map[$i-1][$y-1], array('class' => "img-responsive", 'alt' => 'uploaded image', 'height' => 15,'width' =>15));
+                    echo "</td>";
+                    
                         
                 }
                 echo "</tr>";
@@ -135,6 +147,7 @@ foreach( $Fighter as $Fight)
 
     <div class="col-md-3">
         <div class="panel panel-default" id="gauche">
+            <h3>Attaque</h3>
         <?php echo $this->Form->create('Fighterattack');
             echo $this->Form->input('EnnemiID',array('div'=>'form-group','class'=>'form-control'));
             echo $this->Form->input('direction',array('options' => array('north'=>'north','east'=>'east','south'=>'south','west'=>'west'),'div' => 'form-group','class'=>'form-control','default' => 'east'));
@@ -162,13 +175,6 @@ foreach( $Fighter as $Fight)
 
     <div class ="col-md-6">
         <p> <?php  var_dump($this->Session->read('Auth.User'));
-        }else{
-            ?> <div class="row">
-            <div class="col-md-6 col-md-offset-3 centered">
-            <?php
-            echo "Veuillez vous connecter <br>";
-            echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
-
         }
 
         ?> </p></div></div>
