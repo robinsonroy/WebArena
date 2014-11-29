@@ -51,76 +51,67 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     ?>
 </head>
 <body>
-<div id="container" class="backcontainer">
-    <div id="header">
-        <h1 id="h1top"><a id="titrecolor" href="/">Ninja Arena</a></h1>
+
+<!-- Wrap all page content here -->
+<div id="wrap">
+    <h1 id="h1top"><a id="titrecolor" href="/">Ninja Arena</a></h1>
+    <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Acceuil</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight')); ?></li>
+                <li><?php echo $this->Html->link('Creation de personnage', array('controller' => 'Arena', 'action' => 'createchar')); ?></a></li>
+                <li><?php echo $this->Html->link('Vos personnages', array('controller' => 'Arena', 'action' => 'character')); ?></li>
+                <li><?php echo $this->Html->link('Evenements', array('controller' => 'Arena', 'action' => 'diary')); ?></li>
+                <li><?php echo $this->Html->link('Choisir avatar', array('controller' => 'Arena', 'action' => 'chooseAvatar')); ?></li>
 
 
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1">
-                    </button>
-                    <a class="navbar-brand" href="#">NinjaArena</a>
-                </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight')); ?>
-                            <span class="sr-only">(current)</span></a></li>
-                        <li><?php echo $this->Html->link('Creation de personnage', array('controller' => 'Arena', 'action' => 'createchar')); ?></a></li>
-                        <li><?php echo $this->Html->link('Vos personnages', array('controller' => 'Arena', 'action' => 'character')); ?></li>
-                        <li><?php echo $this->Html->link('Evenements', array('controller' => 'Arena', 'action' => 'diary')); ?></li>
-                        <li><?php echo $this->Html->link('Choisir avatar', array('controller' => 'Arena', 'action' => 'chooseAvatar')); ?></li>
+                <?php if ($this->Session->read('Auth.User')) { ?>
+                    <li><?php echo $this->Html->link('Mon compte', array('controller' => 'Arena', 'action' => 'account')); ?></li>
+                    <li><?php echo $this->Html->link('Deconnexion', array('controller' => 'Users', 'action' => 'logout')); ?></li>
+                <?php } else { ?>
+                    <li><?php echo $this->Html->link('Inscription', array('controller' => 'Users', 'action' => 'add')); ?></li>
+                    <li><?php echo $this->Html->link('Identification', array('controller' => 'Users', 'action' => 'login')); ?></li>
+                <?php } ?>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <!-- ICI LE form pour se connecter -->
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
 
-
-
-                        <?php if ($this->Session->read('Auth.User')) { ?>
-                            <li><?php echo $this->Html->link('Mon compte', array('controller' => 'Arena', 'action' => 'account')); ?></li>
-
-                            <li><?php echo $this->Html->link('Deconnexion', array('controller' => 'Users', 'action' => 'logout')); ?></li>
-                        <?php } else { ?>
-                            <li><?php echo $this->Html->link('Inscription', array('controller' => 'Users', 'action' => 'add')); ?></li>
-                            <li><?php echo $this->Html->link('Identification', array('controller' => 'Users', 'action' => 'login')); ?></li>
-                        <?php } ?>
-
-                    </ul>
-
-                </div>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container-fluid -->
-        </nav>
-
+    <!-- Begin page content -->
+    <div id="content" class="backcontent">
+        <?php echo $this->Session->flash(); ?>
+        <?php echo $this->fetch('content'); ?>
     </div>
-</div>
-<div id="content" class="backcontent">
-    <?php echo $this->Session->flash(); ?>
-    <?php echo $this->fetch('content'); ?>
-</div>
-
+</div><!-- Wrap Div end -->
 
 <div id="footer">
-    <div class="container">
-        <footer class="footer">
-            <div class="container">
-                <p class="text-muted">
-
-                <p> WebArena : SI-4 | PORTIER, SAMBRES, RAUBER, ROY </p>
-
-                <p></p><a href="https://github.com/robinsonroy/WebArena"> Repo GitHub</a></p>
-                <p></p><a href="http://c6244f3fcd.url-de-test.ws/Arena/character">Notre site en ligne</a></p>
-            </div>
-        </footer>
-
-
+        <p>WebArena : SI4-08-CF | PORTIER, SAMBRES, RAUBER, ROY </p>
         <p>
-            <?php echo $cakeVersion; ?>
+            <a href="https://github.com/robinsonroy/WebArena">Repo GitHub |</a>
+            <a href="http://c6244f3fcd.url-de-test.ws/Arena/character">Site en ligne</a>
         </p>
-    </div>
 </div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<?php echo $this->Html->script('bootstrap.min');?>
 </body>
 </html>

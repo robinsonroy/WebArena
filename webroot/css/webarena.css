@@ -14,6 +14,10 @@
 {
 }
 
+#footer{
+    text-align: center;
+}
+
 #gauche
 {
     background-color: gray;
@@ -31,10 +35,11 @@
 }
 #h1top
 {
-   margin-top:0px;
-   margin-bottom: 120px;
-   background-image : url('../img/ninja-chars.png');
-   color: #ff925d;
+    margin-top:0px;
+    margin-bottom: 0;
+    height: 130px;
+    background-image : url('../img/ninja-chars.png');
+    color: #ff925d;
 }
 
 #titrecolor
