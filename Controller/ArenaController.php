@@ -39,7 +39,6 @@ class ArenaController extends AppController {
         if (!empty($user_fighter)) {
             //Recherche du level
             $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
-            echo $level_possible;
             $this->set('choix_level', $level_possible);
         }
 
@@ -51,6 +50,17 @@ class ArenaController extends AppController {
             if (isset($this->request->data['ChangeLevel'])) {
 
                 $this->Fighter->changeLevel($level_possible, $user_fighter[0]['Fighter']['id'], $this->request->data['ChangeLevel']['skill']);
+               if($user_fighter[0]['Fighter']['skill']=='Force')
+                {
+                    $user_fighter[0]['Fighter']['skill_strength']=$user_fighter[0]['Fighter']['skill_strength']+1;
+                }
+                if($user_fighter[0]['Fighter']['skill']=='Vue')
+                {
+                    $user_fighter[0]['Fighter']['skill_sight']=$user_fighter[0]['Fighter']['skill_sight']+3;
+
+                }
+
+
             }
 
             //Récupération du résultat du formulaire
@@ -72,16 +82,10 @@ class ArenaController extends AppController {
                         echo "erreur sur le transfert";
                 }
 
-                //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
-                //avec le nom avatar_id.jpg
-                if (move_uploaded_file(
-                    $_FILES['avatar']['tmp_name'], WWW_ROOT . 'img/uploads/avatar_' . $fighter_id . ".jpg"
-                )
-                ) {
-                    echo "Le transfert s'est bien deroule";
-                } else
-                    echo "erreur sur le transfert";
             }
+
+            $this->set('raw', $user_fighter);
+
         }
 
     }
@@ -133,7 +137,7 @@ class ArenaController extends AppController {
                         $this->Fighter->doMove(
                                 $firrst['Fighter']['id'], $this->request->data['Fightermove']['direction']);
                         // ici on retire un PA apres l'action.
-                        $action_possible['PA']=$action_possible['PA']-1;
+                       $action_possible['PA']=$action_possible['PA']-1;
                         $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     } else {
                         $this->Session->setFlash('Personnage mort et supprimé');
