@@ -140,6 +140,7 @@ class ArenaController extends AppController {
 
                         $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
                         $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                        $this->Fighter->removeDeadFighter($resultat_attaque);
                     }
                 } else {
                     $this->Session->setFlash('Personnage mort et supprimé');

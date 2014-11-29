@@ -87,8 +87,6 @@ class Fighter extends AppModel {
     //il faut supprimer l'ancien personnage mort de l'utilisateur
     function removeOldFighter($user_id) {
         $fighterList = $this->find('all', array('fields' => array('player_id', 'id')));
-
-        pr($fighterList);
         foreach ($fighterList as $fighter) {
             if ($fighter['Fighter']['player_id'] == $user_id) {
                 $this->id = $fighter['Fighter']['id'];
@@ -268,6 +266,19 @@ class Fighter extends AppModel {
         );
 
         return $result;
+    }
+    
+    function removeDeadFighter()
+    {
+        $fighterList = $this->find('all', array('fields' => array('player_id', 'id', 'current_health')));
+        
+        foreach ($fighterList as $fighter) {
+            if ($fighter['Fighter']['current_health'] <= 0) {
+                $this->id = $fighter['Fighter']['id'];
+                $this->delete($fighter['Fighter']['id'],false);
+                break;
+            }
+        }
     }
 
     function changeLevel($level, $fighterId, $skill) {
