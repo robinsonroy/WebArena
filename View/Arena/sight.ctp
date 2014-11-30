@@ -74,7 +74,6 @@ $this->assign('title', 'WebArena : Game'); ?>
             <th> CoordXY</th>
             <th> Point de vie</th>
             <tr>
-<<<<<<< HEAD
                 <?php
                 // Fighters vide ?
                 foreach ($Fighters as $fighter)
@@ -91,7 +90,6 @@ $this->assign('title', 'WebArena : Game'); ?>
             <tr><?php
                 }
                 pr($action_possible);?>
-=======
          <?php
          // Fighters vide ?
          foreach($persVisibles as $fighter)

@@ -135,7 +135,7 @@ class ArenaController extends AppController {
                 if ($this->checkHealth($firrst['Fighter']['id'])) {   // faire l'attaque
                     if ($action_possible['action_possible']) {
 
-                        $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
+                        $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
                         $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                         $this->Fighter->removeDeadFighter($resultat_attaque);
                     }

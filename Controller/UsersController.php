@@ -33,10 +33,10 @@ class UsersController extends AppController {
     {
         $mail = new CakeEmail('gmail');
         $mail->to($mail_dest)
-            ->from('grportier@gmail.com')
-            ->subject('Contact :: Site');
+            ->from('webarenagroupsi408cf@gmail.com')
+            ->subject('Contact :: Site')
+            ->send('Welcome, voici les rules:');
 
-        $mail->send();
 
     }
  // LOGI?
