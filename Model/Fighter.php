@@ -249,43 +249,54 @@ class Fighter extends AppModel {
         $this->id = $id;
 
         // déclarer l'id du def ici
-        $iddef = null;
-        switch ($direction) {
-            case "east": {
-                    $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'] + 1, $datas['Fighter']['coordinate_y'], $id);
-                    if ($iddef == null) {
-                        echo "PAS BIEN VISER";
-                        return 0;
-                    }
-                }break;
-            case "west": {
-                    $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'] - 1, $datas['Fighter']['coordinate_y'], $id);
-                    if ($iddef == null) {
-                        echo "PAS BIEN VISER";
-                        return 0;
-                    }
-                }break;
-            case "north": {
-                    $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y'] + 1, $id);
-                    if ($iddef == null) {
-                        echo "PAS BIEN VISER";
-                        return 0;
-                    }
-                }break;
-            case "south": {
-                    $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y'] - 1, $id);
-                    pr($iddef);
-                    if ($iddef == null) {
-                        echo "PAS BIEN VISER";
-                        return 0;
-                    }
-                }break;
+        $iddef=null;
+        switch($direction)
+        {
+            case "east":
+            {
+                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']+1, $datas['Fighter']['coordinate_y'], $id);
+                if($iddef==null)
+                {
+                    echo "PAS BIEN VISER";
+                    return"";
+                }
+            }break;
+            case "west":
+            {
+                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']-1, $datas['Fighter']['coordinate_y'], $id);
+                if($iddef==null)
+                {
+                    echo "PAS BIEN VISER";
+                    return"";
+                }
+            }break;
+            case "north":
+            {
+                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']+1, $id);
+                if($iddef==null)
+                {
+
+                    echo "PAS BIEN VISER";
+                    return"";
+                }
+
+            }break;
+            case "south":
+            {
+                $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']-1, $id);
+                pr($iddef);
+                if($iddef==null)
+                {
+                    echo "PAS BIEN VISER";
+                    return;
+                }
+
+            }break;
         }
 
         // On récupere l'id def
         echo $iddef;
         $datas2 = $this->findById($iddef);
-        pr($datas2);
 
 
         switch ($direction) {

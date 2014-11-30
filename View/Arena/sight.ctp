@@ -46,7 +46,9 @@ $this->assign('title', 'WebArena : Game'); ?>
             <!--PA-->
             <h3>Points d'Actions</h3>
             <?php
-            echo $action_possible['PA'];
+
+            // ICI LA MODIF DES PA.
+            echo $test;
             ?>
         </div>
             <div>
@@ -145,7 +147,6 @@ $this->assign('title', 'WebArena : Game'); ?>
         <div class="panel panel-default" id="gauche">
             <h3>Attaque</h3>
             <?php echo $this->Form->create('Fighterattack');
-            echo $this->Form->input('EnnemiID', array('div' => 'form-group', 'class' => 'form-control'));
             echo $this->Form->input('direction', array('options' => array('north' => 'north', 'east' => 'east', 'south' => 'south', 'west' => 'west'), 'div' => 'form-group', 'class' => 'form-control', 'default' => 'east'));
 
             ?>
