@@ -13,13 +13,15 @@
  */
 App::uses('AppModel', 'Model');
 
+
 class Surrounding extends AppModel {
 
     function updateSurrounding($charAll) {
         //Test existence Monstre
         $monster = $this->find('first', array('conditions' => array('Surrounding.type' => 'monster')));
         $traps = $this->find('all', array('conditions' => array('Surrounding.type' => 'trap')));
-        
+        $columns = $this->find('all', array('conditions'=> array('Surrounding.type' => 'column')));
+        $decors = $this->find('all');
         if (empty($monster)) {
             $this->create();
 
@@ -32,10 +34,11 @@ class Surrounding extends AppModel {
                     if ($char['Fighter']['coordinate_x'] == $x && $char['Fighter']['coordinate_y'] == $y)
                         $place = false;
                 }
-                foreach ($traps as $trap) {
-                    if ($trap['Surrounding']['coordinate_x'] == $x && $trap['Surrounding']['coordinate_y'] == $y)
+                foreach ($decors as $decor) {
+                    if ($decor['Surrounding']['coordinate_x'] == $x && $decor['Surrounding']['coordinate_y'] == $y)
                         $place = false;
                 }
+                
             }while ($place == false);
 
             $data = array(
@@ -62,21 +65,45 @@ class Surrounding extends AppModel {
                     if ($char['Fighter']['coordinate_x'] == $x && $char['Fighter']['coordinate_y'] == $y)
                         $place = false;
                 }
-                foreach ($traps as $trap) 
+                foreach ($decors as $decor) 
                     if ($trap['Surrounding']['coordinate_x'] == $x && $trap['Surrounding']['coordinate_y'] == $y)
                         $place = false;
-                
-                
-                if($monster['Surrounding']['coordinate_x'] == $x && $monster['Surrounding']['coordinate_y'] == $y)
-                {
-                $place= false;
-                    
-                }
                     
             }while ($place == false);
 
             $data = array(
                 'type' => "trap",
+                'coordinate_x' => $x,
+                'coordinate_y' => $y,
+            );
+            $this->save($data);
+            $this->clear();
+            }
+        }
+        
+        if(count($columns)<15)
+        {
+            for($i = count($columns); $i<15;$i++)
+            {
+                $this->create();
+
+            do {
+                $x = rand(1, 15);
+                $y = rand(1, 10);
+
+                $place = true;
+                foreach ($charAll as $char) {
+                    if ($char['Fighter']['coordinate_x'] == $x && $char['Fighter']['coordinate_y'] == $y)
+                        $place = false;
+                }
+                foreach ($decors as $decor) 
+                    if ($decor['Surrounding']['coordinate_x'] == $x && $decor['Surrounding']['coordinate_y'] == $y)
+                        $place = false;
+                    
+            }while ($place == false);
+
+            $data = array(
+                'type' => "column",
                 'coordinate_x' => $x,
                 'coordinate_y' => $y,
             );

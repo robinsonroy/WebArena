@@ -103,7 +103,7 @@ class ArenaController extends AppController {
 
         //création de la map
         $this->Surrounding->updateSurrounding($this->Fighter->find('all'));
-        $result_map = $this->Fighter->creerMap($user_fighter);
+        $result_map = $this->Fighter->creerMap($user_fighter, $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
         $this->set('map', $result_map['map']);
         $this->set('message',"");
         $this->set('persVisibles', $result_map['persVisibles']);
@@ -121,20 +121,22 @@ class ArenaController extends AppController {
                 if ($action_possible['action_possible']) {
 
                     $result_move = $this->Fighter->doMove($firrst['Fighter']['id'], $this->request->data['Fightermove']['direction'], $decors);
-                    pr($result_move);
+                    
                     switch ($result_move) {
                         case false: $this->set('message',"Déplacement impossible!");
                             break;
-                        case 'monster': $this->set('message',"Vous avez rencontre un monstre! Vous etes mort");
-                            echo 'monstre';
+                        case 'monster': $this->set('message',"Vous avez rencontre un monstre");
+                            $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
+                            $this->render('mort');
                             break;
                         case 'puanteur' :$this->set('message',"Puanteur! Un monstre est a proximite");
-
-                            break;
-                        case 'trap': $this->set('message',"Vous avez marche sur un piege! Vous etes mort");
                             $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                             // ici on retire un PA apres l'action.
                             $action_possible['PA'] = $action_possible['PA'] - 1;
+                            break;
+                        case 'trap': $this->set('message',"Vous avez marche sur un piege");
+                            $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
+                            $this->render('mort');
                             break;
                         case 'danger': $this->set('message',"Danger! Un piege est a proximite");
                             $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
