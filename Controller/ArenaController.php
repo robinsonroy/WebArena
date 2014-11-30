@@ -15,7 +15,7 @@ App::uses('AppController', 'Controller');
  */
 class ArenaController extends AppController {
 
-    public $uses = array('Player', 'Fighter', 'Event', 'Tool');
+    public $uses = array('Player', 'Fighter', 'Event', 'Tool','Message');
 
     /**
      * index method : first page
@@ -231,6 +231,13 @@ class ArenaController extends AppController {
                 echo "Il est en vie";
                 return true;
             }
+    }
+
+    public function chat(){
+        if ($this->request->is('post')) {
+            $this->Message->addMessage($this->request->data, $this->Fighter->findFighterWithName($this->request->data['Message']['fighterName']));
+
+        }
     }
 
 }

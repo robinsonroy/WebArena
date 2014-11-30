@@ -34,8 +34,6 @@ $this->assign('title', 'Journal d\'events');
                     </tbody>
                 </table>
             </div>
-
-            <p>Note : La fonction affiche tous les persos. A modifier?</p>
         <?php }
         else {
             echo "Veuillez vous connecter <br>";
