@@ -87,7 +87,7 @@ class ArenaController extends AppController {
     }
 
     public function diary() {
-        $this->set('raw', $this->Event->find());
+        $this->set('raw', $this->Event->getEvent());
     }
 
     public function login() {
