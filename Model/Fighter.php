@@ -99,7 +99,8 @@ class Fighter extends AppModel {
     function creermap($fighter) {
 
         $charAll = $this->find('all');
-
+        $persVisibles = array();
+        
         for ($y = 15; $y > 0; $y--) {
             for ($i = 1; $i <= 15; $i++) {
                 $perssonage_place = false;
@@ -116,6 +117,8 @@ class Fighter extends AppModel {
                                     $map[$i - 1][$y - 1] = 'char.png';
                                 }
                                 else $map[$i - 1][$y - 1] = 'uploads/'.$map[$i - 1][$y - 1];
+                                
+                                $persVisibles[] = $char['Fighter'];
                                 $perssonage_place = true;
                                 
                             }
@@ -123,18 +126,40 @@ class Fighter extends AppModel {
                         if ($perssonage_place == false) {
                             $map[$i - 1][$y - 1] = 'vue.png';
                             $perssonage_place = true;
-                            
                         }
                     }
                 }
-
-
                 if ($perssonage_place == false) {
                     $map[$i - 1][$y - 1] = 'noir.png';
                 }
             }
         }
-        return $map;
+        if (!empty($fighter))
+        {
+        $nbpers = count($persVisibles);
+        //Tri du tableau des personnages visibles
+        for($i = 0;$i<$nbpers;$i++)
+        {
+            for($j = 0;$j<$nbpers;$j++)
+            {
+               if($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
+                       + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']
+                       > $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
+                       + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']) 
+               {
+                   $pers = $persVisibles[$i];
+                   $persVisibles[$i] = $persVisibles[$j];
+                   $persVisibles[$j] =$pers;
+                   
+               }
+            }
+        }
+        }
+        
+        return $resultat = array(
+            'map' => $map,
+            'persVisibles' => $persVisibles
+        );
     }
 
     function doAttack($id, $id2, $direction) {
