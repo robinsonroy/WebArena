@@ -6,5 +6,5 @@
  * Time: 5:10 PM
  */
 
-echo json_encode($datas);
+echo json_encode($test);
 ?>  

@@ -257,7 +257,7 @@ class Fighter extends AppModel
                 if($iddef==null)
                 {
                     echo "PAS BIEN VISER";
-                    return 0;
+                    return"";
                 }
             }break;
             case "west":
@@ -266,7 +266,7 @@ class Fighter extends AppModel
                 if($iddef==null)
                 {
                     echo "PAS BIEN VISER";
-                    return 0;
+                    return"";
                 }
             }break;
             case "north":
@@ -274,8 +274,9 @@ class Fighter extends AppModel
                 $iddef=$this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']+1, $id);
                 if($iddef==null)
                 {
+
                     echo "PAS BIEN VISER";
-                    return 0;
+                    return"";
                 }
 
             }break;
@@ -286,7 +287,7 @@ class Fighter extends AppModel
                 if($iddef==null)
                 {
                     echo "PAS BIEN VISER";
-                    return 0;
+                    return;
                 }
 
             }break;
@@ -295,7 +296,6 @@ class Fighter extends AppModel
         // On récupere l'id def
         echo $iddef;
         $datas2 = $this->findById($iddef);
-        pr($datas2);
 
 
         switch ($direction) {

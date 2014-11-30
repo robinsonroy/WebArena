@@ -107,6 +107,9 @@ class ArenaController extends AppController {
         $this->set('map', $result_map['map']);
         $this->set('message',"");
         $this->set('persVisibles', $result_map['persVisibles']);
+
+
+
 //Test si le joueur a assez de PA pour jouer
         if (!empty($user_fighter)) {
             $action_possible = $this->Event->actionPossible($firrst['Fighter']);
@@ -159,7 +162,7 @@ class ArenaController extends AppController {
                 $this->Session->setFlash('Personnage mort et supprimé');
             }
         }
-
+        $this->set('test',$action_possible['PA']);
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Tools', $this->Tool->find('all'));
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
