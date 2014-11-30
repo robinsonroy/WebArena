@@ -18,8 +18,42 @@ class Fighter extends AppModel
     public $PA_max = 3;
     public $PA_recup = 10;
 
-    function doMove($fighterId, $direction)
-    { // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
+    function createChar($name, $player_id) {
+        $this->create();
+        $charAll = $this->find('all');
+
+        //Recherche des coordonnées de placem^$this->finent
+        do {
+            $x = rand(1, 15);
+            $y = rand(1, 10);
+
+            $place = true;
+            foreach ($charAll as $char) {
+                if ($char['Fighter']['coordinate_x'] == $x && $char['Fighter']['coordinate_y'] == $y)
+                    $place = false;
+            }
+        }while ($place == false);
+        $data = array(
+            'Fighter' => array(
+                'name' => $name,
+                'player_id' => $player_id,
+                'coordinate_x' => $x,
+                'coordinate_y' => $y,
+                'level' => '1',
+                'xp' => '1',
+                'skill_sight' => '1',
+                'skill_strength' => '1',
+                'skill_health' => '1',
+                'current_health' => '1'));
+        
+        $this->save($data);
+        return array(
+            'x' => $x,
+            'y' => $y
+        );
+    }
+
+    function doMove($fighterId, $direction) { // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
         // récupérer la position et fixer l'id de travail
         $datas = $this->read(null, $fighterId);
         $x = $datas['Fighter']['coordinate_x'];
@@ -95,74 +129,60 @@ class Fighter extends AppModel
         foreach ($fighterList as $fighter) {
             if ($fighter['Fighter']['player_id'] == $user_id) {
                 $this->id = $fighter['Fighter']['id'];
-                $this->saveField('player_id', 0);
+                $this->delete($fighter['Fighter']['id'], false);
                 break;
             }
         }
     }
 
-    function creermap($fighter)
-    {
-
-        $charAll = $this->find('all');
-        $persVisibles = array();
-
-        for ($y = 15; $y > 0; $y--) {
-            for ($i = 1; $i <= 15; $i++) {
-                $perssonage_place = false;
-                if (!empty($fighter)) {
-                    if ($i < $fighter[0]['Fighter']['coordinate_x'] + $fighter[0]['Fighter']['skill_sight'] + 1
-                        && $i > $fighter[0]['Fighter']['coordinate_x'] - $fighter[0]['Fighter']['skill_sight'] - 1
-                        && $y < $fighter[0]['Fighter']['coordinate_y'] + $fighter[0]['Fighter']['skill_sight'] + 1
-                        && $y > $fighter[0]['Fighter']['coordinate_y'] - $fighter[0]['Fighter']['skill_sight'] - 1
-                    ) {
-                        foreach ($charAll as $char) {
-                            if ($char['Fighter']['coordinate_x'] == $i && $char['Fighter']['coordinate_y'] == $y) {
-
-                                if (!($map[$i - 1][$y - 1] = $this->chercherAvatar($char['Fighter']['id']))) {
-                                    $map[$i - 1][$y - 1] = 'char.png';
-                                } else $map[$i - 1][$y - 1] = 'uploads/' . $map[$i - 1][$y - 1];
-
-                                $persVisibles[] = $char['Fighter'];
+        function creermap($fighter) {
+            $charAll = $this->find('all');
+            $persVisibles = array();
+            for ($y = 15; $y > 0; $y--) {
+                for ($i = 1; $i <= 15; $i++) {
+                    $perssonage_place = false;
+                    if (!empty($fighter)) {
+                        if ($i < $fighter[0]['Fighter']['coordinate_x'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $i > $fighter[0]['Fighter']['coordinate_x'] - $fighter[0]['Fighter']['skill_sight'] - 1 && $y < $fighter[0]['Fighter']['coordinate_y'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $y > $fighter[0]['Fighter']['coordinate_y'] - $fighter[0]['Fighter']['skill_sight'] - 1
+                        ) {
+                            foreach ($charAll as $char) {
+                                if ($char['Fighter']['coordinate_x'] == $i && $char['Fighter']['coordinate_y'] == $y) {
+                                    if (!($map[$i - 1][$y - 1] = $this->chercherAvatar($char['Fighter']['id']))) {
+                                        $map[$i - 1][$y - 1] = 'char.png';
+                                    } else
+                                        $map[$i - 1][$y - 1] = 'uploads/' . $map[$i - 1][$y - 1];
+                                    $persVisibles[] = $char['Fighter'];
+                                    $perssonage_place = true;
+                                }
+                            }
+                            if ($perssonage_place == false) {
+                                $map[$i - 1][$y - 1] = 'vue.png';
                                 $perssonage_place = true;
-
                             }
                         }
-                        if ($perssonage_place == false) {
-                            $map[$i - 1][$y - 1] = 'vue.png';
-                            $perssonage_place = true;
+                    }
+                    if ($perssonage_place == false) {
+                        $map[$i - 1][$y - 1] = 'noir.png';
+                    }
+                }
+            }
+            if (!empty($fighter)) {
+                $nbpers = count($persVisibles);
+//Tri du tableau des personnages visibles
+                for ($i = 0; $i < $nbpers; $i++) {
+                    for ($j = 0; $j < $nbpers; $j++) {
+                        if ($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'] > $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']) {
+                            $pers = $persVisibles[$i];
+                            $persVisibles[$i] = $persVisibles[$j];
+                            $persVisibles[$j] = $pers;
                         }
                     }
                 }
-                if ($perssonage_place == false) {
-                    $map[$i - 1][$y - 1] = 'noir.png';
-                }
             }
+            return $resultat = array(
+                'map' => $map,
+                'persVisibles' => $persVisibles
+            );
         }
-        if (!empty($fighter)) {
-            $nbpers = count($persVisibles);
-            //Tri du tableau des personnages visibles
-            for ($i = 0; $i < $nbpers; $i++) {
-                for ($j = 0; $j < $nbpers; $j++) {
-                    if ($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x']
-                        + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']
-                        > $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x']
-                        + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']
-                    ) {
-                        $pers = $persVisibles[$i];
-                        $persVisibles[$i] = $persVisibles[$j];
-                        $persVisibles[$j] = $pers;
-
-                    }
-                }
-            }
-        }
-
-        return $resultat = array(
-            'map' => $map,
-            'persVisibles' => $persVisibles
-        );
-    }
 
 
     //Obtenir l'ID du mec attaqué
@@ -175,24 +195,15 @@ class Fighter extends AppModel
             foreach ($key as $value) {
                 if ($value['coordinate_y'] == $coordonnee_y &&
                     $value['coordinate_x'] == $coordonnee_x
-                )     echo "TEST SUR L'ID".$value['id']."";
+                    ){
+                    echo "TEST SUR L'ID".$value['id']."";
 
                 return $value['id'];
+                }
             }
-        return false;
+
     }
-  /*
-    //Obtenir les infos sur le monstre
-        $tab = $this->query("Select * from surroundings where type='Monster'");
-    //Renvoyer -1 si le truc attaqué correspond au monstre
-        foreach ($tab as $key)
-            foreach ($key as $value) {
-                if ($value['coordinate_y'] == $coordonnee_y &&
-                    $value['coordinate_x'] == $coordonnee_x
-                )
-                    return -1;
-            }
-        return false; */
+
 
 
 
@@ -210,16 +221,15 @@ class Fighter extends AppModel
         // déclarer l'id du def ici
         $iddef=null;
         switch($direction)
-
         {
             case "east":
             {
-                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']-1, $datas['Fighter']['coordinate_y'], $id);
+                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']+1, $datas['Fighter']['coordinate_y'], $id);
                 pr($iddef);
             }break;
             case "west":
             {
-                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']+1, $datas['Fighter']['coordinate_y'], $id);
+                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']-1, $datas['Fighter']['coordinate_y'], $id);
                 pr($iddef);
             }break;
             case "north":
@@ -233,10 +243,11 @@ class Fighter extends AppModel
                 $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']-1, $id);
                 pr($iddef);
 
-            }
+            }break;
         }
 
         // On récupere l'id def
+        echo $iddef;
         $datas2 = $this->findById($iddef);
         pr($datas2);
 
@@ -369,8 +380,8 @@ class Fighter extends AppModel
         return $result;
     }
 
-    function removeDeadFighter()
-    {
+
+    function removeDeadFighter() {
         $fighterList = $this->find('all', array('fields' => array('player_id', 'id', 'current_health')));
 
         foreach ($fighterList as $fighter) {
@@ -411,5 +422,5 @@ class Fighter extends AppModel
         $this->saveField('current_health', $datas['Fighter']['skill_health']);
     }
 
+    }
 
-}

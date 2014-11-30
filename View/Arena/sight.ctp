@@ -110,7 +110,6 @@ $this->assign('title', 'WebArena : Game'); ?>
             }
             }
             ?>
->>>>>>> 720ca70d56be5c1b1b9bbac66b5ce9e274bc322d
             </tr>
 
             <!--Jvais recup les donné de tout -->
@@ -125,8 +124,6 @@ $this->assign('title', 'WebArena : Game'); ?>
                         echo "<td>";
                         echo $this->Html->image($map[$i - 1][$y - 1], array('class' => "img-responsive", 'alt' => 'uploaded image', 'height' => 15, 'width' => 15));
                         echo "</td>";
-
-
                     }
                     echo "</tr>";
                 }
