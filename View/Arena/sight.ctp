@@ -50,29 +50,17 @@ $this->assign('title', 'WebArena : Game'); ?>
             <?php
             echo $action_possible['PA'];
             ?>
-            
-            <h3>Level UP</h3>
-           <?php
-           echo $this->Form->create('ChangeLevel');
-           echo $this->Form->input('level',array('options' => array(1=>'level 1',2=>'level 2',3=>'level 3',4=>'level 4'),'div'=>'form-group','class'=>'form-control', 'default' => 'level 1'));
-           ?>
-            <input type="submit" class="btn btn-danger" value="Level UP">
-            <h3>Infos personnages</h3>
-
-           <?php
-           echo $this->Form->end();
-           ?>
-
+        </div>
+            <div>
             <!-- Info personnages -->
 <?php
-foreach( $Fighter as $Fight)
-{
-        ?>   Nom : <?php     echo $Fight['Fighter']['name'];
+
+        ?>   Nom : <?php     echo $Fighter[0]['Fighter']['name'];
     ?> </br>
-            PV :    <?php echo $Fight['Fighter']['current_health'];?> </br>
-            CoordX : <?php echo $Fight['Fighter']['coordinate_x'];?> </br>
-            CoordY : <?php echo $Fight['Fighter']['coordinate_y'];?></br>
-            XP :     <?php echo $Fight['Fighter']['xp']; ?><?php } ?>
+            PV :    <?php echo $Fighter[0]['Fighter']['current_health'];?> </br>
+            CoordX : <?php echo $Fighter[0]['Fighter']['coordinate_x'];?> </br>
+            CoordY : <?php echo $Fighter[0]['Fighter']['coordinate_y'];?></br>
+            XP :     <?php echo $Fighter[0]['Fighter']['xp']; ?>
             <!-- VU PERSONNAGE PAS BEAU -->
 
 
@@ -90,14 +78,24 @@ foreach( $Fighter as $Fight)
             <tr>
          <?php
          // Fighters vide ?
-         foreach($Fighters as $fighter)
-            { ?> <td> <?php
-                echo $fighter['Fighter']['name'];?></td><td><?php
-                ?>   x :<?php echo $fighter['Fighter']['coordinate_x']; ?>
-                    y: <?php echo $fighter['Fighter']['coordinate_y'];?></td><td>
-                    pv :<?php echo $fighter['Fighter']['current_health']; ?>
-                </td><tr><?php
-            } pr($action_possible);?>
+         foreach($persVisibles as $fighter)
+            {
+             if ($fighter['coordinate_x'] < $Fighter[0]['Fighter']['coordinate_x'] + $Fighter[0]['Fighter']['skill_sight'] + 1 
+                            && $fighter['coordinate_x'] > $Fighter[0]['Fighter']['coordinate_x'] - $Fighter[0]['Fighter']['skill_sight'] - 1 
+                            && $fighter['coordinate_y'] < $Fighter[0]['Fighter']['coordinate_y'] + $Fighter[0]['Fighter']['skill_sight'] + 1 
+                            && $fighter['coordinate_y'] > $Fighter[0]['Fighter']['coordinate_y'] - $Fighter[0]['Fighter']['skill_sight'] - 1
+                    )
+             {
+                ?> <td> <?php
+                   echo $fighter['name'];?></td><td><?php
+                   ?>   x :<?php echo $fighter['coordinate_x']; ?>
+                       y: <?php echo $fighter['coordinate_y'];?></td><td>
+                       pv :<?php echo $fighter['current_health']; ?>
+                   </td><tr>
+            <?php
+            }
+            }
+            ?>
             </tr>
 
             <!--Jvais recup les donné de tout -->
