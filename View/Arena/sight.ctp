@@ -13,6 +13,7 @@ if (!($this->Session->read('Auth.User')))
     </div>
 <?php
 }
+
 else if (empty($Fighter))
 {
     echo "Vous n'avez pas de perssonnage<br> Creez en un!<br>";
@@ -45,7 +46,9 @@ $this->assign('title', 'WebArena : Game'); ?>
             <!--PA-->
             <h3>Points d'Actions</h3>
             <?php
-            echo $action_possible['PA'];
+
+            // ICI LA MODIF DES PA.
+            echo $test;
             ?>
         </div>
             <div>
@@ -71,22 +74,7 @@ $this->assign('title', 'WebArena : Game'); ?>
             <th> CoordXY</th>
             <th> Point de vie</th>
             <tr>
-                <?php
-                // Fighters vide ?
-                foreach ($Fighters as $fighter)
-                {
-                ?>
-                <td> <?php
-                    echo $fighter['Fighter']['name'];?></td>
-                <td><?php
-                    ?>   x :<?php echo $fighter['Fighter']['coordinate_x']; ?>
-                    y: <?php echo $fighter['Fighter']['coordinate_y']; ?></td>
-                <td>
-                    pv :<?php echo $fighter['Fighter']['current_health']; ?>
-                </td>
-            <tr><?php
-                }
-                pr($action_possible);?>
+               
          <?php
          // Fighters vide ?
          foreach($persVisibles as $fighter)
@@ -159,7 +147,6 @@ $this->assign('title', 'WebArena : Game'); ?>
         <div class="panel panel-default" id="gauche">
             <h3>Attaque</h3>
             <?php echo $this->Form->create('Fighterattack');
-            echo $this->Form->input('EnnemiID', array('div' => 'form-group', 'class' => 'form-control'));
             echo $this->Form->input('direction', array('options' => array('north' => 'north', 'east' => 'east', 'south' => 'south', 'west' => 'west'), 'div' => 'form-group', 'class' => 'form-control', 'default' => 'east'));
 
             ?>
