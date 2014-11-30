@@ -43,7 +43,20 @@
                     'type' => 'submit')
             );?>
         </form>
-
+    </div>
+    <div class="col-md-6">
+        <h4 id="chatTitle">Messages privées :</h4>
+        <?php  foreach($privateMessages as $messages){
+            foreach($messages as $message){ ?>
+                <div class="list-group">
+                    <a class="list-group-item">
+                        <h4 class="list-group-item-heading"><?php echo $message['fighter_name_from'] ?></h4>
+                        <h5 class="list-group-item-heading"><?php echo $message['title'] . " / " . $message['date'] ?></h5>
+                        <p class="list-group-item-text"><?php echo $message['message'] ?></p>
+                    </a>
+                </div>
+           <?php }
+        } ?>
 
     </div>
 </div>

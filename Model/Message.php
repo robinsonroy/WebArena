@@ -4,12 +4,14 @@ App::uses('AppModel', 'Model');
 App::uses('Folder', 'Utility');
 App::uses('File', 'Utility');
 
-class Message extends AppModel {
+class Message extends AppModel
+{
 
-    function addMessage($dataMessage, $fighterTo, $fighterFrom){
-        if($fighterTo['Fighter']['id'] == NULL) {
+    function addMessage($dataMessage, $fighterTo, $fighterFrom)
+    {
+        if (!isset($fighterTo['Fighter']['id'])) {
             return -1;
-        }else{
+        } else {
             $this->create();
 
             $data = array(
@@ -21,9 +23,16 @@ class Message extends AppModel {
                     'fighter_id_from' => $fighterFrom['Fighter']['id']
                 )
             );
-
             $this->save($data);
             return 1;
         }
+    }
+
+    function getMessage($currentFighter){
+        $messages = $this->find('all', array(
+            'conditions' => array('Message.fighter_id' => $currentFighter['Fighter']['id']),
+            'order' => 'Message.date DESC'
+        ));
+         return $messages;
     }
 }
