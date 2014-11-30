@@ -76,55 +76,72 @@ class Fighter extends AppModel {
         $listeChar = $this->find('all');
 
         //Tests limite map
+        $bordure = false;
         if ($x > 15 || $y > 10 || $x < 1 || $y < 1) {
-            return false;
+            $bordure = true;
         }
+        
+        $ennemi = false;
         //Test case occupée
         foreach ($listeChar as $char) {
             if ($char['Fighter']['id'] != $fighterId && $char['Fighter']['coordinate_x'] == $x && $char['Fighter']['coordinate_y'] == $y) {
-                return false;
+                $ennemi = true;
             }
         }
 
         //test decor
+        $monstre = false;
+        $trap = false;
+        $colonne = false;
+        $puanteur = false;
+        $danger = false;
         foreach ($decors as $decor) {
             if (1 >= abs($decor['Surrounding']['coordinate_x'] - $x) && 1 >= abs($decor['Surrounding']['coordinate_y'] - $y)) {
                 if ($decor['Surrounding']['coordinate_x'] == $x && $decor['Surrounding']['coordinate_y'] == $y) {
 
                     switch ($decor['Surrounding']['type']) {
-                        case 'monster' :return 'monstre';
+                        case 'monster' : $monstre = true;
+                            
                             break;
-                        case 'trap': return 'trap';
+                        case 'trap': $trap = true;
                             break;
-                        case 'column':return false;
+                        case 'column': $colonne = true;
                             break;
                     }
                 } else {
-                    $this->set('coordinate_x', $x);
-                    $this->set('coordinate_y', $y);
-                    //on sauvegarde le temps du dernier event
-                    $this->set('next_action_time', date("Y-m-d h:i:s.u"));
-// sauver la modif
-                    $this->save();
+                    
                     switch ($decor['Surrounding']['type']) {
-                        case 'monster' :return 'puanteur';
+                        case 'monster' : $puanteur =true;
+                            
                             break;
-                        case 'trap': return 'danger';
+                        case 'trap': $danger =true;
+                            
                             break;
-                        case 'column':
+                        case 'column': 
                             break;
                     }
                 }
             }
         }
-
-        $this->set('coordinate_x', $x);
-        $this->set('coordinate_y', $y);
-        //on sauvegarde le temps du dernier event
-        $this->set('next_action_time', date("Y-m-d h:i:s.u"));
-// sauver la modif
-        $this->save();
-        return 'deplacement';
+        if(!($colonne || $ennemi || $bordure))
+        {
+            $this->set('coordinate_x', $x);
+            $this->set('coordinate_y', $y);
+            //on sauvegarde le temps du dernier event
+            $this->set('next_action_time', date("Y-m-d h:i:s.u"));
+    // sauver la modif
+            $this->save();
+        
+        }
+        return array(
+            'monstre' => $monstre,
+            'puanteur' => $puanteur,
+            'trap' => $trap,
+            'colonne' =>$colonne,
+            'danger' => $danger,
+            'ennemi' => $ennemi,
+            'bordure' => $bordure
+        );
     }
 
     //Renvoie le niveau auquel peut passer le perssonnage si c'est possible,
@@ -168,7 +185,7 @@ class Fighter extends AppModel {
         $charAll = $this->find('all');
         $persVisibles = array();
 
-        for ($y = 15; $y > 0; $y--) {
+        for ($y = 10; $y > 0; $y--) {
             for ($i = 1; $i <= 15; $i++) {
                 $perssonage_place = false;
                 if (!empty($fighter)) {

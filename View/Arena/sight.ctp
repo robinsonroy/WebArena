@@ -38,9 +38,9 @@ $this->assign('title', 'WebArena : Game'); ?>
             ?>
             <input type="submit" class="btn btn-danger" value="Go">
             <?php
-            echo $this->Form->end();
-            if (!$action_possible['action_possible'])
-                echo "Pas assez de points d'actions!";
+           echo $this->Form->end();
+//            if (!$action_possible['action_possible'])
+//                echo "Pas assez de points d'actions!";
             ?>
 
             <!--PA-->
@@ -48,7 +48,7 @@ $this->assign('title', 'WebArena : Game'); ?>
             <?php
 
             // ICI LA MODIF DES PA.
-            echo $test;
+            echo $action_possible['PA'];
             ?>
         </div>
             <div>
@@ -102,7 +102,7 @@ $this->assign('title', 'WebArena : Game'); ?>
             <table id="mapmap" class="table">
                 <?php
 
-                for ($y = 15; $y > 0; $y--) {
+                for ($y = 10; $y > 0; $y--) {
                     echo "<tr>";
                     for ($i = 1; $i <= 15; $i++) {
 
@@ -154,24 +154,22 @@ $this->assign('title', 'WebArena : Game'); ?>
             <?php
             echo $this->Form->end(); // A REFAIRE NE FONCTIONNE PAS BIEN
             //Si pas assez de PA
-            if (!$action_possible['action_possible'])
-                echo "Pas assez de points d'actions!";
+//            if (!$action_possible['action_possible'])
+//                echo "Pas assez de points d'actions!";
             ?>
             <h3>Message</h3>
             <?php
-            echo $message;
+            
+            foreach($message as $line)
+                
+            echo "<p>".$line."</p>";
             ?>
         </div>
     </div>
 </div>
-
-<div class="row">
-    <div class="col-md-3">
-
-
-    </div>
-
-    <div class="col-md-6">
-        <p> <?php  var_dump($this->Session->read('Auth.User'));
+<div class = "row">
+    
+</div>
+<?php  
 } ?>
 

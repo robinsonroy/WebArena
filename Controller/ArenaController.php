@@ -45,17 +45,12 @@ class ArenaController extends AppController {
             if (isset($this->request->data['ChangeLevel'])) {
 
                 $this->Fighter->changeLevel($level_possible, $user_fighter[0]['Fighter']['id'], $this->request->data['ChangeLevel']['skill']);
-               if($user_fighter[0]['Fighter']['skill']=='Force')
-                {
-                    $user_fighter[0]['Fighter']['skill_strength']=$user_fighter[0]['Fighter']['skill_strength']+1;
+                if ($user_fighter[0]['Fighter']['skill'] == 'Force') {
+                    $user_fighter[0]['Fighter']['skill_strength'] = $user_fighter[0]['Fighter']['skill_strength'] + 1;
                 }
-                if($user_fighter[0]['Fighter']['skill']=='Vue')
-                {
-                    $user_fighter[0]['Fighter']['skill_sight']=$user_fighter[0]['Fighter']['skill_sight']+3;
-
+                if ($user_fighter[0]['Fighter']['skill'] == 'Vue') {
+                    $user_fighter[0]['Fighter']['skill_sight'] = $user_fighter[0]['Fighter']['skill_sight'] + 3;
                 }
-
-
             }
 
             //Récupération du résultat du formulaire
@@ -80,7 +75,6 @@ class ArenaController extends AppController {
             }
 
             $this->set('raw', $user_fighter);
-
         }
     }
 
@@ -105,12 +99,11 @@ class ArenaController extends AppController {
         $this->Surrounding->updateSurrounding($this->Fighter->find('all'));
         $result_map = $this->Fighter->creerMap($user_fighter, $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
         $this->set('map', $result_map['map']);
-        $this->set('message',"");
+        $message = array();
         $this->set('persVisibles', $result_map['persVisibles']);
 
-
-
 //Test si le joueur a assez de PA pour jouer
+        
         if (!empty($user_fighter)) {
             $action_possible = $this->Event->actionPossible($firrst['Fighter']);
             $this->set('action_possible', $action_possible);
@@ -121,50 +114,55 @@ class ArenaController extends AppController {
                 if ($action_possible['action_possible']) {
 
                     $result_move = $this->Fighter->doMove($firrst['Fighter']['id'], $this->request->data['Fightermove']['direction'], $decors);
-                    
-                    switch ($result_move) {
-                        case false: $this->set('message',"Déplacement impossible!");
-                            break;
-                        case 'monster': $this->set('message',"Vous avez rencontre un monstre");
-                            $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
-                            $this->render('mort');
-                            break;
-                        case 'puanteur' :$this->set('message',"Puanteur! Un monstre est a proximite");
-                            $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
-                            // ici on retire un PA apres l'action.
-                            $action_possible['PA'] = $action_possible['PA'] - 1;
-                            break;
-                        case 'trap': $this->set('message',"Vous avez marche sur un piege");
-                            $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
-                            $this->render('mort');
-                            break;
-                        case 'danger': $this->set('message',"Danger! Un piege est a proximite");
-                            $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
-                            // ici on retire un PA apres l'action.
-                            $action_possible['PA'] = $action_possible['PA'] - 1;
-                            break;
-                        case 'deplacement': $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
-                            // ici on retire un PA apres l'action.
-                            $action_possible['PA'] = $action_possible['PA'] - 1;
-                            break;
+               
+                    if ($result_move['monstre']) {
+                        $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
+                        $this->set('message',"Vous avez rencontre un monstre");
+                        $this->render('mort');
                     }
-                }
+                    if ($result_move['puanteur']) {
+                        $message[] = "Puanteur! Un monstre est a proximite";
+                       
+                    }
+                    if ($result_move['trap']) {
+                        $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
+                        $this->set('message',"Vous avez marche sur un piege");
+                        $this->render('mort');
+                    }
+                    if ($result_move['danger']) {
+                     
+                        $message[] = "Danger! Un piege est a proximite";
+                        
+                    }
+                    if (!($result_move['ennemi'] || $result_move['bordure'] || $result_move['colonne'] )) {
+                        $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                        // ici on retire un PA apres l'action.
+                        $action_possible['PA'] = $action_possible['PA'] - 1;
+                    }
+                    else $message[] = "Deplacement impossible";
+                }else{
+                        $message[] = "Pas assez de points d'action";
+                    }
             }
-        }
+
+
 //Attaque
-        if (isset($this->request->data['Fighterattack'])) {
+            if (isset($this->request->data['Fighterattack'])) {
 // Si le perso est encore vivant
-            if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
-                if ($action_possible['action_possible']) {
-                    $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
-                    $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
-                    $this->Fighter->removeDeadFighter($resultat_attaque);
-                }
-            } else {
-                $this->Session->setFlash('Personnage mort et supprimé');
+                if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
+                    if ($action_possible['action_possible']) {
+                        $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
+                        $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                        $this->Fighter->removeDeadFighter($resultat_attaque);
+                    }
+                    else{
+                        $message[] = "Pas assez de points d'action";
+                    }
+                } 
             }
         }
-        $this->set('test',$action_possible['PA']);
+       
+        $this->set('message', $message);
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Tools', $this->Tool->find('all'));
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
