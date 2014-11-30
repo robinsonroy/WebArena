@@ -4,7 +4,8 @@ App::uses('AppModel', 'Model');
 App::uses('Folder', 'Utility');
 App::uses('File', 'Utility');
 
-class Fighter extends AppModel {
+class Fighter extends AppModel
+{
 
     public $displayField = 'name';
     public $belongsTo = array(
@@ -127,7 +128,8 @@ class Fighter extends AppModel {
 
     //Renvoie le niveau auquel peut passer le perssonnage si c'est possible,
     //0 sinon
-    function determinerNiveau($fighter) {
+    function determinerNiveau($fighter)
+    {
         $niveau_actuel = $fighter['level'];
 
         //tous les 4pts d'xp, le fighter monte de niveau
@@ -140,7 +142,8 @@ class Fighter extends AppModel {
             return 0;
     }
 
-    function chercherAvatar($id) {
+    function chercherAvatar($id)
+    {
         $dir = new Folder(WWW_ROOT . 'img/uploads/');
         $files = $dir->find('avatar_' . $id . '.jpg');
         if (!empty($files)) {
@@ -151,7 +154,8 @@ class Fighter extends AppModel {
 
     //En cas de la création d'un nouveau personnage,
     //il faut supprimer l'ancien personnage mort de l'utilisateur
-    function removeOldFighter($user_id) {
+    function removeOldFighter($user_id)
+    {
         $fighterList = $this->find('all', array('fields' => array('player_id', 'id')));
         foreach ($fighterList as $fighter) {
             if ($fighter['Fighter']['player_id'] == $user_id) {
@@ -162,173 +166,233 @@ class Fighter extends AppModel {
         }
     }
 
-    function creermap($fighter) {
-
-        $charAll = $this->find('all');
-        $persVisibles = array();
-
-        for ($y = 15; $y > 0; $y--) {
-            for ($i = 1; $i <= 15; $i++) {
-                $perssonage_place = false;
-                if (!empty($fighter)) {
-                    if ($i < $fighter[0]['Fighter']['coordinate_x'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $i > $fighter[0]['Fighter']['coordinate_x'] - $fighter[0]['Fighter']['skill_sight'] - 1 && $y < $fighter[0]['Fighter']['coordinate_y'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $y > $fighter[0]['Fighter']['coordinate_y'] - $fighter[0]['Fighter']['skill_sight'] - 1
-                    ) {
-                        foreach ($charAll as $char) {
-                            if ($char['Fighter']['coordinate_x'] == $i && $char['Fighter']['coordinate_y'] == $y) {
-
-                                if (!($map[$i - 1][$y - 1] = $this->chercherAvatar($char['Fighter']['id']))) {
-                                    $map[$i - 1][$y - 1] = 'char.png';
-                                } else
-                                    $map[$i - 1][$y - 1] = 'uploads/' . $map[$i - 1][$y - 1];
-
-                                $persVisibles[] = $char['Fighter'];
+        function creermap($fighter) {
+            $charAll = $this->find('all');
+            $persVisibles = array();
+            for ($y = 15; $y > 0; $y--) {
+                for ($i = 1; $i <= 15; $i++) {
+                    $perssonage_place = false;
+                    if (!empty($fighter)) {
+                        if ($i < $fighter[0]['Fighter']['coordinate_x'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $i > $fighter[0]['Fighter']['coordinate_x'] - $fighter[0]['Fighter']['skill_sight'] - 1 && $y < $fighter[0]['Fighter']['coordinate_y'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $y > $fighter[0]['Fighter']['coordinate_y'] - $fighter[0]['Fighter']['skill_sight'] - 1
+                        ) {
+                            foreach ($charAll as $char) {
+                                if ($char['Fighter']['coordinate_x'] == $i && $char['Fighter']['coordinate_y'] == $y) {
+                                    if (!($map[$i - 1][$y - 1] = $this->chercherAvatar($char['Fighter']['id']))) {
+                                        $map[$i - 1][$y - 1] = 'char.png';
+                                    } else
+                                        $map[$i - 1][$y - 1] = 'uploads/' . $map[$i - 1][$y - 1];
+                                    $persVisibles[] = $char['Fighter'];
+                                    $perssonage_place = true;
+                                }
+                            }
+                            if ($perssonage_place == false) {
+                                $map[$i - 1][$y - 1] = 'vue.png';
                                 $perssonage_place = true;
                             }
                         }
-                        if ($perssonage_place == false) {
-                            $map[$i - 1][$y - 1] = 'vue.png';
-                            $perssonage_place = true;
+                    }
+                    if ($perssonage_place == false) {
+                        $map[$i - 1][$y - 1] = 'noir.png';
+                    }
+                }
+            }
+            if (!empty($fighter)) {
+                $nbpers = count($persVisibles);
+//Tri du tableau des personnages visibles
+                for ($i = 0; $i < $nbpers; $i++) {
+                    for ($j = 0; $j < $nbpers; $j++) {
+                        if ($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'] > $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']) {
+                            $pers = $persVisibles[$i];
+                            $persVisibles[$i] = $persVisibles[$j];
+                            $persVisibles[$j] = $pers;
                         }
                     }
                 }
-                if ($perssonage_place == false) {
-                    $map[$i - 1][$y - 1] = 'noir.png';
-                }
             }
-        }
-        if (!empty($fighter)) {
-            $nbpers = count($persVisibles);
-            //Tri du tableau des personnages visibles
-            for ($i = 0; $i < $nbpers; $i++) {
-                for ($j = 0; $j < $nbpers; $j++) {
-                    if ($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'] > $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']) {
-                        $pers = $persVisibles[$i];
-                        $persVisibles[$i] = $persVisibles[$j];
-                        $persVisibles[$j] = $pers;
-                    }
-                }
-            }
+            return $resultat = array(
+                'map' => $map,
+                'persVisibles' => $persVisibles
+            );
         }
 
-        return $resultat = array(
-            'map' => $map,
-            'persVisibles' => $persVisibles
-        );
+
+    //Obtenir l'ID du mec attaqué
+    function getIdDef($coordonnee_x, $coordonnee_y, $fighterID)
+    {
+    //Obtenir les autres fighter susceptibles d'être attaqué
+        $tab = $this->query("Select * from fighters where id<> $fighterID and current_health>0");
+    //Vérifier si l'un des fighter est attaqué en fonction de sa position et retourner l'ID du mec attaqué
+        foreach ($tab as $key)
+            foreach ($key as $value) {
+                if ($value['coordinate_y'] == $coordonnee_y &&
+                    $value['coordinate_x'] == $coordonnee_x
+                    ){
+                    echo "TEST SUR L'ID".$value['id']."";
+
+                return $value['id'];
+                }
+            }
+
     }
 
-    function doAttack($id, $id2, $direction) {
-        echo "salut";
+
+
+
+    function doAttack($id, $direction)
+    {
         // On recupe l'id du méchant.
         $datas = $this->findById($id);
-        $datas2 = $this->findById($id2);
+
+        // Recuperer ID2 en fonction de direction.
         $direction2 = $direction;
 
         //on fixe l'ID sur l'attaquant pour les changements.
-        $this->id = $id;
+        $this->id =$id;
+
+        // déclarer l'id du def ici
+        $iddef=null;
+        switch($direction)
+        {
+            case "east":
+            {
+                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']+1, $datas['Fighter']['coordinate_y'], $id);
+                pr($iddef);
+            }break;
+            case "west":
+            {
+                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']-1, $datas['Fighter']['coordinate_y'], $id);
+                pr($iddef);
+            }break;
+            case "north":
+            {
+                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']+1, $id);
+                pr($iddef);
+
+            }break;
+            case "south":
+            {
+                $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']-1, $id);
+                pr($iddef);
+
+            }break;
+        }
+
+        // On récupere l'id def
+        echo $iddef;
+        $datas2 = $this->findById($iddef);
+        pr($datas2);
+
 
         switch ($direction) {
-            case "east": {
-                    if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
-                        $this->set('xp', $datas['Fighter']['xp'] + 1);
-                        $attaque_touche = true;
-                    } else {
-                        $attaque_touche = false;
-                        echo "raté";
-                    }
+            case "east":
+            {
+
+                if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
+                    $attaque_touche = true;
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
                 }
+            }
                 break;
-            case "west": {
-                    if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
-                        $attaque_touche = true;
-                        $this->set('xp', $datas['Fighter']['xp'] + 1);
+            case "west":
+            {
+                if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
+                    $attaque_touche = true;
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
-                        echo "Succes";
-                    } else {
-                        $attaque_touche = false;
-                        echo "raté";
-                    }
+                    echo "Succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
                 }
+            }
 
                 break;
-            case "north" : {
-                    if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
-                        $attaque_touche = true;
-                        $this->set('xp', $datas['Fighter']['xp'] + 1);
+            case "north" :
+            {
+                if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
+                    $attaque_touche = true;
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
-                        echo "Succes";
-                    } else {
-                        $attaque_touche = false;
-                        echo "raté";
-                    }
+                    echo "Succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
                 }
+            }
                 break;
-            case "south" : {
-                    if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
-                        $attaque_touche = true;
-                        $this->set('xp', $datas['Fighter']['xp'] + 1);
+            case "south" :
+            {
+                if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
+                    $attaque_touche = true;
+                    $this->set('xp', $datas['Fighter']['xp'] + 1);
 
-                        echo "Succes";
-                    } else {
-                        $attaque_touche = false;
-                        echo "raté";
-                    }
+                    echo "Succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
                 }
+            }
                 break;
         }
         $this->save();
 
 
-
-        $this->id = $id2;
-
+        $this->id = $iddef;
 
         switch ($direction2) {
-            case "east": {
-                    if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                        $attaque_touche = true;
-                        echo "succes";
-                    } else {
-                        $attaque_touche = false;
-                        echo "raté";
-                    }
+            case "east":
+            {
+                if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
+                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                    $attaque_touche = true;
+                    echo "succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
                 }
+            }
                 break;
-            case "west": {
-                    if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                        $attaque_touche = true;
+            case "west":
+            {
+                if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
+                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                    $attaque_touche = true;
 
-                        echo "Succes";
-                    } else {
-                        $attaque_touche = false;
-                        echo "raté";
-                    }
+                    echo "Succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
                 }
+            }
 
                 break;
-            case "north" : {
-                    if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                        $attaque_touche = true;
+            case "north" :
+            {
+                if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
+                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                    $attaque_touche = true;
 
-                        echo "Succes";
-                    } else {
-                        $attaque_touche = false;
-                        echo "raté";
-                    }
+                    echo "Succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "raté";
                 }
+            }
                 break;
-            case "south" : {
-                    if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
-                        $attaque_touche = true;
-                        echo "Succes";
-                    } else {
-                        $attaque_touche = false;
-                        echo "Raté";
-                    }
+            case "south" :
+            {
+                if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
+                    $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                    $attaque_touche = true;
+                    echo "Succes";
+                } else {
+                    $attaque_touche = false;
+                    echo "Raté";
                 }
+            }
                 break;
         }
         $this->save();
@@ -347,6 +411,7 @@ class Fighter extends AppModel {
         return $result;
     }
 
+
     function removeDeadFighter() {
         $fighterList = $this->find('all', array('fields' => array('player_id', 'id', 'current_health')));
 
@@ -359,7 +424,8 @@ class Fighter extends AppModel {
         }
     }
 
-    function changeLevel($level, $fighterId, $skill) {
+    function changeLevel($level, $fighterId, $skill)
+    {
 
         $datas = $this->read(null, $fighterId);
 
@@ -387,33 +453,5 @@ class Fighter extends AppModel {
         $this->saveField('current_health', $datas['Fighter']['skill_health']);
     }
 
-    public function timeManager($time) {
-        $time = $time - 1;
-        return $time;
     }
 
-    /*
-      public function create_map()
-      {
-      // $map=array(array());
-      //parcours de la liste des perssonnages
-      //test collision:il ne faut pas qu'il y ait déja qqh sur la case
-      // $map=array[$i][$j];
-      echo   "<table id='map' class='table table-striped'>";
-
-      for($i=0;$i<12;$i++)
-      {
-
-      echo "<tr>";
-      for ($y=0;$y<12;$y++)
-      {
-      //echo "<td id='$map[$i][$y]'> X </td>"
-      echo "<td id='$i $y'> X </td>";
-      }
-      echo "</tr>";
-      }
-      echo "</table>";
-
-      }
-     */
-}

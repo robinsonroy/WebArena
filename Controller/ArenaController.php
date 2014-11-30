@@ -45,6 +45,17 @@ class ArenaController extends AppController {
             if (isset($this->request->data['ChangeLevel'])) {
 
                 $this->Fighter->changeLevel($level_possible, $user_fighter[0]['Fighter']['id'], $this->request->data['ChangeLevel']['skill']);
+               if($user_fighter[0]['Fighter']['skill']=='Force')
+                {
+                    $user_fighter[0]['Fighter']['skill_strength']=$user_fighter[0]['Fighter']['skill_strength']+1;
+                }
+                if($user_fighter[0]['Fighter']['skill']=='Vue')
+                {
+                    $user_fighter[0]['Fighter']['skill_sight']=$user_fighter[0]['Fighter']['skill_sight']+3;
+
+                }
+
+
             }
 
             //Récupération du résultat du formulaire
@@ -67,6 +78,9 @@ class ArenaController extends AppController {
                         echo "erreur sur le transfert";
                 }
             }
+
+            $this->set('raw', $user_fighter);
+
         }
     }
 
@@ -93,17 +107,14 @@ class ArenaController extends AppController {
         $this->set('map', $result_map['map']);
         $this->set('message',"");
         $this->set('persVisibles', $result_map['persVisibles']);
-
-        //Test si le joueur a assez de PA pour jouer
+//Test si le joueur a assez de PA pour jouer
         if (!empty($user_fighter)) {
             $action_possible = $this->Event->actionPossible($firrst['Fighter']);
             $this->set('action_possible', $action_possible);
         }
-
-
         if ($this->request->is('post')) {
             if (isset($this->request->data['Fightermove'])) {
-                //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
+//test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
                 if ($action_possible['action_possible']) {
 
                     $result_move = $this->Fighter->doMove($firrst['Fighter']['id'], $this->request->data['Fightermove']['direction'], $decors);
@@ -135,15 +146,13 @@ class ArenaController extends AppController {
                 }
             }
         }
-
-
-        //Attaque
+//Attaque
         if (isset($this->request->data['Fighterattack'])) {
-            // Si le perso est encore vivant
-            if ($this->checkHealth($firrst['Fighter']['id'])) {   // faire l'attaque
+// Si le perso est encore vivant
+            if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
                 if ($action_possible['action_possible']) {
-
-                    $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['EnnemiID'], $this->request->data['Fighterattack']['direction']);
+                    echo "jsuis al";
+                    $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
                     $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     $this->Fighter->removeDeadFighter($resultat_attaque);
                 }
@@ -153,8 +162,6 @@ class ArenaController extends AppController {
         }
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Tools', $this->Tool->find('all'));
-
-
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
     }
 
