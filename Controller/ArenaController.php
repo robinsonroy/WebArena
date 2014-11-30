@@ -29,11 +29,12 @@ class ArenaController extends AppController
         //die('test');
     }
 
-    public function character() {
+    public function character()
+    {
         // On recherche que les personnages qui ont un ID commun avec les USER pour les afficher.
         $this->set('fighters', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
-        
+
         $this->set('fighter', $user_fighter);
         if (!empty($user_fighter)) {
             //Recherche du level
@@ -81,21 +82,24 @@ class ArenaController extends AppController
         }
     }
 
-    public function diary() {
+    public function diary()
+    {
         $this->set('raw', $this->Event->getEvent());
     }
 
-    public function login() {
+    public function login()
+    {
         if ($this->request->is('post')) {
             $this->Player->loginplayer($this->request->data['sub']['login'], $this->request['sub']['password']);
         }
     }
 
-    public function sight() {
+    public function sight()
+    {
         $this->set('charAll', $this->Fighter->find('all'));
         $decors = $this->Surrounding->find('all');
 
-        $firrst = $this->Fighter->getCurrentFighter( $this->Session->read("Auth.User.id"));
+        $firrst = $this->Fighter->getCurrentFighter($this->Session->read("Auth.User.id"));
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
         //création de la map
@@ -119,7 +123,7 @@ class ArenaController extends AppController
 
                     if ($result_move['monstre']) {
                         $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
-                        $this->set('message',"Vous avez rencontre un monstre");
+                        $this->set('message', "Vous avez rencontre un monstre");
                         $this->render('mort');
                     }
                     if ($result_move['puanteur']) {
@@ -128,7 +132,7 @@ class ArenaController extends AppController
                     }
                     if ($result_move['trap']) {
                         $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
-                        $this->set('message',"Vous avez marche sur un piege");
+                        $this->set('message', "Vous avez marche sur un piege");
                         $this->render('mort');
                     }
                     if ($result_move['danger']) {
@@ -136,41 +140,41 @@ class ArenaController extends AppController
                         $message[] = "Danger! Un piege est a proximite";
 
                     }
-                    if (!($result_move['ennemi'] || $result_move['bordure'] || $result_move['colonne'] )) {
+                    if (!($result_move['ennemi'] || $result_move['bordure'] || $result_move['colonne'])) {
                         $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                         // ici on retire un PA apres l'action.
                         $action_possible['PA'] = $action_possible['PA'] - 1;
-                    }
-                    else $message[] = "Deplacement impossible";
-                }else{
+                    } else $message[] = "Deplacement impossible";
+                } else {
                     $message[] = "Pas assez de points d'action";
                 }
+            }
+        }
+
+//Attaque
+        if (isset($this->request->data['Fighterattack'])) {
+// Si le perso est encore vivant
+            if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
+                if ($action_possible['action_possible']) {
+                    $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
+                    $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                    $this->Fighter->removeDeadFighter($resultat_attaque);
+                } else {
+                    $message[] = "Pas assez de points d'action";
                 }
             }
         }
-//Attaque
-            if (isset($this->request->data['Fighterattack'])) {
-// Si le perso est encore vivant
-                if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
-                    if ($action_possible['action_possible']) {
-                        $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
-                        $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
-                        $this->Fighter->removeDeadFighter($resultat_attaque);
-                    }
-                    else{
-                        $message[] = "Pas assez de points d'action";
-                    }
-                } 
-            }
-        }
-       
+
+
         $this->set('message', $message);
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Tools', $this->Tool->find('all'));
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
     }
 
-    public function chooseAvatar() {    //A VIRER
+    public
+    function chooseAvatar()
+    {    //A VIRER
         //Récupère la liste des fighters, avec les champs id et name
         $fighterList = $this->Fighter->find('all', array('fields' => array('id', 'name')));
 
@@ -197,8 +201,8 @@ class ArenaController extends AppController
                 //déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
                 //avec le nom avatar_id.jpg
                 if (move_uploaded_file(
-                                $_FILES['avatar']['tmp_name'], 'img/uploads/avatar_' . $fighter_id . ".jpg"
-                        )
+                    $_FILES['avatar']['tmp_name'], 'img/uploads/avatar_' . $fighter_id . ".jpg"
+                )
                 ) {
                     echo "Le transfert s'est bien deroule";
                 } else
@@ -207,7 +211,9 @@ class ArenaController extends AppController
         }
     }
 
-    public function createchar() {
+    public
+    function createchar()
+    {
         //création
         if ($this->request->is('post')) {
             //Supprime l'ancien personage de l'utilisateur si il existe
@@ -223,7 +229,9 @@ class ArenaController extends AppController
         }
     }
 
-    public function checkHealth($id) {
+    public
+    function checkHealth($id)
+    {
         $fighters = $this->Fighter->findById($id);
 
 
@@ -256,13 +264,15 @@ class ArenaController extends AppController
             }
     }
 
-    public function chat(){
+    public
+    function chat()
+    {
         $addMessageOK = 2;
 
         $fighterFrom = $this->Fighter->getCurrentFighter($this->Session->read("Auth.User.id"));
         $privateMessages = $this->Message->getMessage($fighterFrom);
-        foreach($privateMessages as &$messages){
-            foreach($messages as &$message){
+        foreach ($privateMessages as &$messages) {
+            foreach ($messages as &$message) {
                 $message['fighter_name_from'] = $this->Fighter->getById($message['fighter_id_from'])['Fighter']['name'];
             }
         }
