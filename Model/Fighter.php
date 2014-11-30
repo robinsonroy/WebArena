@@ -196,8 +196,6 @@ class Fighter extends AppModel
                 if ($value['coordinate_y'] == $coordonnee_y &&
                     $value['coordinate_x'] == $coordonnee_x
                     ){
-                    echo "TEST SUR L'ID".$value['id']."";
-
                 return $value['id'];
                 }
             }
@@ -225,23 +223,40 @@ class Fighter extends AppModel
             case "east":
             {
                 $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']+1, $datas['Fighter']['coordinate_y'], $id);
-                pr($iddef);
+                if($iddef==null)
+                {
+                    echo "PAS BIEN VISER";
+                    return 0;
+                }
             }break;
             case "west":
             {
                 $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']-1, $datas['Fighter']['coordinate_y'], $id);
-                pr($iddef);
+                if($iddef==null)
+                {
+                    echo "PAS BIEN VISER";
+                    return 0;
+                }
             }break;
             case "north":
             {
                 $iddef=$this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']+1, $id);
-                pr($iddef);
+                if($iddef==null)
+                {
+                    echo "PAS BIEN VISER";
+                    return 0;
+                }
 
             }break;
             case "south":
             {
                 $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']-1, $id);
                 pr($iddef);
+                if($iddef==null)
+                {
+                    echo "PAS BIEN VISER";
+                    return 0;
+                }
 
             }break;
         }

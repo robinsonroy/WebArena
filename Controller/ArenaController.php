@@ -111,7 +111,7 @@ class ArenaController extends AppController {
             if (isset($this->request->data['Fightermove'])) {
 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
                 if ($action_possible['action_possible']) {
-                    if ($this->Fighter->doMove($firrst['Fighter']['id'], $this->request->data['Fightermove']['direction'])) {
+                    if ($this->Fighter->doMove($firrst['Fighter']['id'], $this->request->data['Fightermove']['direction'])){
                         $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
 // ici on retire un PA apres l'action.
                         $action_possible['PA'] = $action_possible['PA'] - 1;
@@ -127,7 +127,6 @@ class ArenaController extends AppController {
 // Si le perso est encore vivant
             if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
                 if ($action_possible['action_possible']) {
-                    echo "jsuis al";
                     $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
                     $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     $this->Fighter->removeDeadFighter($resultat_attaque);
@@ -136,6 +135,7 @@ class ArenaController extends AppController {
                 $this->Session->setFlash('Personnage mort et supprimé');
             }
         }
+
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Tools', $this->Tool->find('all'));
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
@@ -188,7 +188,7 @@ class ArenaController extends AppController {
                 $this->Event->enregistrerDepart($fighter);
                 $this->Fighter->removeOldFighter($this->Session->read('Auth.User.id'));
             }
-            
+
             $result_crea = $this->Fighter->createChar($this->request->data['Createchar']['create_name'], $this->Session->read('Auth.User.id'));
             $this->Event->enregistrerCreation($this->request->data['Createchar']['create_name'], $result_crea['x'], $result_crea['y']);
             return $this->redirect('sight');
