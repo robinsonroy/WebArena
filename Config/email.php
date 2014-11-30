@@ -43,8 +43,8 @@ class EmailConfig {
         'host' => 'ssl://smtp.gmail.com',
 		'transport' => 'Smtp',
         'port' => 465,
-        'username' => 'grportier@gmail.com',
-        'password' => "GreGGus10.");
+        'username' => 'webarenagroupsi408cf@gmail.com',
+        'password' => 'WebArena2014');
 
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
@@ -56,7 +56,7 @@ class EmailConfig {
 		'host' => 'ssl://smtp.gmail.com',
 		'port' => 465,
 		'timeout' => 30,
-		'username' => 'grportier@gmail.com',
+		'username' => 'webarenagroupsi408cf@gmail.com',
 		'password' => '',
 		'client' => null,
 		'log' => false,

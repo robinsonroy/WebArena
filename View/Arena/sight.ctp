@@ -60,10 +60,7 @@ $this->assign('title', 'WebArena : Game'); ?>
             XP :     <?php echo $Fighter[0]['Fighter']['xp']; ?>
 
             <!-- VU PERSONNAGE PAS BEAU -->
-
-
         </div>
-
     </div>
 
     <!--C'EST LE BORDEL LA DEDANS-->
@@ -74,7 +71,6 @@ $this->assign('title', 'WebArena : Game'); ?>
             <th> CoordXY</th>
             <th> Point de vie</th>
             <tr>
-<<<<<<< HEAD
                 <?php
                 // Fighters vide ?
                 foreach ($Fighters as $fighter)
@@ -91,7 +87,6 @@ $this->assign('title', 'WebArena : Game'); ?>
             <tr><?php
                 }
                 pr($action_possible);?>
-=======
          <?php
          // Fighters vide ?
          foreach($persVisibles as $fighter)
@@ -112,7 +107,6 @@ $this->assign('title', 'WebArena : Game'); ?>
             }
             }
             ?>
->>>>>>> 720ca70d56be5c1b1b9bbac66b5ce9e274bc322d
             </tr>
 
             <!--Jvais recup les donné de tout -->
@@ -127,8 +121,6 @@ $this->assign('title', 'WebArena : Game'); ?>
                         echo "<td>";
                         echo $this->Html->image($map[$i - 1][$y - 1], array('class' => "img-responsive", 'alt' => 'uploaded image', 'height' => 15, 'width' => 15));
                         echo "</td>";
-
-
                     }
                     echo "</tr>";
                 }
@@ -178,11 +170,12 @@ $this->assign('title', 'WebArena : Game'); ?>
             if (!$action_possible['action_possible'])
                 echo "Pas assez de points d'actions!";
             ?>
+            <h3>Message</h3>
+            <?php
+            echo $message;
+            ?>
         </div>
-
     </div>
-
-
 </div>
 
 <div class="row">
