@@ -86,8 +86,9 @@ class ArenaController extends AppController {
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
         //création de la map
-        $map = $this->Fighter->creerMap($user_fighter);
-        $this->set('map', $map);
+        $result_map = $this->Fighter->creerMap($user_fighter);
+        $this->set('map', $result_map['map']);
+        $this->set('persVisibles',$result_map['persVisibles']);
         
         //Test si le joueur a assez de PA pour jouer
         if(!empty($user_fighter))
@@ -98,21 +99,6 @@ class ArenaController extends AppController {
             
 
         if ($this->request->is('post')) {
-
-            // Il faut un form pour choisir le héro
-            // Recuperer l'id dans un $
-            // Utiliser cette idée pour faire les events.
-
-            $this->Session->setFlash('Une action a ete realise.');
-            var_dump($this->Session->read('Auth.User.id'));
-            // on recupere le fighter du joueur
-            //  $first2=$this->Fighter->find('first',array('conditions'=>array('Fighter.player_id'=>$this->Session->read("Auth.User.id"),'Fighter.id'=>$varglob)));
-            //$this->set('super', $time2);
-            //var_dump($this->Session->read('Auth.User.id'));
-            // on recupere le fighter du joueur
-//            $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
-
-
 
             if (isset($this->request->data['Fightermove'])) {
                 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
@@ -128,9 +114,6 @@ class ArenaController extends AppController {
                     }
                 }
             }
-
-            if (isset($this->request->data['ChangeLevel']))
-                $this->Fighter->changeLevel(1, $this->request->data['ChangeLevel']['level']);
 
             //Attaque
             if (isset($this->request->data['Fighterattack']))
