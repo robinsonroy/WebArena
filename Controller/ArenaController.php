@@ -151,7 +151,6 @@ class ArenaController extends AppController {
 // Si le perso est encore vivant
             if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
                 if ($action_possible['action_possible']) {
-                    echo "jsuis al";
                     $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
                     $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     $this->Fighter->removeDeadFighter($resultat_attaque);
@@ -160,6 +159,7 @@ class ArenaController extends AppController {
                 $this->Session->setFlash('Personnage mort et supprimé');
             }
         }
+
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Tools', $this->Tool->find('all'));
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
