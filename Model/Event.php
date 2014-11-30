@@ -138,8 +138,12 @@ class Event extends AppModel{
             'PA' => $PA
         );
     }
-    
-    
-    
-    
+    function getEvent(){
+        $events = $this->find('all', array(
+            'conditions' => array('Event.date >' => date('Y-m-d H:i:s', strtotime('-1 days'))),
+            'fields' => array('Event.name', 'Event.date', 'Event.coordinate_x', 'Event.coordinate_y'),
+            'order' => 'Event.date'
+        ));
+        return $events;
+    }
 }
