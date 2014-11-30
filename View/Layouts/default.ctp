@@ -75,6 +75,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                 <li><?php echo $this->Html->link('Vos personnages', array('controller' => 'Arena', 'action' => 'character')); ?></li>
                 <li><?php echo $this->Html->link('Evenements', array('controller' => 'Arena', 'action' => 'diary')); ?></li>
                 <li><?php echo $this->Html->link('Choisir avatar', array('controller' => 'Arena', 'action' => 'chooseAvatar')); ?></li>
+                <li><?php echo $this->Html->link('Chat', array('controller' => 'Arena', 'action' => 'chat')); ?></li>
 
 
 

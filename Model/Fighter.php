@@ -255,7 +255,12 @@ class Fighter extends AppModel {
             }
     }
 
-    function doAttack($id, $direction) {
+
+
+// A FAIRE AVEC LA FORCE ICI : GREG
+
+    function doAttack($id, $direction)
+    {
         // On recupe l'id du méchant.
         $datas = $this->findById($id);
 
@@ -481,4 +486,42 @@ class Fighter extends AppModel {
         $this->saveField('current_health', $datas['Fighter']['skill_health']);
     }
 
+}
+    }
+
+    /*
+      public function create_map()
+      {
+      // $map=array(array());
+      //parcours de la liste des perssonnages
+      //test collision:il ne faut pas qu'il y ait déja qqh sur la case
+      // $map=array[$i][$j];
+      echo   "<table id='map' class='table table-striped'>";
+
+      for($i=0;$i<12;$i++)
+      {
+
+      echo "<tr>";
+      for ($y=0;$y<12;$y++)
+      {
+      //echo "<td id='$map[$i][$y]'> X </td>"
+      echo "<td id='$i $y'> X </td>";
+      }
+      echo "</tr>";
+      }
+      echo "</table>";
+
+      }
+     */
+
+    function findFighterWithName($name){
+        $fighter = $this->find('first', array(
+            'conditions' => array ('Fighter.name' => $name)
+        ));
+        return $fighter;
+    }
+
+    function getCurrentFighter($playerId){
+        return $this->find('first', array('conditions' => array('Fighter.player_id' => $playerId)));
+    }
 }
