@@ -235,7 +235,7 @@ class Fighter extends AppModel
 
 
 
-
+// A FAIRE AVEC LA FORCE ICI : GREG
     function doAttack($id, $direction)
     {
         // On recupe l'id du méchant.
