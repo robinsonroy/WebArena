@@ -60,10 +60,7 @@ $this->assign('title', 'WebArena : Game'); ?>
             XP :     <?php echo $Fighter[0]['Fighter']['xp']; ?>
 
             <!-- VU PERSONNAGE PAS BEAU -->
-
-
         </div>
-
     </div>
 
     <!--C'EST LE BORDEL LA DEDANS-->
@@ -158,11 +155,12 @@ $this->assign('title', 'WebArena : Game'); ?>
             if (!$action_possible['action_possible'])
                 echo "Pas assez de points d'actions!";
             ?>
+            <h3>Message</h3>
+            <?php
+            echo $message;
+            ?>
         </div>
-
     </div>
-
-
 </div>
 
 <div class="row">

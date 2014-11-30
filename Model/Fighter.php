@@ -52,7 +52,7 @@ class Fighter extends AppModel {
         );
     }
 
-    function doMove($fighterId, $direction) { // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
+    function doMove($fighterId, $direction, $decors) { // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
         // récupérer la position et fixer l'id de travail
         $datas = $this->read(null, $fighterId);
         $x = $datas['Fighter']['coordinate_x'];
@@ -85,6 +85,36 @@ class Fighter extends AppModel {
                 return false;
             }
         }
+        
+        //test decor
+        foreach($decors as $decor)
+        {
+            if(1 >= abs($decor['Surrounding']['coordinate_x'] - $x) 
+               && 1 >= abs($decor['Surrounding']['coordinate_y'] - $y))
+            {
+            
+                if($decor['Surrounding']['coordinate_x'] == $x && $decor['Surrounding']['coordinate_y'] == $y)
+                {
+                   
+                    switch($decor['Surrounding']['type'])
+                    {
+                        case 'monster' :return 'monstre';
+                            break;
+                        case 'trap': return 'trap';
+                            break;
+                    } 
+                }
+                else{
+                    switch($decor['Surrounding']['type'])
+                    {
+                        case 'monster' :return 'puanteur';
+                            break;
+                        case 'trap': return 'danger';
+                            break;
+                    }
+                }
+            }
+        }
 
         $this->set('coordinate_x', $x);
         $this->set('coordinate_y', $y);
@@ -92,6 +122,7 @@ class Fighter extends AppModel {
         $this->set('next_action_time', date("Y-m-d h:i:s.u"));
 // sauver la modif
         $this->save();
+        return 'deplacement';
     }
 
     //Renvoie le niveau auquel peut passer le perssonnage si c'est possible,

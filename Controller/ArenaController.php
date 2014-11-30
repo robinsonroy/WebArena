@@ -15,7 +15,7 @@ App::uses('AppController', 'Controller');
  */
 class ArenaController extends AppController {
 
-    public $uses = array('Player', 'Fighter', 'Event', 'Tool');
+    public $uses = array('Player', 'Fighter', 'Event', 'Tool', 'Surrounding');
 
     /**
      * index method : first page
@@ -82,12 +82,16 @@ class ArenaController extends AppController {
 
     public function sight() {
         $this->set('charAll', $this->Fighter->find('all'));
+        $decors = $this->Surrounding->find('all');
+
         $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
         //création de la map
+        $this->Surrounding->updateSurrounding($this->Fighter->find('all'));
         $result_map = $this->Fighter->creerMap($user_fighter);
         $this->set('map', $result_map['map']);
+        $this->set('message',"");
         $this->set('persVisibles', $result_map['persVisibles']);
 
         //Test si le joueur a assez de PA pour jouer
@@ -98,21 +102,40 @@ class ArenaController extends AppController {
 
 
         if ($this->request->is('post')) {
-
             if (isset($this->request->data['Fightermove'])) {
                 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
                 if ($action_possible['action_possible']) {
-                    if ($this->Fighter->doMove($firrst['Fighter']['id'], $this->request->data['Fightermove']['direction'])) {
-                        $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
-                        // ici on retire un PA apres l'action.
-                        $action_possible['PA'] = $action_possible['PA'] - 1;
-                    } else {
-                        //Message déplacement impossible
-                        echo "Déplacement impossible!";
+
+                    $result_move = $this->Fighter->doMove($firrst['Fighter']['id'], $this->request->data['Fightermove']['direction'], $decors);
+                    pr($result_move);
+                    switch ($result_move) {
+                        case false: $this->set('message',"Déplacement impossible!");
+                            break;
+                        case 'monster': $this->set('message',"Vous avez rencontre un monstre! Vous etes mort");
+                            echo 'monstre';
+                            break;
+                        case 'puanteur' :$this->set('message',"Puanteur! Un monstre est a proximite");
+
+                            break;
+                        case 'trap': $this->set('message',"Vous avez marche sur un piege! Vous etes mort");
+                            $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                            // ici on retire un PA apres l'action.
+                            $action_possible['PA'] = $action_possible['PA'] - 1;
+                            break;
+                        case 'danger': $this->set('message',"Danger! Un piege est a proximite");
+                            $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                            // ici on retire un PA apres l'action.
+                            $action_possible['PA'] = $action_possible['PA'] - 1;
+                            break;
+                        case 'deplacement': $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                            // ici on retire un PA apres l'action.
+                            $action_possible['PA'] = $action_possible['PA'] - 1;
+                            break;
                     }
                 }
             }
         }
+
 
         //Attaque
         if (isset($this->request->data['Fighterattack'])) {
@@ -177,12 +200,11 @@ class ArenaController extends AppController {
         if ($this->request->is('post')) {
             //Supprime l'ancien personage de l'utilisateur si il existe
             $fighter = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
-            if(!empty($fighter))
-            {
+            if (!empty($fighter)) {
                 $this->Event->enregistrerDepart($fighter);
                 $this->Fighter->removeOldFighter($this->Session->read('Auth.User.id'));
             }
-            
+
             $result_crea = $this->Fighter->createChar($this->request->data['Createchar']['create_name'], $this->Session->read('Auth.User.id'));
             $this->Event->enregistrerCreation($this->request->data['Createchar']['create_name'], $result_crea['x'], $result_crea['y']);
             return $this->redirect('sight');
