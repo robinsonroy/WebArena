@@ -17,6 +17,41 @@ class Fighter extends AppModel {
     public $PA_max = 3;
     public $PA_recup = 10;
 
+    function createChar($name, $player_id) {
+        $this->create();
+        $charAll = $this->find('all');
+
+        //Recherche des coordonnées de placem^$this->finent
+        do {
+            $x = rand(1, 15);
+            $y = rand(1, 10);
+
+            $place = true;
+            foreach ($charAll as $char) {
+                if ($char['Fighter']['coordinate_x'] == $x && $char['Fighter']['coordinate_y'] == $y)
+                    $place = false;
+            }
+        }while ($place == false);
+        $data = array(
+            'Fighter' => array(
+                'name' => $name,
+                'player_id' => $player_id,
+                'coordinate_x' => $x,
+                'coordinate_y' => $y,
+                'level' => '1',
+                'xp' => '1',
+                'skill_sight' => '0',
+                'skill_strength' => '1',
+                'skill_health' => '1',
+                'current_health' => '1'));
+        
+        $this->save($data);
+        return array(
+            'x' => $x,
+            'y' => $y
+        );
+    }
+
     function doMove($fighterId, $direction) { // ATTENTION UTILISABLE QUE SUR LE FIGHTER EN COURS DE JEU
         // récupérer la position et fixer l'id de travail
         $datas = $this->read(null, $fighterId);
@@ -90,7 +125,7 @@ class Fighter extends AppModel {
         foreach ($fighterList as $fighter) {
             if ($fighter['Fighter']['player_id'] == $user_id) {
                 $this->id = $fighter['Fighter']['id'];
-                $this->saveField('player_id', 0);
+                $this->delete($fighter['Fighter']['id'], false);
                 break;
             }
         }
@@ -100,27 +135,23 @@ class Fighter extends AppModel {
 
         $charAll = $this->find('all');
         $persVisibles = array();
-        
+
         for ($y = 15; $y > 0; $y--) {
             for ($i = 1; $i <= 15; $i++) {
                 $perssonage_place = false;
                 if (!empty($fighter)) {
-                    if ($i < $fighter[0]['Fighter']['coordinate_x'] + $fighter[0]['Fighter']['skill_sight'] + 1 
-                            && $i > $fighter[0]['Fighter']['coordinate_x'] - $fighter[0]['Fighter']['skill_sight'] - 1 
-                            && $y < $fighter[0]['Fighter']['coordinate_y'] + $fighter[0]['Fighter']['skill_sight'] + 1 
-                            && $y > $fighter[0]['Fighter']['coordinate_y'] - $fighter[0]['Fighter']['skill_sight'] - 1
+                    if ($i < $fighter[0]['Fighter']['coordinate_x'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $i > $fighter[0]['Fighter']['coordinate_x'] - $fighter[0]['Fighter']['skill_sight'] - 1 && $y < $fighter[0]['Fighter']['coordinate_y'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $y > $fighter[0]['Fighter']['coordinate_y'] - $fighter[0]['Fighter']['skill_sight'] - 1
                     ) {
                         foreach ($charAll as $char) {
                             if ($char['Fighter']['coordinate_x'] == $i && $char['Fighter']['coordinate_y'] == $y) {
 
                                 if (!($map[$i - 1][$y - 1] = $this->chercherAvatar($char['Fighter']['id']))) {
                                     $map[$i - 1][$y - 1] = 'char.png';
-                                }
-                                else $map[$i - 1][$y - 1] = 'uploads/'.$map[$i - 1][$y - 1];
-                                
+                                } else
+                                    $map[$i - 1][$y - 1] = 'uploads/' . $map[$i - 1][$y - 1];
+
                                 $persVisibles[] = $char['Fighter'];
                                 $perssonage_place = true;
-                                
                             }
                         }
                         if ($perssonage_place == false) {
@@ -134,28 +165,20 @@ class Fighter extends AppModel {
                 }
             }
         }
-        if (!empty($fighter))
-        {
-        $nbpers = count($persVisibles);
-        //Tri du tableau des personnages visibles
-        for($i = 0;$i<$nbpers;$i++)
-        {
-            for($j = 0;$j<$nbpers;$j++)
-            {
-               if($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
-                       + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']
-                       > $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
-                       + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']) 
-               {
-                   $pers = $persVisibles[$i];
-                   $persVisibles[$i] = $persVisibles[$j];
-                   $persVisibles[$j] =$pers;
-                   
-               }
+        if (!empty($fighter)) {
+            $nbpers = count($persVisibles);
+            //Tri du tableau des personnages visibles
+            for ($i = 0; $i < $nbpers; $i++) {
+                for ($j = 0; $j < $nbpers; $j++) {
+                    if ($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'] > $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']) {
+                        $pers = $persVisibles[$i];
+                        $persVisibles[$i] = $persVisibles[$j];
+                        $persVisibles[$j] = $pers;
+                    }
+                }
             }
         }
-        }
-        
+
         return $resultat = array(
             'map' => $map,
             'persVisibles' => $persVisibles
@@ -292,15 +315,14 @@ class Fighter extends AppModel {
 
         return $result;
     }
-    
-    function removeDeadFighter()
-    {
+
+    function removeDeadFighter() {
         $fighterList = $this->find('all', array('fields' => array('player_id', 'id', 'current_health')));
-        
+
         foreach ($fighterList as $fighter) {
             if ($fighter['Fighter']['current_health'] <= 0) {
                 $this->id = $fighter['Fighter']['id'];
-                $this->delete($fighter['Fighter']['id'],false);
+                $this->delete($fighter['Fighter']['id'], false);
                 break;
             }
         }
