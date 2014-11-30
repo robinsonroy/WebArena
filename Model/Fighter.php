@@ -231,11 +231,6 @@ class Fighter extends AppModel
                 }
             }
 
-    }
-
-
-
-
     function doAttack($id, $direction)
     {
         // On recupe l'id du méchant.
@@ -495,10 +490,14 @@ class Fighter extends AppModel
       }
      */
 
-    public function findFighterWithName($name){
+    function findFighterWithName($name){
         $fighter = $this->find('first', array(
             'conditions' => array ('Fighter.name' => $name)
         ));
         return $fighter;
+    }
+
+    function getCurrentFighter($playerId){
+        return $this->find('first', array('conditions' => array('Fighter.player_id' => $playerId)));
     }
 }

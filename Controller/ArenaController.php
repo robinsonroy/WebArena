@@ -99,7 +99,7 @@ class ArenaController extends AppController {
         $this->set('charAll', $this->Fighter->find('all'));
         $decors = $this->Surrounding->find('all');
 
-        $firrst = $this->Fighter->find('first', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
+        $firrst = $this->Fighter->getCurrentFighter( $this->Session->read("Auth.User.id"));
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
 
         //création de la map
@@ -253,10 +253,13 @@ class ArenaController extends AppController {
     }
 
     public function chat(){
+        $addMessageOK = 2;
         if ($this->request->is('post')) {
-            $this->Message->addMessage($this->request->data, $this->Fighter->findFighterWithName($this->request->data['Message']['fighterName']));
-
+            $fighterFrom = $this->Fighter->getCurrentFighter( $this->Session->read("Auth.User.id"));
+            $fighterTo = $this->Fighter->findFighterWithName($this->request->data['Message']['fighterName']);
+            $addMessageOK = $this->Message->addMessage($this->request->data, $fighterTo, $fighterFrom);
         }
+        $this->set('addMessageOk', $addMessageOK);
     }
 
 }
