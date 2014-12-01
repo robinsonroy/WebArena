@@ -1,14 +1,19 @@
-
-
 <?php
-
 $this->assign('title', 'Votre personnage');
-if(!($this->Session->read('Auth.User')))
+if (!($this->Session->read('Auth.User')))
 {
-    //Si l'utilisateur n'est pas enregistré
-    echo "Veuillez vous connecter <br>";
-    echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
+    ?>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 centered">
+            <?php
+            echo "Veuillez vous connecter <br>";
+            echo $this->Html->link('Inscription', array('controller' => 'Users', 'action' => 'add'));
+            ?>
+        </div>
+    </div>
+<?php
 }
+
 else if(empty($fighter))
 {
     echo "Vous n'avez pas de perssonnage<br> Creez en un !";

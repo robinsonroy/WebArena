@@ -1,3 +1,21 @@
+<?php
+
+if (!($this->Session->read('Auth.User')))
+{
+    ?>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 centered">
+            <?php
+            echo "Veuillez vous connecter <br>";
+            echo $this->Html->link('Inscription', array('controller' => 'Users', 'action' => 'add'));
+            ?>
+        </div>
+    </div>
+<?php
+}
+
+else{ ?>
+
 <div class="row">
     <div class="col-md-3">
         <?php
@@ -60,3 +78,5 @@
 
     </div>
 </div>
+
+<?php } ?>

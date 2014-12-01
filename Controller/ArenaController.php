@@ -267,23 +267,25 @@ class ArenaController extends AppController
     public
     function chat()
     {
-        $addMessageOK = 2;
+        if ($this->Session->read('Auth.User')) {
+            $addMessageOK = 2;
 
-        $fighterFrom = $this->Fighter->getCurrentFighter($this->Session->read("Auth.User.id"));
-        $privateMessages = $this->Message->getMessage($fighterFrom);
-        foreach ($privateMessages as &$messages) {
-            foreach ($messages as &$message) {
-                $message['fighter_name_from'] = $this->Fighter->getById($message['fighter_id_from'])['Fighter']['name'];
+            $fighterFrom = $this->Fighter->getCurrentFighter($this->Session->read("Auth.User.id"));
+            $privateMessages = $this->Message->getMessage($fighterFrom);
+            foreach ($privateMessages as &$messages) {
+                foreach ($messages as &$message) {
+                    $message['fighter_name_from'] = $this->Fighter->getById($message['fighter_id_from'])['Fighter']['name'];
+                }
             }
-        }
-        $this->set('privateMessages', $privateMessages);
+            $this->set('privateMessages', $privateMessages);
 
-        if ($this->request->is('post')) {
+            if ($this->request->is('post')) {
 
-            $fighterTo = $this->Fighter->findFighterWithName($this->request->data['Message']['fighterName']);
-            $addMessageOK = $this->Message->addMessage($this->request->data, $fighterTo, $fighterFrom);
+                $fighterTo = $this->Fighter->findFighterWithName($this->request->data['Message']['fighterName']);
+                $addMessageOK = $this->Message->addMessage($this->request->data, $fighterTo, $fighterFrom);
+            }
+            $this->set('addMessageOk', $addMessageOK);
         }
-        $this->set('addMessageOk', $addMessageOK);
     }
 
 }
