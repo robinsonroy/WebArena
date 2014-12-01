@@ -29,7 +29,6 @@ else{ ?>
         <?php
         }
         echo $this->Form->create('Message');?>
-        <form role="form">
             <div class="form-group">
                 <?php echo $this->Form->input('fighterName', $options = array(
                         'class' => 'form-control',
@@ -55,12 +54,8 @@ else{ ?>
                     )
                 )); ?>
             </div>
-            <?php echo $this->Form->end('Envoyer', $otions = array(
-                    'class' => 'btn',
-                    'class' => 'btn-default',
-                    'type' => 'submit')
-            );?>
-        </form>
+            <input type="submit" class="btn btn-default" value="Envoyer">
+           <?php echo $this->Form->end(); ?>
     </div>
     <div class="col-md-6">
         <h4 id="chatTitle">Messages privées :</h4>
@@ -75,8 +70,27 @@ else{ ?>
                 </div>
            <?php }
         } ?>
-
     </div>
+    <div class="col-md-3">
+        <?php if($addShoutOk == 1){ ?>
+            <div class="alert alert-success" role="alert">Message envoyé correctement.</div>
+        <?php } ?>
+        <h4 id="chatTitle">Crier :</h4>
+        <?php echo $this->Form->create('Shout'); ?>
+            <div class="form-group">
+                <?php echo $this->Form->input('Shout.name', $options = array(
+                'class' => 'form-control',
+                'row' => '3',
+                'type' => 'textarea',
+                'maxlength'=>'255',
+                'label' => array(
+                        'text' => 'Message :'
+                    ))); ?>
+            </div>
+            <input type="submit" class="btn btn-default" value="Envoyer">
+            <?php echo $this->Form->end(); ?>
+    </div>
+
 </div>
 
 <?php } ?>
