@@ -277,9 +277,12 @@ class Fighter extends AppModel {
             case "east":
             {
                 $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']+1, $datas['Fighter']['coordinate_y'], $id);
+   // Si on recupe pas l'id du def, donc qu'il n'existe pas
                 if($iddef==null)
                 {
-                    return"";
+                    $attaque_touche=false;
+                    $attaque_reussi=false;
+
                 }
             }break;
             case "west":
@@ -287,7 +290,10 @@ class Fighter extends AppModel {
                 $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']-1, $datas['Fighter']['coordinate_y'], $id);
                 if($iddef==null)
                 {
-                    return"";
+                    $attaque_touche=false;
+                    $attaque_reussi=false;
+
+
                 }
             }break;
             case "north":
@@ -296,7 +302,10 @@ class Fighter extends AppModel {
                 if($iddef==null)
                 {
 
-                    return"";
+                    $attaque_touche=false;
+                    $attaque_reussi=false;
+
+
                 }
 
             }break;
@@ -306,7 +315,10 @@ class Fighter extends AppModel {
                 pr($iddef);
                 if($iddef==null)
                 {
-                    return"";
+                    $attaque_touche=false;
+                    $attaque_reussi=false;
+
+
                 }
 
             }break;
@@ -450,6 +462,7 @@ class Fighter extends AppModel {
                 break;
         }
         $this->save();
+        $attaque_reussi=false;
 
 
         }else{
@@ -464,11 +477,11 @@ class Fighter extends AppModel {
 
         $this->PA_actuel--;
         $result = array(
-            'nom_attaquant' => $datas['Fighter']['name'],
+            'nom_attaquant' => $datas['Fighter']['name'], // Nom attaquant
             'direction' => $direction,
             'attaque_touche' => $attaque_touche,
-            'nom_attaque' => $datas2['Fighter']['name'],
-            'attaque_reussi' => true,
+            'nom_attaque' => $datas2['Fighter']['name'], // Nom def
+            'attaque_reussi' => $attaque_reussi,
 
         );
 
