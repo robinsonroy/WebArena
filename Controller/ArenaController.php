@@ -269,6 +269,7 @@ class ArenaController extends AppController
     {
         if ($this->Session->read('Auth.User')) {
             $addMessageOK = 2;
+            $addShoutOk = 2;
 
             $fighterFrom = $this->Fighter->getCurrentFighter($this->Session->read("Auth.User.id"));
             $privateMessages = $this->Message->getMessage($fighterFrom);
@@ -280,10 +281,18 @@ class ArenaController extends AppController
             $this->set('privateMessages', $privateMessages);
 
             if ($this->request->is('post')) {
+                if (isset($this->request->data['Message'])) {
+                    pr('hello');
 
-                $fighterTo = $this->Fighter->findFighterWithName($this->request->data['Message']['fighterName']);
-                $addMessageOK = $this->Message->addMessage($this->request->data, $fighterTo, $fighterFrom);
+                    $fighterTo = $this->Fighter->findFighterWithName($this->request->data['Message']['fighterName']);
+                    $addMessageOK = $this->Message->addMessage($this->request->data, $fighterTo, $fighterFrom);
+                }
+                if (isset($this->request->data['Shout'])) {
+                    $shoutMessage = $this->request->data['Shout']['name'];
+                    $addShoutOk = $this->Event->addMessage($fighterFrom['Fighter'], $shoutMessage);
+                }
             }
+            $this->set('addShoutOk', $addShoutOk);
             $this->set('addMessageOk', $addMessageOK);
         }
     }
