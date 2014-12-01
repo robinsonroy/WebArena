@@ -166,6 +166,8 @@ class Event extends AppModel {
             'fields' => array('Event.name', 'Event.date', 'Event.coordinate_x', 'Event.coordinate_y'),
             'order' => 'Event.date DESC'
         ));
+        
+        
         return $events;
     }
 
