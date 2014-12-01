@@ -49,10 +49,10 @@ class ArenaController extends AppController
             if (isset($this->request->data['ChangeLevel'])) {
 
                 $this->Fighter->changeLevel($level_possible, $user_fighter[0]['Fighter']['id'], $this->request->data['ChangeLevel']['skill']);
-                if ($user_fighter[0]['Fighter']['skill'] == 'Force') {
+                if ($this->request->data['ChangeLevel']['skill'] == 'Force') {
                     $user_fighter[0]['Fighter']['skill_strength'] = $user_fighter[0]['Fighter']['skill_strength'] + 1;
                 }
-                if ($user_fighter[0]['Fighter']['skill'] == 'Vue') {
+                if ($this->request->data['ChangeLevel']['skill'] == 'Vue') {
                     $user_fighter[0]['Fighter']['skill_sight'] = $user_fighter[0]['Fighter']['skill_sight'] + 3;
                 }
             }
@@ -113,6 +113,7 @@ class ArenaController extends AppController
             $this->set('action_possible', $action_possible);
         }
         if ($this->request->is('post')) {
+            $this-> Session-> setFlash ('Une action vient d\'avoir lieu.');
             if (isset($this->request->data['Fightermove'])) {
 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
                 if ($action_possible['action_possible']) {
@@ -158,8 +159,15 @@ class ArenaController extends AppController
             if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
                 if ($action_possible['action_possible']) {
                     $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
+                    if($resultat_attaque==null)
+                    {
+                        $this->Session->setFlash("Attaque rate");
+                    }
+                    if($resultat_attaque!=null){
                     $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                    }
                     $this->Fighter->removeDeadFighter($resultat_attaque);
+
                 } else {
                     $message[] = "Pas assez de points d'action";
                 }
@@ -171,8 +179,6 @@ class ArenaController extends AppController
         $this->set('map', $result_map['map']);
         $message = array();
         $this->set('persVisibles', $result_map['persVisibles']);
-
-
 
 
         $this->set('action_possible', $action_possible);
@@ -239,24 +245,19 @@ class ArenaController extends AppController
         }
     }
 
-    public
-    function checkHealth($id)
+
+   function checkHealth($id)
     {
         $fighters = $this->Fighter->findById($id);
 
 
         echo $fighters['Fighter']['current_health'];
         if ($fighters['Fighter']['current_health'] <= 0) {
-            //$this->query(" DELETE  FROM `fighters`  WHERE `id`=".$id.";");
-            // $fighters->delete();
-            // $this->Fighter->id=$id;
-            // $this->Fighter->delete();
+
 
             $this->Fighter->delete($fighters['Fighter']['id']);
-            echo "Il est mort";
             return false;
         } else {
-            echo "Ilestenvie";
             return true;
         }
         $Fighterss = $this->Fighter->find('all');
@@ -266,10 +267,8 @@ class ArenaController extends AppController
         foreach ($Fighterss as $fight)
             if ($fight['Fighter']['current_health'] <= 0) {
                 $this->Fighter->delete($fight['Fighter']['id']);
-                echo "Il est mort";
                 return false;
             } else {
-                echo "Il est en vie";
                 return true;
             }
     }

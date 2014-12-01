@@ -279,7 +279,6 @@ class Fighter extends AppModel {
                 $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']+1, $datas['Fighter']['coordinate_y'], $id);
                 if($iddef==null)
                 {
-                    echo "PAS BIEN VISER";
                     return"";
                 }
             }break;
@@ -288,7 +287,6 @@ class Fighter extends AppModel {
                 $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']-1, $datas['Fighter']['coordinate_y'], $id);
                 if($iddef==null)
                 {
-                    echo "PAS BIEN VISER";
                     return"";
                 }
             }break;
@@ -298,7 +296,6 @@ class Fighter extends AppModel {
                 if($iddef==null)
                 {
 
-                    echo "PAS BIEN VISER";
                     return"";
                 }
 
@@ -309,7 +306,6 @@ class Fighter extends AppModel {
                 pr($iddef);
                 if($iddef==null)
                 {
-                    echo "PAS BIEN VISER";
                     return"";
                 }
 
@@ -319,6 +315,11 @@ class Fighter extends AppModel {
         //On fixe l'iD def
         echo $iddef;
         $datas2 = $this->findById($iddef);
+        $a = rand(1 , 20 );
+
+        if ($a>(10 + $datas2['Fighter']['level'] - $datas['Fighter']['level']))
+        {
+
 
 
         switch ($direction) {
@@ -329,7 +330,6 @@ class Fighter extends AppModel {
                         $attaque_touche = true;
                     } else {
                         $attaque_touche = false;
-                        echo "raté";
                     }
                 }
                 break;
@@ -338,10 +338,8 @@ class Fighter extends AppModel {
                         $attaque_touche = true;
                         $this->set('xp', $datas['Fighter']['xp'] + 1);
 
-                        echo "Succes";
                     } else {
                         $attaque_touche = false;
-                        echo "raté";
                     }
                 }
 
@@ -351,10 +349,8 @@ class Fighter extends AppModel {
                         $attaque_touche = true;
                         $this->set('xp', $datas['Fighter']['xp'] + 1);
 
-                        echo "Succes";
                     } else {
                         $attaque_touche = false;
-                        echo "raté";
                     }
                 }
                 break;
@@ -363,10 +359,8 @@ class Fighter extends AppModel {
                         $attaque_touche = true;
                         $this->set('xp', $datas['Fighter']['xp'] + 1);
 
-                        echo "Succes";
                     } else {
                         $attaque_touche = false;
-                        echo "raté";
                     }
                 }
                 break;
@@ -381,26 +375,20 @@ class Fighter extends AppModel {
                     if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
 
                         $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
-                        echo "forceatt : ".$datas['Fighter']['skill_strenght']."";
                         $attaque_touche = true;
-                        echo "succes";
                     } else {
                         $attaque_touche = false;
-                        echo "raté";
                     }
                 }
                 break;
             case "west": {
                     if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
                         $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
-                        echo "forceatt : ".$datas['Fighter']['skill_strength']."";
 
                         $attaque_touche = true;
 
-                        echo "Succes";
                     } else {
                         $attaque_touche = false;
-                        echo "raté";
                     }
                 }
 
@@ -409,12 +397,9 @@ class Fighter extends AppModel {
                     if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
                         $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
                         $attaque_touche = true;
-                        echo "forceatt : ".$datas['Fighter']['skill_strength']."";
 
-                        echo "Succes";
                     } else {
                         $attaque_touche = false;
-                        echo "raté";
                     }
                 }
                 break;
@@ -422,19 +407,22 @@ class Fighter extends AppModel {
                     if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
                         $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
                         $attaque_touche = true;
-                        echo "forceatt : ".$datas['Fighter']['skill_strength']."";
 
-                        echo "Succes";
                     } else {
                         $attaque_touche = false;
-                        echo "Raté";
                     }
                 }
                 break;
+        }}else{
+               echo "Pas eu de chance sur le lancé";
+               $see=  10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'];
+               echo "".$a."<".$see."";
+               $attaque_touche=null;
+               $message="Vous avez raté votre coup du à un manque de chance, retentez !";
         }
         $this->save();
 
-        pr($this->PA_actuel);
+      //  pr($this->PA_actuel);
 
         $this->PA_actuel--;
         $result = array(
@@ -442,7 +430,8 @@ class Fighter extends AppModel {
             'direction' => $direction,
             'attaque_touche' => $attaque_touche,
             'nom_attaque' => $datas2['Fighter']['name'],
-            'attaque_reussi' => true
+            'attaque_reussi' => true,
+          
         );
 
         return $result;
