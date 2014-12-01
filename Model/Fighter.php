@@ -232,8 +232,9 @@ class Fighter extends AppModel {
                         $persVisibles[$j] = $pers;
                     }
                 }
-            }
-        }
+            }}
+
+
         return $resultat = array(
             'map' => $map,
             'persVisibles' => $persVisibles
@@ -309,7 +310,7 @@ class Fighter extends AppModel {
                 if($iddef==null)
                 {
                     echo "PAS BIEN VISER";
-                    return;
+                    return"";
                 }
 
             }break;

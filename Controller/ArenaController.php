@@ -104,10 +104,8 @@ class ArenaController extends AppController
 
         //création de la map
         $this->Surrounding->updateSurrounding($this->Fighter->find('all'));
-        $result_map = $this->Fighter->creerMap($user_fighter, $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
-        $this->set('map', $result_map['map']);
-        $message = array();
-        $this->set('persVisibles', $result_map['persVisibles']);
+
+        //Map
 
 //Test si le joueur a assez de PA pour jouer
         if (!empty($user_fighter)) {
@@ -129,15 +127,18 @@ class ArenaController extends AppController
                     if ($result_move['puanteur']) {
                         $message[] = "Puanteur! Un monstre est a proximite";
 
+
                     }
                     if ($result_move['trap']) {
                         $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
                         $this->set('message', "Vous avez marche sur un piege");
                         $this->render('mort');
+
                     }
                     if ($result_move['danger']) {
 
                         $message[] = "Danger! Un piege est a proximite";
+
 
                     }
                     if (!($result_move['ennemi'] || $result_move['bordure'] || $result_move['colonne'])) {
@@ -164,8 +165,15 @@ class ArenaController extends AppController
                 }
             }
         }
+        $result_map = $this->Fighter->creerMap($user_fighter, $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
+        $this->set('map', $result_map['map']);
+        $message = array();
+        $this->set('persVisibles', $result_map['persVisibles']);
 
 
+
+
+        $this->set('action_possible', $action_possible);
         $this->set('message', $message);
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Tools', $this->Tool->find('all'));
