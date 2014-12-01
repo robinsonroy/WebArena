@@ -169,4 +169,18 @@ class Event extends AppModel {
         return $events;
     }
 
+    function addMessage($fighter, $message){
+        $this->create();
+        $event = array(
+            'name' => $fighter['name'] .' : '. $message,
+            'date' => date("Y-m-d h:i:s.u"),
+            'coordinate_x' => $fighter['coordinate_x'],
+            'coordinate_y' => $fighter['coordinate_y']
+
+        );
+
+        $this->save($event);
+        return 1;
+    }
+
 }

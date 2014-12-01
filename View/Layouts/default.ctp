@@ -27,13 +27,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <?php echo $this->Html->css('bootstrap.min.css')?>
+    <?php     echo $this->Html->css('docs.min') ?>
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <?php echo $this->Html->css('bootstrap-theme.min.css') ?>
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
 
     <?php
@@ -80,7 +79,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
                 <?php if ($this->Session->read('Auth.User')) { ?>
-                    <li><?php echo $this->Html->link('Mon compte', array('controller' => 'Arena', 'action' => 'account')); ?></li>
                     <li><?php echo $this->Html->link('Deconnexion', array('controller' => 'Users', 'action' => 'logout')); ?></li>
                 <?php } else { ?>
                     <li><?php echo $this->Html->link('Inscription', array('controller' => 'Users', 'action' => 'add')); ?></li>
@@ -112,7 +110,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<?php echo $this->Html->script('bootstrap.min');?>
+<?php echo $this->Html->script('facebook.js'); ?>
+<?php echo $this->Html->script('jquery-2.1.1.min'); ?>
+<?php echo $this->Html->script('bootstrap.min'); ?>
 </body>
 </html>

@@ -124,3 +124,12 @@ body {
 caption{
     color: #ffffff;
 }
+
+.row{
+    margin-right: 0;
+    margin-left: 0;
+}
+
+#chatTitle{
+    margin-top: 0px;
+}
