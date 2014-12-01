@@ -78,8 +78,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
 
-                <?php if ($this->Session->read('Auth.User') ) { ?>
-                    <li><?php echo $this->Html->link('Mon compte', array('controller' => 'Arena', 'action' => 'account')); ?></li>
+                <?php if ($this->Session->read('Auth.User')) { ?>
                     <li><?php echo $this->Html->link('Deconnexion', array('controller' => 'Users', 'action' => 'logout')); ?></li>
                 <?php } else { ?>
                     <li><?php echo $this->Html->link('Inscription', array('controller' => 'Users', 'action' => 'add')); ?></li>
