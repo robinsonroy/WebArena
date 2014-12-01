@@ -141,9 +141,12 @@ class ArenaController extends AppController
             }
         }
 //MAP Apres traitement.
+        if (!($this->Session->read('Auth.User')))
+        {
         $result_map = $this->Fighter->creerMap($user_fighter[0]['Fighter']['id'], $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
         $this->set('map', $result_map['map']);
         $this->set('persVisibles', $result_map['persVisibles']);
+        }
         if (!empty($user_fighter)) {
             $this->set('action_possible', $action_possible);
         }
