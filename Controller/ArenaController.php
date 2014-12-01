@@ -18,7 +18,6 @@ class ArenaController extends AppController
 
     public $uses = array('Player', 'Fighter', 'Event', 'Tool', 'Surrounding', 'Message');
 
-
     /**
      * index method : first page
      *
@@ -84,7 +83,7 @@ class ArenaController extends AppController
 
     public function diary()
     {
-        $this->set('raw', $this->Event->getEvent());
+        $this->set('raw', $this->Event->getEvent($this->listePersVisibles));
     }
 
     public function login()
@@ -98,11 +97,9 @@ class ArenaController extends AppController
     {
         $this->set('charAll', $this->Fighter->find('all'));
         $decors = $this->Surrounding->find('all');
-
+        $message = array();
         $firrst = $this->Fighter->getCurrentFighter($this->Session->read("Auth.User.id"));
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
-
-        //création de la map
         $this->Surrounding->updateSurrounding($this->Fighter->find('all'));
 
         //Map
@@ -127,20 +124,15 @@ class ArenaController extends AppController
                     }
                     if ($result_move['puanteur']) {
                         $message[] = "Puanteur! Un monstre est a proximite";
-
-
                     }
                     if ($result_move['trap']) {
                         $this->Fighter->removeTrappedFighter($firrst['Fighter']['id']);
                         $this->set('message', "Vous avez marche sur un piege");
                         $this->render('mort');
-
                     }
                     if ($result_move['danger']) {
 
                         $message[] = "Danger! Un piege est a proximite";
-
-
                     }
                     if (!($result_move['ennemi'] || $result_move['bordure'] || $result_move['colonne'])) {
                         $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
@@ -175,20 +167,20 @@ class ArenaController extends AppController
         }
 
         //MAP Apres traitement.
-        $result_map = $this->Fighter->creerMap($user_fighter, $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
+        $result_map = $this->Fighter->creerMap($user_fighter[0]['Fighter']['id'], $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
         $this->set('map', $result_map['map']);
-        $message = array();
         $this->set('persVisibles', $result_map['persVisibles']);
+       
 
-
-        $this->set('action_possible', $action_possible);
+       if (!empty($user_fighter)) {
+            $this->set('action_possible', $action_possible);
+        }
         $this->set('message', $message);
         $this->set('Fighters', $this->Fighter->find('all'));
         $this->set('Tools', $this->Tool->find('all'));
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
     }
 
-    public
     function chooseAvatar()
     {    //A VIRER
         //Récupère la liste des fighters, avec les champs id et name
@@ -227,7 +219,6 @@ class ArenaController extends AppController
         }
     }
 
-    public
     function createchar()
     {
         //création

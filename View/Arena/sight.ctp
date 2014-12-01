@@ -39,8 +39,6 @@ $this->assign('title', 'WebArena : Game'); ?>
             <input type="submit" class="btn btn-danger" value="Go">
             <?php
            echo $this->Form->end();
-//            if (!$action_possible['action_possible'])
-//                echo "Pas assez de points d'actions!";
             ?>
 
             <!--PA-->
@@ -150,9 +148,16 @@ $this->assign('title', 'WebArena : Game'); ?>
             <input type="submit" class="btn btn-danger" value="Attack">
             <?php
             echo $this->Form->end(); // A REFAIRE NE FONCTIONNE PAS BIEN
-            //Si pas assez de PA
-//            if (!$action_possible['action_possible'])
-//                echo "Pas assez de points d'actions!";
+
+            ?>
+        </div>
+        <div class="panel panel-default" id="gauche">
+            <h3>Message</h3>
+            <?php
+            
+            foreach($message as $line)
+                
+            echo "<p>".$line."</p>";
             ?>
         </div>
     </div>
