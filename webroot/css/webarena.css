@@ -4,6 +4,10 @@
     text-align: center;
 }
 
+.centeredIMG{
+    margin: auto;
+}
+
 .levelup{
 
     margin-top : -150px;
@@ -132,4 +136,9 @@ caption{
 
 #chatTitle{
     margin-top: 0px;
+}
+
+#avatar{
+    width: 150px;
+    height: 150px;
 }

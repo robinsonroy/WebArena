@@ -19,6 +19,7 @@ class ArenaController extends AppController
     public $uses = array('Player', 'Fighter', 'Event', 'Tool', 'Surrounding', 'Message');
 
 
+
     /**
      * index method : first page
      *
@@ -193,6 +194,8 @@ class ArenaController extends AppController
     {    //A VIRER
         //Récupère la liste des fighters, avec les champs id et name
         $fighterList = $this->Fighter->find('all', array('fields' => array('id', 'name')));
+        $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
+
 
         //crée un tableau qui serviras à remplir les options du formulaire de choix de fighter
         $choicelist = array();

@@ -16,8 +16,16 @@ if (!($this->Session->read('Auth.User')))
 
 else if (empty($Fighter))
 {
-    echo "Vous n'avez pas de perssonnage<br> Creez en un!<br>";
-    echo $this->Html->link("Creation d'un personnage", array('controller' => 'Arena', 'action' => 'createchar'));
+    ?>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 centered">
+            <?php
+            echo "Vous n'avez pas de perssonnage<br>";
+            echo $this->Html->link("Creation d'un personnage", array('controller' => 'Arena', 'action' => 'createchar'));
+            ?>
+        </div>
+    </div>
+<?php
 }
 else {
 
@@ -64,7 +72,9 @@ $this->assign('title', 'WebArena : Game'); ?>
     </div>
 
     <!--C'EST LE BORDEL LA DEDANS-->
-    <div class="col-md-6" id="map">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
 
         <table id="char" class="table">
             <th> Entités</th>
@@ -137,8 +147,10 @@ $this->assign('title', 'WebArena : Game'); ?>
 
                 </table>
             </table>
-
+        </table>
+                </div>
     </div>
+        </div>
 
     <div class="col-md-3">
         <div class="panel panel-default" id="gauche">
