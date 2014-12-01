@@ -41,6 +41,7 @@ class UsersController extends AppController {
     }
  // LOGI?
     public function login() {
+
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
                 return $this->redirect($this->Auth->redirect(array('controller' => 'Arena', 'action' => 'sight')));

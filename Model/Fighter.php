@@ -479,35 +479,36 @@ class Fighter extends AppModel
                     break;
             }
 
+            $this->save();
+
+            $attaque_reussi=true;
+        }else
+        {
+            $attaque_reussi = false;
+            echo "Pas eu de chance sur le lancé :  ";
+            $see = 10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'];
+            echo " " . $a . "<" . $see . "";
+            $attaque_touche = null;
+        }
+
         $this->save();
-
-     $attaque_reussi=true;
-    }else
-    {
-    $attaque_reussi = false;
-    echo "Pas eu de chance sur le lancé :  ";
-    $see = 10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'];
-    echo " " . $a . "<" . $see . "";
-    $attaque_touche = null;
-    }
-
-$this->save();
 
 //  pr($this->PA_actuel);
 
-$this->PA_actuel--;
-$result = array(
-    'nom_attaquant' => $datas['Fighter']['name'], // Nom attaquant
-    'direction' => $direction,
-    'attaque_touche' => $attaque_touche,
-    'nom_attaque' => $datas2['Fighter']['name'], // Nom def
-    'attaque_reussi' => $attaque_reussi,
+        $this->PA_actuel--;
+        $result = array(
+            'nom_attaquant' => $datas['Fighter']['name'], // Nom attaquant
+            'direction' => $direction,
+            'attaque_touche' => $attaque_touche,
+            'nom_attaque' => $datas2['Fighter']['name'], // Nom def
+            'attaque_reussi' => $attaque_reussi,
 
 
-);
+        );
 
-return $result;
-}
+        return $result;
+    }
+
 
 function removeTrappedFighter($fighter_id)
 {

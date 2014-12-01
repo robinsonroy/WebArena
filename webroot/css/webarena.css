@@ -4,6 +4,10 @@
     text-align: center;
 }
 
+.centeredIMG{
+    margin: auto;
+}
+
 .levelup{
 
     margin-top : -150px;
@@ -32,6 +36,10 @@
 .backcontent
 {
     background-color: gray;
+}
+
+#sight{
+    margin-bottom: 20px; 
 }
 #h1top
 {
@@ -132,4 +140,9 @@ caption{
 
 #chatTitle{
     margin-top: 0px;
+}
+
+#avatar{
+    width: 150px;
+    height: 150px;
 }
