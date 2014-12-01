@@ -313,7 +313,6 @@ class Fighter extends AppModel {
         }
 
         //On fixe l'iD def
-        echo $iddef;
         $datas2 = $this->findById($iddef);
         $a = rand(1 , 20 );
 
@@ -414,11 +413,10 @@ class Fighter extends AppModel {
                 }
                 break;
         }}else{
-               echo "Pas eu de chance sur le lancé";
+               echo "Pas eu de chance sur le lancé :  ";
                $see=  10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'];
-               echo "".$a."<".$see."";
+               echo " ".$a."<".$see."";
                $attaque_touche=null;
-               $message="Vous avez raté votre coup du à un manque de chance, retentez !";
         }
         $this->save();
 
@@ -431,7 +429,7 @@ class Fighter extends AppModel {
             'attaque_touche' => $attaque_touche,
             'nom_attaque' => $datas2['Fighter']['name'],
             'attaque_reussi' => true,
-          
+
         );
 
         return $result;
@@ -482,30 +480,7 @@ class Fighter extends AppModel {
         $this->saveField('current_health', $datas['Fighter']['skill_health']);
     }
 
-    /*
-      public function create_map()
-      {
-      // $map=array(array());
-      //parcours de la liste des perssonnages
-      //test collision:il ne faut pas qu'il y ait déja qqh sur la case
-      // $map=array[$i][$j];
-      echo   "<table id='map' class='table table-striped'>";
 
-      for($i=0;$i<12;$i++)
-      {
-
-      echo "<tr>";
-      for ($y=0;$y<12;$y++)
-      {
-      //echo "<td id='$map[$i][$y]'> X </td>"
-      echo "<td id='$i $y'> X </td>";
-      }
-      echo "</tr>";
-      }
-      echo "</table>";
-
-      }
-     */
 
     function findFighterWithName($name){
         $fighter = $this->find('first', array(

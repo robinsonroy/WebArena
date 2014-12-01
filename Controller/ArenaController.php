@@ -251,7 +251,6 @@ class ArenaController extends AppController
         $fighters = $this->Fighter->findById($id);
 
 
-        echo $fighters['Fighter']['current_health'];
         if ($fighters['Fighter']['current_health'] <= 0) {
 
 
