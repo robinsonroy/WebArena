@@ -146,6 +146,7 @@ class ArenaController extends AppController
                         $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                         // ici on retire un PA apres l'action.
                         $action_possible['PA'] = $action_possible['PA'] - 1;
+
                     } else $message[] = "Deplacement impossible";
                 } else {
                     $message[] = "Pas assez de points d'action";
@@ -163,11 +164,13 @@ class ArenaController extends AppController
                     {
                         $this->Session->setFlash("Attaque rate");
                     }
-                    if($resultat_attaque!=null){
-                    $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                    if($resultat_attaque!=null)
+                    {
+
+                        $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     }
                     $this->Fighter->removeDeadFighter($resultat_attaque);
-
+                    $action_possible['PA'] = $action_possible['PA'] - 1;
                 } else {
                     $message[] = "Pas assez de points d'action";
                 }
@@ -248,10 +251,9 @@ class ArenaController extends AppController
 
    function checkHealth($id)
     {
-        $fighters = $this->Fighter->findById($id);
-
-
-        if ($fighters['Fighter']['current_health'] <= 0) {
+            $fighters = $this->Fighter->findById($id);
+        if ($fighters['Fighter']['current_health'] <= 0)
+        {
 
 
             $this->Fighter->delete($fighters['Fighter']['id']);
@@ -272,7 +274,7 @@ class ArenaController extends AppController
             }
     }
 
-    public
+
     function chat()
     {
         if ($this->Session->read('Auth.User')) {

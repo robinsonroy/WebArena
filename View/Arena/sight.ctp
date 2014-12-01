@@ -47,6 +47,8 @@ $this->assign('title', 'WebArena : Game'); ?>
             <h3>Points d'Actions</h3>
             <?php
 
+
+            pr($action_possible);
             // ICI LA MODIF DES PA.
             echo $action_possible['PA'];
             ?>
