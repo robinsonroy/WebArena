@@ -486,8 +486,8 @@ class Fighter extends AppModel {
         $this->saveField('current_health', $datas['Fighter']['skill_health']);
     }
 
-}
-    }
+
+    
 
     /*
       public function create_map()
