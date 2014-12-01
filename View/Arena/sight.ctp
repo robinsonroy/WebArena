@@ -139,10 +139,12 @@ if (!($this->Session->read('Auth.User'))) {
                 <h3>Message</h3>
                 <?php
 
-                foreach ($message as $line)
-
-                    echo "<p>" . $line . "</p>";
+                foreach ($message as $line) {
+                    if (isset($line)){
                 ?>
+                <div class="alert alert-danger" role="alert"><?php echo $line; ?></div>
+                  <?php  }
+                } ?>
             </div>
         </div>
     </div>
