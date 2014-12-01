@@ -1,5 +1,4 @@
 <?php
-
 if (!($this->Session->read('Auth.User'))) {
     ?>
     <div class="row">
@@ -23,13 +22,9 @@ if (!($this->Session->read('Auth.User'))) {
     </div>
 <?php
 } else {
-
-
     $this->assign('title', 'WebArena : Game'); ?>
-
     <!--1ER ROW -->
     <div class="row">
-
         <!--1-->
         <div class="col-md-3">
             <div class="panel panel-default" id="gauche">
@@ -37,17 +32,14 @@ if (!($this->Session->read('Auth.User'))) {
                 <?php
                 echo $this->Form->create('Fightermove');
                 echo $this->Form->input('direction', array('options' => array('north' => 'north', 'east' => 'east', 'south' => 'south', 'west' => 'west'), 'div' => 'form-group', 'class' => 'form-control', 'default' => 'east'));
-
                 ?>
                 <input type="submit" class="btn btn-danger" value="Go">
                 <?php
                 echo $this->Form->end();
                 ?>
-
                 <!--PA-->
                 <h3>Points d'Actions</h3>
                 <?php
-
                 // ICI LA MODIF DES PA.
                 echo $action_possible['PA'];
                 ?>
@@ -55,26 +47,22 @@ if (!($this->Session->read('Auth.User'))) {
             <div class="bs-callout bs-callout-info">
                 <!-- Info personnages -->
                 Nom : <?php echo $Fighter[0]['Fighter']['name']; ?> </br>
-                PV :    <?php echo $Fighter[0]['Fighter']['current_health']; ?> </br>
+                PV : <?php echo $Fighter[0]['Fighter']['current_health']; ?> </br>
                 CoordX : <?php echo $Fighter[0]['Fighter']['coordinate_x']; ?> </br>
                 CoordY : <?php echo $Fighter[0]['Fighter']['coordinate_y']; ?></br>
-                XP :     <?php echo $Fighter[0]['Fighter']['xp']; ?>
-
+                XP : <?php echo $Fighter[0]['Fighter']['xp']; ?>
                 <!-- VU PERSONNAGE PAS BEAU -->
             </div>
         </div>
-
         <!--C'EST LE BORDEL LA DEDANS-->
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-body">
-
                     <table id="char" class="table">
                         <th> Entités</th>
                         <th> CoordXY</th>
                         <th> Point de vie</th>
                         <tr>
-
                             <?php
                             // Fighters vide ?
                             foreach ($persVisibles as $fighter)
@@ -89,7 +77,7 @@ if (!($this->Session->read('Auth.User'))) {
                             <td> <?php
                                 echo $fighter['name'];?></td>
                             <td><?php
-                                ?>   x :<?php echo $fighter['coordinate_x']; ?>
+                                ?> x :<?php echo $fighter['coordinate_x']; ?>
                                 y: <?php echo $fighter['coordinate_y']; ?></td>
                             <td>
                                 pv :<?php echo $fighter['current_health']; ?>
@@ -100,16 +88,13 @@ if (!($this->Session->read('Auth.User'))) {
                             }
                             ?>
                         </tr>
-
                         <!--Jvais recup les donné de tout -->
                         <?php //pr($charAll); ?>
                         <table id="mapmap" class="table">
                             <?php
-
                             for ($y = 10; $y > 0; $y--) {
                                 echo "<tr>";
                                 for ($i = 1; $i <= 15; $i++) {
-
                                     echo "<td>";
                                     echo $this->Html->image($map[$i - 1][$y - 1], array('class' => "img-responsive", 'alt' => 'uploaded image', 'height' => 15, 'width' => 15));
                                     echo "</td>";
@@ -121,24 +106,20 @@ if (!($this->Session->read('Auth.User'))) {
                 </div>
             </div>
         </div>
-
         <div class="col-md-3">
             <div class="panel panel-default" id="gauche">
                 <h3>Attaque</h3>
                 <?php echo $this->Form->create('Fighterattack');
                 echo $this->Form->input('direction', array('options' => array('north' => 'north', 'east' => 'east', 'south' => 'south', 'west' => 'west'), 'div' => 'form-group', 'class' => 'form-control', 'default' => 'east'));
-
                 ?>
                 <input type="submit" class="btn btn-danger" value="Attack">
                 <?php
                 echo $this->Form->end(); // A REFAIRE NE FONCTIONNE PAS BIEN
-
                 ?>
             </div>
             <div class="panel panel-default" id="gauche">
                 <h3>Message</h3>
                 <?php
-
                 foreach ($message as $line) {
                     if (isset($line)){
                 ?>
@@ -148,7 +129,5 @@ if (!($this->Session->read('Auth.User'))) {
             </div>
         </div>
     </div>
-
 <?php
 } ?>
-
