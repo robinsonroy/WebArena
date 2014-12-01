@@ -112,7 +112,6 @@ class Event extends AppModel {
     function enregistrerDepart($fighter)
     {
         $this->create();
-        pr($fighter);
         $message = $fighter['Fighter']['name'] . " quitte l'arene";
         $data = array(
             'Event' => array(
@@ -166,6 +165,8 @@ class Event extends AppModel {
             'fields' => array('Event.name', 'Event.date', 'Event.coordinate_x', 'Event.coordinate_y'),
             'order' => 'Event.date DESC'
         ));
+        
+        
         return $events;
     }
 

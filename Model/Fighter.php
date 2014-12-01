@@ -80,7 +80,7 @@ class Fighter extends AppModel {
         if ($x > 15 || $y > 10 || $x < 1 || $y < 1) {
             $bordure = true;
         }
-        
+
         $ennemi = false;
         //Test case occupée
         foreach ($listeChar as $char) {
@@ -96,12 +96,12 @@ class Fighter extends AppModel {
         $puanteur = false;
         $danger = false;
         foreach ($decors as $decor) {
-            if (1 >= abs($decor['Surrounding']['coordinate_x'] - $x) && 1 >= abs($decor['Surrounding']['coordinate_y'] - $y)) {
+            if (1 >= (abs($decor['Surrounding']['coordinate_x'] - $x) + abs($decor['Surrounding']['coordinate_y'] - $y))) {
                 if ($decor['Surrounding']['coordinate_x'] == $x && $decor['Surrounding']['coordinate_y'] == $y) {
 
                     switch ($decor['Surrounding']['type']) {
                         case 'monster' : $monstre = true;
-                            
+
                             break;
                         case 'trap': $trap = true;
                             break;
@@ -109,35 +109,33 @@ class Fighter extends AppModel {
                             break;
                     }
                 } else {
-                    
+
                     switch ($decor['Surrounding']['type']) {
-                        case 'monster' : $puanteur =true;
-                            
+                        case 'monster' : $puanteur = true;
+
                             break;
-                        case 'trap': $danger =true;
-                            
+                        case 'trap': $danger = true;
+
                             break;
-                        case 'column': 
+                        case 'column':
                             break;
                     }
                 }
             }
         }
-        if(!($colonne || $ennemi || $bordure))
-        {
+        if (!($colonne || $ennemi || $bordure)) {
             $this->set('coordinate_x', $x);
             $this->set('coordinate_y', $y);
             //on sauvegarde le temps du dernier event
             $this->set('next_action_time', date("Y-m-d h:i:s.u"));
-    // sauver la modif
+            // sauver la modif
             $this->save();
-        
         }
         return array(
             'monstre' => $monstre,
             'puanteur' => $puanteur,
             'trap' => $trap,
-            'colonne' =>$colonne,
+            'colonne' => $colonne,
             'danger' => $danger,
             'ennemi' => $ennemi,
             'bordure' => $bordure
@@ -181,15 +179,19 @@ class Fighter extends AppModel {
         }
     }
 
-    function creermap($fighter, $columns) {
+    function creermap($fighter_id, $columns) {
         $charAll = $this->find('all');
+        $fighter = $this->find('all', array('conditions' => array('Fighter.id' => $fighter_id)));
         $persVisibles = array();
 
         for ($y = 10; $y > 0; $y--) {
             for ($i = 1; $i <= 15; $i++) {
                 $perssonage_place = false;
                 if (!empty($fighter)) {
-                    if ($i < $fighter[0]['Fighter']['coordinate_x'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $i > $fighter[0]['Fighter']['coordinate_x'] - $fighter[0]['Fighter']['skill_sight'] - 1 && $y < $fighter[0]['Fighter']['coordinate_y'] + $fighter[0]['Fighter']['skill_sight'] + 1 && $y > $fighter[0]['Fighter']['coordinate_y'] - $fighter[0]['Fighter']['skill_sight'] - 1
+                    if ($i < $fighter[0]['Fighter']['coordinate_x'] + $fighter[0]['Fighter']['skill_sight'] + 1 
+                            && $i > $fighter[0]['Fighter']['coordinate_x'] - $fighter[0]['Fighter']['skill_sight'] - 1 
+                            && $y < $fighter[0]['Fighter']['coordinate_y'] + $fighter[0]['Fighter']['skill_sight'] + 1 
+                            && $y > $fighter[0]['Fighter']['coordinate_y'] - $fighter[0]['Fighter']['skill_sight'] - 1
                     ) {
                         foreach ($charAll as $char) {
                             if ($char['Fighter']['coordinate_x'] == $i && $char['Fighter']['coordinate_y'] == $y) {
@@ -203,7 +205,7 @@ class Fighter extends AppModel {
                         }
                         if ($perssonage_place == false) {
                             foreach ($columns as $column) {
-                                
+
                                 if ($column['Surrounding']['coordinate_x'] == $i && $column['Surrounding']['coordinate_y'] == $y) {
                                     $map[$i - 1][$y - 1] = 'column.png';
                                     $perssonage_place = true;
@@ -225,16 +227,24 @@ class Fighter extends AppModel {
             $nbpers = count($persVisibles);
 //Tri du tableau des personnages visibles
             for ($i = 0; $i < $nbpers; $i++) {
-                for ($j = 0; $j < $nbpers; $j++) {
-                    if ($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'] > $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']) {
+                for ($j = 1; $j < $nbpers; $j++) {
+                    if (abs($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
+                            + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'] 
+                            )> abs(($persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
+                            + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']))) {
+                        echo $persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] ;
+                        echo $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'];
+                        echo $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'];
+                        echo $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'];
                         $pers = $persVisibles[$i];
                         $persVisibles[$i] = $persVisibles[$j];
                         $persVisibles[$j] = $pers;
+                        
                     }
                 }
-            }}
-
-
+            }
+            
+        }
         return $resultat = array(
             'map' => $map,
             'persVisibles' => $persVisibles
@@ -256,11 +266,9 @@ class Fighter extends AppModel {
             }
     }
 
-
 // A FAIRE AVEC LA FORCE ICI : GREG
 
-    function doAttack($id, $direction)
-    {
+    function doAttack($id, $direction) {
         // On recupe l'id du méchant.
         $datas = $this->findById($id);
 
@@ -271,156 +279,138 @@ class Fighter extends AppModel {
         $this->id = $id;
 
         // déclarer l'id du def ici
-        $iddef=null;
-        switch($direction)
-        {
-            case "east":
-            {
-                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']+1, $datas['Fighter']['coordinate_y'], $id);
-                if($iddef==null)
-                {
-                    return"";
-                }
-            }break;
-            case "west":
-            {
-                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x']-1, $datas['Fighter']['coordinate_y'], $id);
-                if($iddef==null)
-                {
-                    return"";
-                }
-            }break;
-            case "north":
-            {
-                $iddef=$this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']+1, $id);
-                if($iddef==null)
-                {
+        $iddef = null;
+        switch ($direction) {
+            case "east": {
+                    $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'] + 1, $datas['Fighter']['coordinate_y'], $id);
+                    if ($iddef == null) {
+                        return"";
+                    }
+                }break;
+            case "west": {
+                    $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'] - 1, $datas['Fighter']['coordinate_y'], $id);
+                    if ($iddef == null) {
+                        return"";
+                    }
+                }break;
+            case "north": {
+                    $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y'] + 1, $id);
+                    if ($iddef == null) {
 
-                    return"";
-                }
-
-            }break;
-            case "south":
-            {
-                $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y']-1, $id);
-                pr($iddef);
-                if($iddef==null)
-                {
-                    return"";
-                }
-
-            }break;
+                        return"";
+                    }
+                }break;
+            case "south": {
+                    $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'], $datas['Fighter']['coordinate_y'] - 1, $id);
+                    pr($iddef);
+                    if ($iddef == null) {
+                        return"";
+                    }
+                }break;
         }
 
         //On fixe l'iD def
         $datas2 = $this->findById($iddef);
-        $a = rand(1 , 20 );
+        $a = rand(1, 20);
 
-        if ($a>(10 + $datas2['Fighter']['level'] - $datas['Fighter']['level']))
-        {
-
+        if ($a > (10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'])) {
 
 
-        switch ($direction) {
-            case "east": {
+            switch ($direction) {
+                case "east": {
 
-                    if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
-                        $this->set('xp', $datas['Fighter']['xp'] + 1);
-                        $attaque_touche = true;
-                    } else {
-                        $attaque_touche = false;
+                        if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
+                            $this->set('xp', $datas['Fighter']['xp'] + 1);
+                            $attaque_touche = true;
+                        } else {
+                            $attaque_touche = false;
+                        }
                     }
-                }
-                break;
-            case "west": {
-                    if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
-                        $attaque_touche = true;
-                        $this->set('xp', $datas['Fighter']['xp'] + 1);
-
-                    } else {
-                        $attaque_touche = false;
+                    break;
+                case "west": {
+                        if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
+                            $attaque_touche = true;
+                            $this->set('xp', $datas['Fighter']['xp'] + 1);
+                        } else {
+                            $attaque_touche = false;
+                        }
                     }
-                }
 
-                break;
-            case "north" : {
-                    if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
-                        $attaque_touche = true;
-                        $this->set('xp', $datas['Fighter']['xp'] + 1);
-
-                    } else {
-                        $attaque_touche = false;
+                    break;
+                case "north" : {
+                        if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
+                            $attaque_touche = true;
+                            $this->set('xp', $datas['Fighter']['xp'] + 1);
+                        } else {
+                            $attaque_touche = false;
+                        }
                     }
-                }
-                break;
-            case "south" : {
-                    if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
-                        $attaque_touche = true;
-                        $this->set('xp', $datas['Fighter']['xp'] + 1);
-
-                    } else {
-                        $attaque_touche = false;
+                    break;
+                case "south" : {
+                        if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
+                            $attaque_touche = true;
+                            $this->set('xp', $datas['Fighter']['xp'] + 1);
+                        } else {
+                            $attaque_touche = false;
+                        }
                     }
-                }
-                break;
+                    break;
+            }
+            $this->save();
+
+
+            $this->id = $iddef;
+
+            switch ($direction2) {
+                case "east": {
+                        if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
+
+                            $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
+                            $attaque_touche = true;
+                        } else {
+                            $attaque_touche = false;
+                        }
+                    }
+                    break;
+                case "west": {
+                        if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
+                            $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
+
+                            $attaque_touche = true;
+                        } else {
+                            $attaque_touche = false;
+                        }
+                    }
+
+                    break;
+                case "north" : {
+                        if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
+                            $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
+                            $attaque_touche = true;
+                        } else {
+                            $attaque_touche = false;
+                        }
+                    }
+                    break;
+                case "south" : {
+                        if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
+                            $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
+                            $attaque_touche = true;
+                        } else {
+                            $attaque_touche = false;
+                        }
+                    }
+                    break;
+            }
+        } else {
+            echo "Pas eu de chance sur le lancé :  ";
+            $see = 10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'];
+            echo " " . $a . "<" . $see . "";
+            $attaque_touche = null;
         }
         $this->save();
 
-
-        $this->id = $iddef;
-
-        switch ($direction2) {
-            case "east": {
-                    if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
-
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
-                        $attaque_touche = true;
-                    } else {
-                        $attaque_touche = false;
-                    }
-                }
-                break;
-            case "west": {
-                    if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
-
-                        $attaque_touche = true;
-
-                    } else {
-                        $attaque_touche = false;
-                    }
-                }
-
-                break;
-            case "north" : {
-                    if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
-                        $attaque_touche = true;
-
-                    } else {
-                        $attaque_touche = false;
-                    }
-                }
-                break;
-            case "south" : {
-                    if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
-                        $attaque_touche = true;
-
-                    } else {
-                        $attaque_touche = false;
-                    }
-                }
-                break;
-        }}else{
-               echo "Pas eu de chance sur le lancé :  ";
-               $see=  10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'];
-               echo " ".$a."<".$see."";
-               $attaque_touche=null;
-        }
-        $this->save();
-
-      //  pr($this->PA_actuel);
+        //  pr($this->PA_actuel);
 
         $this->PA_actuel--;
         $result = array(
@@ -429,14 +419,16 @@ class Fighter extends AppModel {
             'attaque_touche' => $attaque_touche,
             'nom_attaque' => $datas2['Fighter']['name'],
             'attaque_reussi' => true,
-
         );
 
         return $result;
     }
 
     function removeTrappedFighter($fighter_id) {
+        app::uses('Event', 'Model');
         $this->id = $fighter_id;
+        $event = new Event();
+        $event->enregistrerDepart($this->findById($fighter_id));
         $this->delete($fighter_id, false);
     }
 
@@ -480,26 +472,26 @@ class Fighter extends AppModel {
         $this->saveField('current_health', $datas['Fighter']['skill_health']);
     }
 
-
-
-    function findFighterWithName($name){
+    function findFighterWithName($name) {
         $fighter = $this->find('first', array(
-            'conditions' => array ('Fighter.name' => $name)
+            'conditions' => array('Fighter.name' => $name)
         ));
         return $fighter;
     }
 
-    function getCurrentFighter($playerId)
-    {
+    function getCurrentFighter($playerId) {
         return $this->find('first', array('conditions' => array('Fighter.player_id' => $playerId)));
     }
 
-    function getById($id){
+    function getById($id) {
         $fighter = $this->find('first', array(
             'conditions' => array('Fighter.id' => $id)
         ));
-        if(empty($fighter)){return null;}
+        if (empty($fighter)) {
+            return null;
+        }
 
         return $fighter;
     }
+
 }
