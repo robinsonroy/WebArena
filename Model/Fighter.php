@@ -227,15 +227,18 @@ class Fighter extends AppModel {
             $nbpers = count($persVisibles);
 //Tri du tableau des personnages visibles
             for ($i = 0; $i < $nbpers; $i++) {
-                for ($j = 0; $j < $nbpers-1; $j++) {
-                    if (($persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
-                            + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'] 
-                            )> ($persVisibles[$j+1]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
-                            + $persVisibles[$j+1]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'])) {
-                        
-                        $pers = $persVisibles[$j];
-                        $persVisibles[$j] = $persVisibles[$j+1];
-                        $persVisibles[$j+1] = $pers;
+                for ($j = 1; $j < $nbpers; $j++) {
+                    if (abs($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
+                            + $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'] 
+                            )> abs(($persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] 
+                            + $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']))) {
+                        echo $persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'] ;
+                        echo $persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'];
+                        echo $persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x'];
+                        echo $persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'];
+                        $pers = $persVisibles[$i];
+                        $persVisibles[$i] = $persVisibles[$j];
+                        $persVisibles[$j] = $pers;
                         
                     }
                 }
@@ -422,7 +425,10 @@ class Fighter extends AppModel {
     }
 
     function removeTrappedFighter($fighter_id) {
+        app::uses('Event', 'Model');
         $this->id = $fighter_id;
+        $event = new Event();
+        $event->enregistrerDepart($this->findById($fighter_id));
         $this->delete($fighter_id, false);
     }
 

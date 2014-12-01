@@ -25,7 +25,7 @@ else {
 $this->assign('title', 'WebArena : Game'); ?>
 
 <!--1ER ROW -->
-<div class="row">
+<div class="row" id="sight">
 
     <!--1-->
     <div class="col-md-3">
@@ -109,33 +109,6 @@ $this->assign('title', 'WebArena : Game'); ?>
                 }
                 ?>
             </table>
-
-
-            <table id="char" class="table">
-                <th>Type</th>
-                <th>CoordXY</th>
-                <th>Bonus</th>
-
-                <table id="char" class="table">
-                    <tr>
-                        <?php foreach ($Tools as $tool)
-                        {
-                        ?>
-                        <td> <?php
-                            echo $tool['Tool']['type'];?></td>
-                        <td><?php
-                            ?>  x :<?php echo $tool['Tool']['coordinate_x']; ?>
-                            y: <?php echo $tool['Tool']['coordinate_y']; ?></td>
-                        <td>
-                            Bonus :<?php echo $tool['Tool']['bonus']; ?>
-                        </td>
-                    <tr><?php
-                        } ?>
-                    </tr>
-
-                </table>
-            </table>
-
     </div>
 
     <div class="col-md-3">
@@ -162,9 +135,7 @@ $this->assign('title', 'WebArena : Game'); ?>
         </div>
     </div>
 </div>
-<div class = "row">
-    
-</div>
+
 <?php  
 } ?>
 

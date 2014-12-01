@@ -158,7 +158,7 @@ class ArenaController extends AppController
                     if($resultat_attaque!=null){
                     $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     }
-                    $this->Fighter->removeDeadFighter($resultat_attaque);
+                    $this->Fighter->removeDeadFighter();
 
                 } else {
                     $message[] = "Pas assez de points d'action";
