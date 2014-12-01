@@ -534,6 +534,8 @@ class Fighter extends AppModel {
         $fighter = $this->find('first', array(
             'conditions' => array('Fighter.id' => $id)
         ));
+        if(empty($fighter)){return null;}
+
         return $fighter;
     }
 }

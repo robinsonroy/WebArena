@@ -27,10 +27,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </title>
 
     <!-- Latest compiled and minified CSS -->
-    <?php echo $this->Html->css('bootstrap.min.css') ?>
+    <?php echo $this->Html->css('bootstrap.min.css')?>
+    <?php     echo $this->Html->css('docs.min') ?>
 
     <!-- Optional theme -->
     <?php echo $this->Html->css('bootstrap-theme.min.css') ?>
+
 
 
     <?php
@@ -76,7 +78,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 
 
-                <?php if ($this->Session->read('Auth.User')) { ?>
+                <?php if ($this->Session->read('Auth.User') ) { ?>
                     <li><?php echo $this->Html->link('Mon compte', array('controller' => 'Arena', 'action' => 'account')); ?></li>
                     <li><?php echo $this->Html->link('Deconnexion', array('controller' => 'Users', 'action' => 'logout')); ?></li>
                 <?php } else { ?>
@@ -109,7 +111,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<?php echo $this->Html->script('bootstrap.min');?>
+<?php echo $this->Html->script('facebook.js'); ?>
+<?php echo $this->Html->script('jquery-2.1.1.min'); ?>
+<?php echo $this->Html->script('bootstrap.min'); ?>
 </body>
 </html>

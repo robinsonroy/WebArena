@@ -76,7 +76,7 @@ else
        
         if (isset($imageName)) 
         {
-            echo $this->Html->image('uploads/' . $imageName, array('class' => "img-responsive", 'alt' => 'uploaded image'));
+            echo $this->Html->image('uploads/' . $imageName, array('class' => "img-responsive img-circle", 'alt' => 'uploaded image'));
         }
         ?> 
         

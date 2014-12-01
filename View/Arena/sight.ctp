@@ -51,15 +51,12 @@ $this->assign('title', 'WebArena : Game'); ?>
             echo $action_possible['PA'];
             ?>
         </div>
-            <div>
+            <div class="bs-callout bs-callout-info">
             <!-- Info personnages -->
-<?php
-
-        ?>   Nom : <?php     echo $Fighter[0]['Fighter']['name'];
-    ?> </br>
-            PV :    <?php echo $Fighter[0]['Fighter']['current_health'];?> </br>
-            CoordX : <?php echo $Fighter[0]['Fighter']['coordinate_x'];?> </br>
-            CoordY : <?php echo $Fighter[0]['Fighter']['coordinate_y'];?></br>
+                Nom : <?php     echo $Fighter[0]['Fighter']['name']; ?> </br>
+            PV :    <?php echo $Fighter[0]['Fighter']['current_health']; ?> </br>
+            CoordX : <?php echo $Fighter[0]['Fighter']['coordinate_x']; ?> </br>
+            CoordY : <?php echo $Fighter[0]['Fighter']['coordinate_y']; ?></br>
             XP :     <?php echo $Fighter[0]['Fighter']['xp']; ?>
 
             <!-- VU PERSONNAGE PAS BEAU -->
@@ -156,13 +153,6 @@ $this->assign('title', 'WebArena : Game'); ?>
             //Si pas assez de PA
 //            if (!$action_possible['action_possible'])
 //                echo "Pas assez de points d'actions!";
-            ?>
-            <h3>Message</h3>
-            <?php
-            
-            foreach($message as $line)
-                
-            echo "<p>".$line."</p>";
             ?>
         </div>
     </div>

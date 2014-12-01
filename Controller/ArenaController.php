@@ -278,32 +278,42 @@ class ArenaController extends AppController
     function chat()
     {
         if ($this->Session->read('Auth.User')) {
-            $addMessageOK = 2;
-            $addShoutOk = 2;
+            $currentFighter = $this->Fighter->getCurrentFighter($this->Session->read("Auth.User.id"));
+            $this->set('Fighter', $currentFighter);
+            if (!empty($currentFighter)) {
 
-            $fighterFrom = $this->Fighter->getCurrentFighter($this->Session->read("Auth.User.id"));
-            $privateMessages = $this->Message->getMessage($fighterFrom);
-            foreach ($privateMessages as &$messages) {
-                foreach ($messages as &$message) {
-                    $message['fighter_name_from'] = $this->Fighter->getById($message['fighter_id_from'])['Fighter']['name'];
+                $addMessageOK = 2;
+                $addShoutOk = 2;
+
+                $privateMessages = $this->Message->getMessage($currentFighter);
+
+                foreach ($privateMessages as &$messages) {
+                    foreach ($messages as &$message) {
+                        $fighterFrom = $this->Fighter->getById($message['fighter_id_from']);
+                        if($fighterFrom != null){
+                            $message['fighter_name_from'] = $fighterFrom['Fighter']['name'];
+                        }
+                        else{
+                            $message = null;
+                        }
+                    }
                 }
+                $this->set('privateMessages', $privateMessages);
+
+                if ($this->request->is('post')) {
+                    if (isset($this->request->data['Message'])) {
+                        $fighterTo = $this->Fighter->findFighterWithName($this->request->data['Message']['fighterName']);
+                        $addMessageOK = $this->Message->addMessage($this->request->data, $fighterTo, $currentFighter);
+                    }
+                    if (isset($this->request->data['Shout'])) {
+
+                        $shoutMessage = $this->request->data['Shout']['name'];
+                        $addShoutOk = $this->Event->addMessage($currentFighter['Fighter'], $shoutMessage);
+                    }
+                }
+                $this->set('addShoutOk', $addShoutOk);
+                $this->set('addMessageOk', $addMessageOK);
             }
-            $this->set('privateMessages', $privateMessages);
-
-            if ($this->request->is('post')) {
-                if (isset($this->request->data['Message'])) {
-                    pr('hello');
-
-                    $fighterTo = $this->Fighter->findFighterWithName($this->request->data['Message']['fighterName']);
-                    $addMessageOK = $this->Message->addMessage($this->request->data, $fighterTo, $fighterFrom);
-                }
-                if (isset($this->request->data['Shout'])) {
-                    $shoutMessage = $this->request->data['Shout']['name'];
-                    $addShoutOk = $this->Event->addMessage($fighterFrom['Fighter'], $shoutMessage);
-                }
-            }
-            $this->set('addShoutOk', $addShoutOk);
-            $this->set('addMessageOk', $addMessageOK);
         }
     }
 
