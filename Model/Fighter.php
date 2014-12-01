@@ -316,7 +316,7 @@ class Fighter extends AppModel {
             }break;
         }
 
-        // On récupere l'id def
+        //On fixe l'iD def
         echo $iddef;
         $datas2 = $this->findById($iddef);
 
@@ -379,7 +379,9 @@ class Fighter extends AppModel {
         switch ($direction2) {
             case "east": {
                     if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+
+                        $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
+                        echo "forceatt : ".$datas['Fighter']['skill_strenght']."";
                         $attaque_touche = true;
                         echo "succes";
                     } else {
@@ -390,7 +392,9 @@ class Fighter extends AppModel {
                 break;
             case "west": {
                     if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                        $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
+                        echo "forceatt : ".$datas['Fighter']['skill_strength']."";
+
                         $attaque_touche = true;
 
                         echo "Succes";
@@ -403,8 +407,9 @@ class Fighter extends AppModel {
                 break;
             case "north" : {
                     if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                        $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
                         $attaque_touche = true;
+                        echo "forceatt : ".$datas['Fighter']['skill_strength']."";
 
                         echo "Succes";
                     } else {
@@ -415,8 +420,10 @@ class Fighter extends AppModel {
                 break;
             case "south" : {
                     if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
-                        $this->set('current_health', $datas2['Fighter']['current_health'] - 1);
+                        $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
                         $attaque_touche = true;
+                        echo "forceatt : ".$datas['Fighter']['skill_strength']."";
+
                         echo "Succes";
                     } else {
                         $attaque_touche = false;

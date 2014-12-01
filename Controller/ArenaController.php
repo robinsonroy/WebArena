@@ -165,6 +165,8 @@ class ArenaController extends AppController
                 }
             }
         }
+
+        //MAP Apres traitement.
         $result_map = $this->Fighter->creerMap($user_fighter, $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
         $this->set('map', $result_map['map']);
         $message = array();
