@@ -200,7 +200,7 @@ class Fighter extends AppModel {
                         foreach ($charAll as $char) {
                             if ($char['Fighter']['coordinate_x'] == $i && $char['Fighter']['coordinate_y'] == $y) {
                                 if (!($map[$i - 1][$y - 1] = $this->chercherAvatar($char['Fighter']['id']))) {
-                                    $map[$i - 1][$y - 1] = 'char.png';
+                                    $map[$i - 1][$y - 1] = 'ninja2.png';
                                 } else
                                     $map[$i - 1][$y - 1] = 'uploads/' . $map[$i - 1][$y - 1];
                                 $persVisibles[] = $char['Fighter'];

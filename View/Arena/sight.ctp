@@ -99,7 +99,7 @@ if (!($this->Session->read('Auth.User'))) {
                                 echo "<tr>";
                                 for ($i = 1; $i <= 15; $i++) {
                                     echo "<td>";
-                                    echo $this->Html->image($map[$i - 1][$y - 1], array('class' => "img-responsive", 'alt' => 'uploaded image', 'height' => 15, 'width' => 15));
+                                    echo $this->Html->image($map[$i - 1][$y - 1], array('class' => "img-responsive", 'alt' => 'uploaded image', 'height' => 15, 'width' => 20));
                                     echo "</td>";
                                 }
                                 echo "</tr>";
