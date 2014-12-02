@@ -1,0 +1,38 @@
+#AccueilBg{
+	background: url(../img/bg.jpg) no-repeat center center fixed;
+    margin-top: -20px;
+    -moz-background-size: cover;
+	-webkit-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	overflow-x: hidden;
+	overflow-y: hidden;
+
+
+}
+
+@font-face {
+    font-family: chinese;
+    src: url(../files/CHINESETAKEAWAY.ttf);
+}
+
+#AccueilTitle{
+    font-family: chinese;
+    font-size:60px;
+    font-weight:bold;
+    
+}
+
+.centeredimg
+{
+    margin: 0 auto;
+ 
+}
+
+
+.legendeslide
+{
+	font-family: chinese;
+	font-size:30px;
+	color: #FF0000;
+}

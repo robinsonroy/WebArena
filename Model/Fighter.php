@@ -550,4 +550,13 @@ class Fighter extends AppModel {
         return $fighter;
     }
 
+    function getSkillSight($fighter){
+        return $fighter['skill_sight'];
+    }
+    function getCoordinate_x($fighter){
+        return $fighter['coordinate_x'];
+    }
+    function getCoordinate_y($fighter){
+        return $fighter['coordinate_y'];
+    }
 }

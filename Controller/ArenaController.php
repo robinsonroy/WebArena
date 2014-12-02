@@ -70,7 +70,14 @@ class ArenaController extends AppController
     
     public function diary()
     {
-        $this->set('raw', $this->Event->getEvent());
+        $playersInfo = $this->Fighter->getCurrentFighter($this->Session->read("Auth.User.id"));
+        if(!empty($playersInfo)){
+            $FighterSkillSight = $this->Fighter->getSkillSight($playersInfo['Fighter']);
+            $FighterCoordinate_x = $this->Fighter->getCoordinate_x($playersInfo['Fighter']);
+            $FighterCoordinate_y = $this->Fighter->getCoordinate_y($playersInfo['Fighter']);
+            $this->set('raw', $this->Event->getEvent($FighterSkillSight, $FighterCoordinate_x, $FighterCoordinate_y));
+        }
+
     }
     
     public function login()
@@ -147,9 +154,11 @@ class ArenaController extends AppController
 //MAP Apres traitement.
         if (($this->Session->read('Auth.User')))
         {
-        $result_map = $this->Fighter->creerMap($user_fighter[0]['Fighter']['id'], $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
-        $this->set('map', $result_map['map']);
-        $this->set('persVisibles', $result_map['persVisibles']);
+            if(!empty($user_fighter)) {
+                $result_map = $this->Fighter->creerMap($user_fighter[0]['Fighter']['id'], $this->Surrounding->find('all', array('conditions' => array('Surrounding.type' => 'column'))));
+                $this->set('map', $result_map['map']);
+                $this->set('persVisibles', $result_map['persVisibles']);
+            }
         }
         if (!empty($user_fighter)) {
             $this->set('action_possible', $action_possible);

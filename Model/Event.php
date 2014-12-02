@@ -47,6 +47,7 @@ class Event extends AppModel {
                 'coordinate_y' => $y)
         );
 
+
         $this->save($data);
     }
 
@@ -160,9 +161,16 @@ class Event extends AppModel {
         );
     }
 
-    function getEvent() {
+    function getEvent($skillSight, $coordinate_x, $coordinate_y) {
+
         $events = $this->find('all', array(
-            'conditions' => array('Event.date >' => date('Y-m-d H:i:s', strtotime('-1 days'))),
+        'conditions' => array(
+                'Event.date >' => date('Y-m-d H:i:s', strtotime('-1 days')),
+                'Event.coordinate_x <=' => ($coordinate_x+$skillSight),
+                'Event.coordinate_x >=' => ($coordinate_x-$skillSight),
+                'Event.coordinate_y <=' => ($coordinate_y+$skillSight),
+                'Event.coordinate_y >=' => ($coordinate_y-$skillSight)
+            ),
             'fields' => array('Event.name', 'Event.date', 'Event.coordinate_x', 'Event.coordinate_y'),
             'order' => 'Event.date DESC'
         ));
