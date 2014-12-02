@@ -39,15 +39,16 @@ if (!($this->Session->read('Auth.User'))) {
             
             <div class="panel-body">
                 
-<?php
+            <?php
                 echo $this->Form->create('avatar', array('type' => 'file'));
-                echo $this->Form->input('image_avatar', array('type' => 'file', array(
-                    'label' => false
+                echo $this->Form->input('image_avatar', array('type' => 'file', 'name' => 'avatar',array(
+                    'label' => false,
                 )));?>
                 <div class="form-group">
                     <button type="submit" class="btn btn-default centeredIMG">Submit</button>
                 </div>
                 <?php echo $this->Form->end(); ?>
+       
                 <?php
                 if (isset($imageName)) {
                     echo $this->Html->image('uploads/' . $imageName, array(

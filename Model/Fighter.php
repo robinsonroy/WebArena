@@ -154,7 +154,7 @@ class Fighter extends AppModel {
         $niveau_actuel = $fighter['level'];
 
         //tous les 4pts d'xp, le fighter monte de niveau
-        
+
         $niveau_possible = $fighter['xp'] / 4;
 
         //si le player a plus d'expérience que de niveau
@@ -232,8 +232,7 @@ class Fighter extends AppModel {
             //Tri du tableau des personnages visibles
             for ($i = 0; $i < $nbpers; $i++) {
                 for ($j = 1; $j < $nbpers; $j++) {
-                    if (abs($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x']) + abs($persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'])
-                            > abs($persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x']) + abs($persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'])) {
+                    if (abs($persVisibles[$i]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x']) + abs($persVisibles[$i]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y']) > abs($persVisibles[$j]['coordinate_x'] - $fighter[0]['Fighter']['coordinate_x']) + abs($persVisibles[$j]['coordinate_y'] - $fighter[0]['Fighter']['coordinate_y'])) {
                         $pers = $persVisibles[$i];
                         $persVisibles[$i] = $persVisibles[$j];
                         $persVisibles[$j] = $pers;
@@ -279,7 +278,7 @@ class Fighter extends AppModel {
             case "east": {
                     $iddef = $this->getIdDef($datas['Fighter']['coordinate_x'] + 1, $datas['Fighter']['coordinate_y'], $id);
                     $x++;
-                    
+
                     // Si on recupe pas l'id du def, donc qu'il n'existe pas
                     if ($iddef == null) {
                         $attaque_touche = false;
@@ -323,9 +322,9 @@ class Fighter extends AppModel {
         $a = rand(1, 20);
         $this->id = $iddef;
         $nom_attaque = "";
-     
+
         if ($datas2) {
-            $nom_attaque =  $datas2['Fighter']['name'];
+            $nom_attaque = $datas2['Fighter']['name'];
             if ($a > (10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'])) {
 
                 switch ($direction2) {
@@ -381,10 +380,9 @@ class Fighter extends AppModel {
                             if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
 
                                 if ($datas2['Fighter']['current_health'] < $datas['Fighter']['skill_strength']) {
-                                    echo "Test attaque qui a tué le perso";
+
                                     $xp = $datas2['Fighter']['level'];
                                     $this->set('xp', $datas['Fighter']['xp'] + $xp);
-                                    echo $datas['Fighter']['xp'] + $xp;
                                 } else {
                                     $this->set('xp', $datas['Fighter']['xp'] + 1);
                                 }
@@ -398,10 +396,9 @@ class Fighter extends AppModel {
                             if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
                                 $attaque_reussi = true;
                                 if ($datas2['Fighter']['current_health'] < $datas['Fighter']['skill_strength']) {
-                                    echo "Test attaque qui a tué le perso";
+
                                     $xp = $datas2['Fighter']['level'];
                                     $this->set('xp', $datas['Fighter']['xp'] + $xp);
-                                    echo $datas['Fighter']['xp'] + $xp;
                                 } else {
                                     $this->set('xp', $datas['Fighter']['xp'] + 1);
                                 }
@@ -416,10 +413,9 @@ class Fighter extends AppModel {
                             if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
                                 $attaque_reussi = true;
                                 if ($datas2['Fighter']['current_health'] < $datas['Fighter']['skill_strength']) {
-                                    echo "Test attaque qui a tué le perso";
+
                                     $xp = $datas2['Fighter']['level'];
                                     $this->set('xp', $datas['Fighter']['xp'] + $xp);
-                                    echo $datas['Fighter']['xp'] + $xp;
                                 } else {
                                     $this->set('xp', $datas['Fighter']['xp'] + 1);
                                 }
@@ -431,10 +427,9 @@ class Fighter extends AppModel {
                             if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
                                 $attaque_reussi = true;
                                 if ($datas2['Fighter']['current_health'] < $datas['Fighter']['skill_strength']) {
-                                    echo "Test attaque qui a tué le perso";
+
                                     $xp = $datas2['Fighter']['level'];
                                     $this->set('xp', $datas['Fighter']['xp'] + $xp);
-                                    echo $datas['Fighter']['xp'] + $xp;
                                 } else {
                                     $this->set('xp', $datas['Fighter']['xp'] + 1);
                                 }
@@ -450,23 +445,21 @@ class Fighter extends AppModel {
                 $attaque_reussi = true;
             } else {
                 $attaque_reussi = false;
-               
+
                 $see = 10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'];
-                
+
                 $attaque_touche = null;
             }
         } else {
             $decor = new Surrounding();
-            $monster = $decor->find('first',array('conditions' => array('Surrounding.type' => 'monster')));
-            if($monster['Surrounding']['coordinate_x'] == $x && $monster['Surrounding']['coordinate_y'] == $y)
-            {
+            $monster = $decor->find('first', array('conditions' => array('Surrounding.type' => 'monster')));
+            if ($monster['Surrounding']['coordinate_x'] == $x && $monster['Surrounding']['coordinate_y'] == $y) {
                 $attaque_reussi = true;
                 $attaque_touche = true;
                 $nom_attaque = "le monstre";
                 $decor->removeMonster();
-            }
-            else{
-            $attaque_reussi = false;
+            } else {
+                $attaque_reussi = false;
                 $attaque_touche = false;
                 $nom_attaque = "";
             }
