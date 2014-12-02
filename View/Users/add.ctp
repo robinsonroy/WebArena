@@ -4,7 +4,7 @@
         <?php echo $this->Form->create('User', array('class' => 'form-horizontal')); ?>
 
         <div class="col-sm-offset-2 col-sm-10">
-            <legend><?php echo __('Nouvel utilisateur'); ?></legend>
+            <h2 id="titre_page"><?php echo __('Nouvel utilisateur'); ?></h2>
         </div>
 
         <div class="form-group">

@@ -76,6 +76,11 @@
     margin-right:150px;
 }
 
+#titre_page{
+    border-bottom: #ffffff solid 1px;
+    margin-bottom: 10px;
+}
+
 .navbar.navbar-default
 {
     color :black;

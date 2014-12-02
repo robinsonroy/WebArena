@@ -48,11 +48,11 @@ if (!($this->Session->read('Auth.User'))) {
             </div>
             <div class="bs-callout bs-callout-info">
                 <!-- Info personnages -->
-                Nom : <?php echo $Fighter[0]['Fighter']['name']; ?> </br>
-                PV : <?php echo $Fighter[0]['Fighter']['current_health']; ?> </br>
-                CoordX : <?php echo $Fighter[0]['Fighter']['coordinate_x']; ?> </br>
-                CoordY : <?php echo $Fighter[0]['Fighter']['coordinate_y']; ?></br>
-                XP : <?php echo $Fighter[0]['Fighter']['xp']; ?>
+                <p>Nom : <?php echo $Fighter[0]['Fighter']['name']; ?> </p>
+                <p>PV : <?php echo $Fighter[0]['Fighter']['current_health']; ?> </p>
+                <p>CoordX : <?php echo $Fighter[0]['Fighter']['coordinate_x']; ?> </p>
+                <p>CoordY : <?php echo $Fighter[0]['Fighter']['coordinate_y']; ?></p>
+                <p>XP : <?php echo $Fighter[0]['Fighter']['xp']; ?></p>
                 <!-- VU PERSONNAGE PAS BEAU -->
             </div>
         </div>
@@ -90,6 +90,7 @@ if (!($this->Session->read('Auth.User'))) {
                             }
                             ?>
                         </tr>
+                    </table>
                         <!--Jvais recup les donné de tout -->
                         <?php //pr($charAll); ?>
                         <table id="mapmap" class="table">

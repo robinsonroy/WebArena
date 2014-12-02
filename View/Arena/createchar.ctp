@@ -19,7 +19,7 @@ if (!($this->Session->read('Auth.User'))) {
         <div class="col-md-6 col-md-offset-3 centered">
 
             <div class="col-sm-offset-2 col-sm-10">
-                <legend><?php echo __('Nouveau personnage'); ?></legend>
+                <h2 id="titre_page"><?php echo __('Nouveau personnage'); ?></h2>
             </div>
             <?php echo $this->Form->create('Createchar', array('class' => 'form-horizontal')); ?>
             <div class="form-group">
@@ -29,7 +29,9 @@ if (!($this->Session->read('Auth.User'))) {
                     'div' => array('class' => 'col-sm-10'),
                     'class' => 'form-control',
                     'placeholder' => 'Entrer le nom du personnage'
-                )); ?>
+                )); 
+                echo $this->Form->end();
+                ?>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
