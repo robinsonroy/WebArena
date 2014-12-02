@@ -74,8 +74,17 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $email=$this->request->data['User']['email'];
 
+
+            // faire requete ici
+            $req = $this->Fighter->query("Select * from players where email='$email'");
+            if($req!=null)
+            {
+                $this->Session->setFlash("Adresse email déjà présente dans la BDD.");
+            }else{
+
+
             // Envoie mail auto
-            if ($this->sendEmail($email)){echo "Email sent";}
+            if ($this->sendEmail($email)){echo "Email send";}
 
             $this->User->create();
             if ($this->User->save($this->request->data)) {
@@ -83,6 +92,7 @@ class UsersController extends AppController {
                 return $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('L\'user n\'a pas été sauvegardé. Merci de réessayer.'));
+            }
             }
         }
     }
