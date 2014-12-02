@@ -47,7 +47,7 @@ class ArenaController extends AppController
             }
 //Récupération du résultat du formulaire
             $fighter_id = $user_fighter[0]['Fighter']['id'];
-             pr($_FILES['avatar']);
+           
             if (isset($_FILES['avatar'])) {
                
                 if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
@@ -67,10 +67,12 @@ class ArenaController extends AppController
             $this->set('raw', $user_fighter);
         }
     }
+    
     public function diary()
     {
         $this->set('raw', $this->Event->getEvent());
     }
+    
     public function login()
     {
         if ($this->request->is('post')) {
@@ -93,7 +95,7 @@ class ArenaController extends AppController
         }
         if ($this->request->is('post')) {
 
-           $message[]= 'Une action vient d\'avoir lieu.';
+           
             if (isset($this->request->data['Fightermove'])) {
 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
                 if ($action_possible['action_possible']) {
@@ -118,6 +120,7 @@ class ArenaController extends AppController
                         $this->Event->enregistrerDeplacement($firrst['Fighter'], $this->request->data['Fightermove']['direction'], $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
 // ici on retire un PA apres l'action.
                         $action_possible['PA'] = $action_possible['PA'] - 1;
+                        $message[]= 'Une action vient d\'avoir lieu.';
                     } else $message[] = "Deplacement impossible";
                 } else {
                     $message[] = "Pas assez de points d'action";
@@ -129,6 +132,7 @@ class ArenaController extends AppController
 // Si le perso est encore vivant
             if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
                 if ($action_possible['action_possible']) {
+                    $message[]= 'Une action vient d\'avoir lieu.';
                     $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
                     
                     if($resultat_attaque!=null){

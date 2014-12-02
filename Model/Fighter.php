@@ -273,6 +273,7 @@ class Fighter extends AppModel {
         $direction2 = $direction;
         $x = $datas['Fighter']['coordinate_x'];
         $y = $datas['Fighter']['coordinate_y'];
+        $attaque_touche = false;
 
         switch ($direction) {
             case "east": {
@@ -317,16 +318,18 @@ class Fighter extends AppModel {
 
         //On fixe l'iD def
         $datas2 = $this->findById($iddef);
-
+        
         //on fixe l'ID sur l'attaquant pour les changements.
         $a = rand(1, 20);
         $this->id = $iddef;
         $nom_attaque = "";
 
         if ($datas2) {
+            
+            $attaque_touche = true;
             $nom_attaque = $datas2['Fighter']['name'];
             if ($a > (10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'])) {
-
+                $attaque_reussi = true;
                 switch ($direction2) {
                     case "east": {
                             if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
@@ -448,7 +451,6 @@ class Fighter extends AppModel {
 
                 $see = 10 + $datas2['Fighter']['level'] - $datas['Fighter']['level'];
 
-                $attaque_touche = null;
             }
         } else {
             $decor = new Surrounding();
