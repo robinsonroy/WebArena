@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 
 <?php
 if (!($this->Session->read('Auth.User'))) {
@@ -6,7 +7,7 @@ if (!($this->Session->read('Auth.User'))) {
         <div class="col-md-6 col-md-offset-3 centered">
             <?php
             echo "Veuillez vous connecter <br>";
-            echo $this->Html->link('Inscription', array('controller' => 'Users', 'action' => 'add'));
+            echo $this->Html->link('Connection', array('controller' => 'Users', 'action' => 'login'));
             ?>
         </div>
     </div>
@@ -100,7 +101,7 @@ if (!($this->Session->read('Auth.User'))) {
                                 echo "<tr>";
                                 for ($i = 1; $i <= 15; $i++) {
                                     echo "<td>";
-                                    echo $this->Html->image($map[$i - 1][$y - 1], array('class' => "img-responsive", 'alt' => 'uploaded image', 'height' => 15, 'width' => 15));
+                                    echo $this->Html->image($map[$i - 1][$y - 1], array('class' => "img-responsive", 'alt' => 'uploaded image', 'height' => 15, 'width' => 20));
                                     echo "</td>";
                                 }
                                 echo "</tr>";

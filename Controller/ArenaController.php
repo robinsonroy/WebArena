@@ -90,7 +90,8 @@ class ArenaController extends AppController
             $this->set('action_possible', $action_possible);
         }
         if ($this->request->is('post')) {
-            $this-> Session-> setFlash ('Une action vient d\'avoir lieu.');
+
+           $message[]= 'Une action vient d\'avoir lieu.';
             if (isset($this->request->data['Fightermove'])) {
 //test si un personnage est vivant lorsqu'il essaye de bougé. Si il est mort (PDV < 0 ), il est alors supprimé.
                 if ($action_possible['action_possible']) {

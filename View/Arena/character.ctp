@@ -6,7 +6,7 @@ if (!($this->Session->read('Auth.User'))) {
         <div class="col-md-6 col-md-offset-3 centered">
             <?php
             echo "Veuillez vous connecter <br>";
-            echo $this->Html->link('Inscription', array('controller' => 'Users', 'action' => 'add'));
+            echo $this->Html->link('Connection', array('controller' => 'Users', 'action' => 'login'));
             ?>
         </div>
     </div>
