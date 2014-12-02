@@ -25,13 +25,18 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <?php echo $cakeDescription ?>:
         <?php echo $this->fetch('title'); ?>
     </title>
-
     <!-- Latest compiled and minified CSS -->
-    <?php echo $this->Html->css('bootstrap.min.css')?>
-    <?php     echo $this->Html->css('docs.min') ?>
+    <?php echo $this->Html->css('bootstrap.min.css'); ?>
+    <?php  echo $this->Html->css('docs.min'); ?>
+    <?php  echo $this->Html->css('accueil'); ?>
+
+
+
+
+
 
     <!-- Optional theme -->
-    <?php echo $this->Html->css('bootstrap-theme.min.css') ?>
+    <?php echo $this->Html->css('bootstrap-theme.min.css'); ?>
 
 
 
@@ -63,12 +68,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Acceuil</a>
+
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                <li><?php echo $this->Html->link('Accueil', array('action' => '../')); ?></li>
                 <li><?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight')); ?></li>
                 <li><?php echo $this->Html->link('Creation de personnage', array('controller' => 'Arena', 'action' => 'createchar')); ?></li>
                 <li><?php echo $this->Html->link('Vos personnages', array('controller' => 'Arena', 'action' => 'character')); ?></li>
@@ -98,7 +104,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </div><!-- Wrap Div end -->
 
 <div id="footer">
-        <p>WebArena : SI4-08-CF | PORTIER, SAMBRES, RAUBER, ROY </p>
+        <p>WebArena : SI4-08-CF | Options supplémentaires : Chat - | PORTIER, SAMBRES, RAUBER, ROY </p>
         <p>
             <a href="https://github.com/robinsonroy/WebArena">Repo GitHub |</a>
             <a href="http://c6244f3fcd.url-de-test.ws/Arena/character">Site en ligne</a>
@@ -109,8 +115,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<?php echo $this->Html->script('facebook.js'); ?>
 <?php echo $this->Html->script('jquery-2.1.1.min'); ?>
 <?php echo $this->Html->script('bootstrap.min'); ?>
+<?php echo $this->Html->script('bootstrap'); ?>
+<?php echo $this->Html->script('npm'); ?>
+<?php echo $this->Js->writeBuffer() ?>
+<?php echo $scripts_for_layout; ?>
+
 </body>
 </html>
