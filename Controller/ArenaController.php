@@ -47,7 +47,9 @@ class ArenaController extends AppController
             }
 //Récupération du résultat du formulaire
             $fighter_id = $user_fighter[0]['Fighter']['id'];
+             pr($_FILES['avatar']);
             if (isset($_FILES['avatar'])) {
+               
                 if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
                     $imageName = "avatar_" . $fighter_id . ".jpg";
                     $this->set('imageName', $imageName);
@@ -123,11 +125,6 @@ class ArenaController extends AppController
             }
         }
 //Attaque
-        /*'nom_attaquant' => $datas['Fighter']['name'], // Nom attaquant
-            'direction' => $direction,
-            'attaque_touche' => $attaque_touche,
-            'nom_attaque' => $datas2['Fighter']['name'], // Nom def
-            'attaque_reussi' => $attaque_reussi,*/
         if (isset($this->request->data['Fighterattack'])) {
 // Si le perso est encore vivant
             if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
@@ -174,6 +171,7 @@ class ArenaController extends AppController
             return $this->redirect('sight');
         }
     }
+    
     function checkHealth($id)
     {
         $fighters = $this->Fighter->findById($id);

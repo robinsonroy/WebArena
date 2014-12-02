@@ -36,15 +36,18 @@ if (!($this->Session->read('Auth.User'))) {
             <div class="panel-heading">
                 <h3 class="panel-title">Choix de l'Avatar</h3>
             </div>
+            
             <div class="panel-body">
-                <?php
+                
+<?php
                 echo $this->Form->create('avatar', array('type' => 'file'));
-                echo $this->Form->input('image_avatar', array('type' => 'file'/*, array('label' => false)*/));?>
-                
-                    <button type="submit" class="btn btn-default centeredIMG form-group">Submit</button>
-                
+                echo $this->Form->input('image_avatar', array('type' => 'file', array(
+                    'label' => false
+                )));?>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default centeredIMG">Submit</button>
+                </div>
                 <?php echo $this->Form->end(); ?>
-
                 <?php
                 if (isset($imageName)) {
                     echo $this->Html->image('uploads/' . $imageName, array(
