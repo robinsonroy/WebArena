@@ -17,7 +17,7 @@ class Event extends AppModel {
 
     //put your code here
     public $PA_max = 3;
-    public $PA_recup = 10;
+    public $PA_recup = 0;
 
     function enregistrerDeplacement($fighter, $direction, $x, $y) {
         $this->create();
@@ -94,6 +94,7 @@ class Event extends AppModel {
         );
 
         $this->save($data);
+        return $message;
     }
 
     function enregistrerCreation($nom_fighter, $x, $y) {

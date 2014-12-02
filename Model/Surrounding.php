@@ -112,4 +112,13 @@ class Surrounding extends AppModel {
             }
         }
     }
+        
+        function removeMonster()
+        {
+            
+            $monster = $this->find('first', array('conditions' => array('Surrounding.type' => 'monster')));
+          
+            $this->delete($monster['Surrounding']['id'],false);
+        }
+    
 }

@@ -122,17 +122,19 @@ class ArenaController extends AppController
             }
         }
 //Attaque
+        /*'nom_attaquant' => $datas['Fighter']['name'], // Nom attaquant
+            'direction' => $direction,
+            'attaque_touche' => $attaque_touche,
+            'nom_attaque' => $datas2['Fighter']['name'], // Nom def
+            'attaque_reussi' => $attaque_reussi,*/
         if (isset($this->request->data['Fighterattack'])) {
 // Si le perso est encore vivant
             if ($this->checkHealth($firrst['Fighter']['id'])) { // faire l'attaque
                 if ($action_possible['action_possible']) {
                     $resultat_attaque = $this->Fighter->doAttack($firrst['Fighter']['id'], $this->request->data['Fighterattack']['direction']);
-                    if($resultat_attaque==null)
-                    {
-                        $this->Session->setFlash("Attaque rate");
-                    }
+                    
                     if($resultat_attaque!=null){
-                        $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
+                        $message[] = $this->Event->enregistrerAttaque($resultat_attaque, $firrst['Fighter']['coordinate_x'], $firrst['Fighter']['coordinate_y']);
                     }
                     $this->Fighter->removeDeadFighter();
                 } else {
