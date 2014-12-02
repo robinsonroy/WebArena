@@ -29,7 +29,7 @@ if (!($this->Session->read('Auth.User'))) {
     <div class="row">
         <!--1-->
         <div class="col-md-3">
-            <div class="panel panel-default" id="gauche">
+            <div class="panel panel-default gauche" >
                 <h3>Se déplacer</h3>
                 <?php
                 echo $this->Form->create('Fightermove');
@@ -61,9 +61,11 @@ if (!($this->Session->read('Auth.User'))) {
             <div class="panel panel-default">
                 <div class="panel-body">
                     <table id="char" class="table">
-                        <th> Entités</th>
+                        <tr>
+                            <th> Entités</th>
                         <th> CoordXY</th>
                         <th> Point de vie</th>
+                        </tr>
                         <tr>
                             <?php
                             // Fighters vide ?
@@ -84,12 +86,12 @@ if (!($this->Session->read('Auth.User'))) {
                             <td>
                                 pv :<?php echo $fighter['current_health']; ?>
                             </td>
-                        <tr>
+                        
                             <?php
                             }
                             }
                             ?>
-                        </tr>
+                        
                     </table>
                         <!--Jvais recup les donné de tout -->
                         <?php //pr($charAll); ?>
@@ -110,7 +112,7 @@ if (!($this->Session->read('Auth.User'))) {
             </div>
         </div>
         <div class="col-md-3">
-            <div class="panel panel-default" id="gauche">
+            <div class="panel panel-default gauche">
                 <h3>Attaque</h3>
                 <?php echo $this->Form->create('Fighterattack');
                 echo $this->Form->input('direction', array('options' => array('north' => 'north', 'east' => 'east', 'south' => 'south', 'west' => 'west'), 'div' => 'form-group', 'class' => 'form-control', 'default' => 'east'));
@@ -120,7 +122,7 @@ if (!($this->Session->read('Auth.User'))) {
                 echo $this->Form->end(); // A REFAIRE NE FONCTIONNE PAS BIEN
                 ?>
             </div>
-            <div class="panel panel-default" id="gauche">
+            <div class="panel panel-default gauche" >
                 <h3>Message</h3>
                 <?php
                 foreach ($message as $line) {

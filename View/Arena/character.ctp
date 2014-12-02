@@ -34,10 +34,12 @@ if (!($this->Session->read('Auth.User'))) {
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Choix de l'Avatars</h3>
+                <h3 class="panel-title">Choix de l'Avatar</h3>
             </div>
+            
             <div class="panel-body">
-                <?php
+                
+<?php
                 echo $this->Form->create('avatar', array('type' => 'file'));
                 echo $this->Form->input('image_avatar', array('type' => 'file', array(
                     'label' => false
@@ -46,7 +48,6 @@ if (!($this->Session->read('Auth.User'))) {
                     <button type="submit" class="btn btn-default centeredIMG">Submit</button>
                 </div>
                 <?php echo $this->Form->end(); ?>
-
                 <?php
                 if (isset($imageName)) {
                     echo $this->Html->image('uploads/' . $imageName, array(
@@ -56,11 +57,11 @@ if (!($this->Session->read('Auth.User'))) {
                     ));
                 }
                 ?>
-        </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
+   </div>
+   <div class="col-md-4">
+        <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Informations du perssonage</h3>
                 </div>
@@ -79,17 +80,17 @@ if (!($this->Session->read('Auth.User'))) {
                     <li>Points de vie: <?php echo $raws['Fighter']['skill_health']; ?></li>
                     <li>Vie actuelle: <?php echo $raws['Fighter']['current_health']; ?></li>
                 <?php } ?> </ul>
-                    </div>
-                </div>
+            </div>
         </div>
+    </div>
 
         <!--Changer de niveau-->
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
                     <h3 class="panel-title">Augmenter son niveau</h3>
-                </div>
-                <div class="panel-body">
+            </div>
+            <div class="panel-body">
             <?php
             if ($choix_level != 0) {
                 echo $this->Form->create('ChangeLevel');
@@ -101,9 +102,9 @@ if (!($this->Session->read('Auth.User'))) {
             } else echo "Pas assez d'expérience pour changer de niveau";
             ?>
 
-        </div>
-                </div>
             </div>
+        </div>
+    </div>
 
 </div>
     <?php

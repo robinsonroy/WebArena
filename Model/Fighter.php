@@ -332,9 +332,9 @@ class Fighter extends AppModel {
                     case "east": {
                             if ($datas['Fighter']['coordinate_x'] + 1 == $datas2['Fighter']['coordinate_x']) {
                                 $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
-                                $attaque_touche = true;
+                                $attaque_reussi = true;
                             } else {
-                                $attaque_touche = false;
+                                $attaque_reussi = false;
                             }
                         }
                         break;
@@ -342,9 +342,9 @@ class Fighter extends AppModel {
                             if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
                                 $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
 
-                                $attaque_touche = true;
+                                $attaque_reussi = true;
                             } else {
-                                $attaque_touche = false;
+                                $attaque_reussi = false;
                             }
                         }
 
@@ -352,9 +352,9 @@ class Fighter extends AppModel {
                     case "south" : {
                             if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
                                 $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
-                                $attaque_touche = true;
+                                $attaque_reussi = true;
                             } else {
-                                $attaque_touche = false;
+                                $attaque_reussi = false;
                             }
                         }
                         break;
@@ -363,9 +363,9 @@ class Fighter extends AppModel {
                     case "north" :
                         if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
                             $this->set('current_health', $datas2['Fighter']['current_health'] - $datas['Fighter']['skill_strength']);
-                            $attaque_touche = true;
+                            $attaque_reussi = true;
                         } else {
-                            $attaque_touche = false;
+                            $attaque_reussi = false;
                         }
                         break;
                 }
@@ -388,15 +388,15 @@ class Fighter extends AppModel {
                                 } else {
                                     $this->set('xp', $datas['Fighter']['xp'] + 1);
                                 }
-                                $attaque_touche = true;
+                                $attaque_reussi = true;
                             } else {
-                                $attaque_touche = false;
+                                $attaque_reussi = false;
                             }
                         }
                         break;
                     case "west": {
                             if ($datas['Fighter']['coordinate_x'] - 1 == $datas2['Fighter']['coordinate_x']) {
-                                $attaque_touche = true;
+                                $attaque_reussi = true;
                                 if ($datas2['Fighter']['current_health'] < $datas['Fighter']['skill_strength']) {
                                     echo "Test attaque qui a tué le perso";
                                     $xp = $datas2['Fighter']['level'];
@@ -405,16 +405,16 @@ class Fighter extends AppModel {
                                 } else {
                                     $this->set('xp', $datas['Fighter']['xp'] + 1);
                                 }
-                                $attaque_touche = true;
+                                $attaque_reussi = true;
                             } else {
-                                $attaque_touche = false;
+                                $attaque_reussi = false;
                             }
                         }
 
                         break;
                     case "north" : {
                             if ($datas['Fighter']['coordinate_y'] + 1 == $datas2['Fighter']['coordinate_y']) {
-                                $attaque_touche = true;
+                                $attaque_reussi = true;
                                 if ($datas2['Fighter']['current_health'] < $datas['Fighter']['skill_strength']) {
                                     echo "Test attaque qui a tué le perso";
                                     $xp = $datas2['Fighter']['level'];
@@ -429,7 +429,7 @@ class Fighter extends AppModel {
 
                     case "south" : {
                             if ($datas['Fighter']['coordinate_y'] - 1 == $datas2['Fighter']['coordinate_y']) {
-                                $attaque_touche = true;
+                                $attaque_reussi = true;
                                 if ($datas2['Fighter']['current_health'] < $datas['Fighter']['skill_strength']) {
                                     echo "Test attaque qui a tué le perso";
                                     $xp = $datas2['Fighter']['level'];
@@ -439,7 +439,7 @@ class Fighter extends AppModel {
                                     $this->set('xp', $datas['Fighter']['xp'] + 1);
                                 }
                             } else {
-                                $attaque_touche = false;
+                                $attaque_reussi = false;
                             }
                         }
                         break;
