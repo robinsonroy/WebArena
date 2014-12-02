@@ -29,9 +29,13 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">Sign in</button>
             </div>
+            
         </div>
         <div class="col-sm-offset-2 col-sm-10">
             <?php echo $this->Html->link('Mot de passe recover', array('controller' => 'users', 'action' => 'recover')); ?>
         </div>
+        <?php
+        echo $this->Form->end();
+            ?>
     </div>
 </div>
