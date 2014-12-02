@@ -66,7 +66,7 @@ if (!($this->Session->read('Auth.User'))) {
                         <th> CoordXY</th>
                         <th> Point de vie</th>
                         </tr>
-                        <tr>
+                        
                             <?php
                             // Fighters vide ?
                             foreach ($persVisibles as $fighter)
@@ -78,15 +78,12 @@ if (!($this->Session->read('Auth.User'))) {
                             )
                             {
                             ?>
-                            <td> <?php
-                                echo $fighter['name'];?></td>
-                            <td><?php
-                                ?> x :<?php echo $fighter['coordinate_x']; ?>
-                                y: <?php echo $fighter['coordinate_y']; ?></td>
-                            <td>
-                                pv :<?php echo $fighter['current_health']; ?>
-                            </td>
-                        
+                            <tr> 
+                                <td> <?php echo $fighter['name']; ?> </td>
+                                <td> <?php?> x : <?php echo $fighter['coordinate_x']; ?> 
+                                    y: <?php echo $fighter['coordinate_y']; ?></td>
+                                <td> pv :<?php echo $fighter['current_health']; ?> </td>
+                            </tr>
                             <?php
                             }
                             }
