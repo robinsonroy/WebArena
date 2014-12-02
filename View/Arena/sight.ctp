@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 
 <?php
 if (!($this->Session->read('Auth.User'))) {
