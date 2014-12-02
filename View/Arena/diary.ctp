@@ -37,7 +37,7 @@ $this->assign('title', 'Journal d\'events');
         <?php }
         else {
             echo "Veuillez vous connecter <br>";
-            echo  $this->Html->link('Inscription',array('controller'=>'Users','action'=>'add'));
+            echo  $this->Html->link('Connection',array('controller'=>'Users','action'=>'login'));
         }
         ?>
     </div>
