@@ -17,7 +17,7 @@ class Event extends AppModel {
 
     //put your code here
     public $PA_max = 3;
-    public $PA_recup = 0;
+    public $PA_recup = 10;
 
     function enregistrerDeplacement($fighter, $direction, $x, $y) {
         $this->create();
@@ -42,7 +42,7 @@ class Event extends AppModel {
         $data = array(
             'Event' => array(
                 'name' => $message,
-                'date' => date("Y-m-d h:i:s.u"),
+                'date' => date("Y-m-d H:i:s.u"),
                 'coordinate_x' => $x,
                 'coordinate_y' => $y)
         );
@@ -88,7 +88,7 @@ class Event extends AppModel {
         $data = array(
             'Event' => array(
                 'name' => $message,
-                'date' => date("Y-m-d h:i:s.u"),
+                'date' => date("Y-m-d H:i:s.u"),
                 'coordinate_x' => $x,
                 'coordinate_y' => $y)
         );
@@ -103,7 +103,7 @@ class Event extends AppModel {
         $data = array(
             'Event' => array(
                 'name' => $message,
-                'date' => date("Y-m-d h:i:s.u"),
+                'date' => date("Y-m-d H:i:s.u"),
                 'coordinate_x' => $x,
                 'coordinate_y' => $y)
         );
@@ -117,7 +117,7 @@ class Event extends AppModel {
         $data = array(
             'Event' => array(
                 'name' => $message,
-                'date' => date("Y-m-d h:i:s.u"),
+                'date' => date("Y-m-d H:i:s.u"),
                 'coordinate_x' => $fighter['Fighter']['coordinate_x'],
                 'coordinate_y' => $fighter['Fighter']['coordinate_y'])
         );
@@ -137,8 +137,8 @@ class Event extends AppModel {
 
         $action_possible = null;
         if (count($event_fighter) >= $this->PA_max) {
-            $delai_attente = date("Y-m-d h:i:s.u", time() - $this->PA_max * $this->PA_recup);
-            $temps_actuel = date("Y-m-d h:i:s.u");
+            $delai_attente = date("Y-m-d H:i:s.u", time() - $this->PA_max * $this->PA_recup);
+            $temps_actuel = date("Y-m-d H:i:s.u");
             $count = $this->query("SELECT COUNT(*) FROM (" . $sous_requete . ") T WHERE date between '" . $delai_attente . "' AND '" . $temps_actuel . "'");
             //Si les 3 derniers évènements se sont déroulés avant le délai d'attente, 
             //il faut que l joueur attende avant de rejouer
@@ -175,7 +175,7 @@ class Event extends AppModel {
         $this->create();
         $event = array(
             'name' => $fighter['name'] .' : '. $message,
-            'date' => date("Y-m-d h:i:s.u"),
+            'date' => date("Y-m-d H:i:s.u"),
             'coordinate_x' => $fighter['coordinate_x'],
             'coordinate_y' => $fighter['coordinate_y']
 

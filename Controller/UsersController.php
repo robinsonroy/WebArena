@@ -68,11 +68,6 @@ class UsersController extends AppController {
         $this->set('user', $this->User->read(null, $id));
     }
 
-    public function recover()
-    {
-
-    }
-
 
     // REGISTER
     public function add() {

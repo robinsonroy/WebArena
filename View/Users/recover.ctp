@@ -2,7 +2,7 @@
 <div class="users form">
     <?php echo $this->Form->create('Recover');?>
     <fieldset>
-        <legend><?php echo __('login YOUser'); ?></legend>
+        <h2 id="#titre_page"><?php echo __('login YOUser'); ?></h2>
 <?php echo $this->Form->input('email');
 ?>
         </fieldset>

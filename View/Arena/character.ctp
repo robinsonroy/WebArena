@@ -48,7 +48,6 @@ if (!($this->Session->read('Auth.User'))) {
                 <?php echo $this->Form->end(); ?>
 
                 <?php
-
                 if (isset($imageName)) {
                     echo $this->Html->image('uploads/' . $imageName, array(
                         'class' => "img-responsive img-circle centeredIMG",
@@ -78,7 +77,7 @@ if (!($this->Session->read('Auth.User'))) {
                     <li>Compétence Vue: <?php echo $raws['Fighter']['skill_sight']; ?> </li>
                     <li>Compétence Force: <?php echo $raws['Fighter']['skill_strength']; ?></li>
                     <li>Points de vie: <?php echo $raws['Fighter']['skill_health']; ?></li>
-                    <li>Vie actuelle: <?php echo $raws['Fighter']['current_health']; ?></li><br><br>
+                    <li>Vie actuelle: <?php echo $raws['Fighter']['current_health']; ?></li>
                 <?php } ?> </ul>
                     </div>
                 </div>

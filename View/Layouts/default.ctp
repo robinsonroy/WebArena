@@ -70,7 +70,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><?php echo $this->Html->link('Vision', array('controller' => 'Arena', 'action' => 'sight')); ?></li>
-                <li><?php echo $this->Html->link('Creation de personnage', array('controller' => 'Arena', 'action' => 'createchar')); ?></a></li>
+                <li><?php echo $this->Html->link('Creation de personnage', array('controller' => 'Arena', 'action' => 'createchar')); ?></li>
                 <li><?php echo $this->Html->link('Vos personnages', array('controller' => 'Arena', 'action' => 'character')); ?></li>
                 <li><?php echo $this->Html->link('Evenements', array('controller' => 'Arena', 'action' => 'diary')); ?></li>
                 <li><?php echo $this->Html->link('Choisir avatar', array('controller' => 'Arena', 'action' => 'chooseAvatar')); ?></li>

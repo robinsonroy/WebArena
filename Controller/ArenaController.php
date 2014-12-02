@@ -67,7 +67,7 @@ class ArenaController extends AppController
     }
     public function diary()
     {
-        $this->set('raw', $this->Event->getEvent($this->listePersVisibles));
+        $this->set('raw', $this->Event->getEvent());
     }
     public function login()
     {
@@ -157,39 +157,7 @@ class ArenaController extends AppController
         $this->set('Tools', $this->Tool->find('all'));
         $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
     }
-    function chooseAvatar()
-    { //A VIRER
-//Récupère la liste des fighters, avec les champs id et name
-        $fighterList = $this->Fighter->find('all', array('fields' => array('id', 'name')));
-        $this->set('Fighter', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
-//crée un tableau qui serviras à remplir les options du formulaire de choix de fighter
-        $choicelist = array();
-//pour tout les fighters de la bdd
-        foreach ($fighterList as $key => $value) {
-//on met dans la liste du choix du formulaire le nom du fighter, avec pour key son id
-            $choicelist[$value['Fighter']['id']] = $value['Fighter']['name'];
-        }
-//on passe la liste de choix de fighter à la vue
-        $this->set('fighterList', $choicelist);
-//si le formulaire a été rempli
-        if ($this->request->is('post')) {
-//Récupération du résultat du formulaire
-            $fighter_id = $this->request->data['avatar']['fighter_choice'];
-            if (is_uploaded_file($_FILES['avatar']['tmp_name'])) {
-                $imageName = "avatar_" . $fighter_id . ".jpg";
-                $this->set('imageName', $imageName);
-//déplacement de l'image d'avatar dans le dossier "webroot/img/uploads/
-//avec le nom avatar_id.jpg
-                if (move_uploaded_file(
-                    $_FILES['avatar']['tmp_name'], 'img/uploads/avatar_' . $fighter_id . ".jpg"
-                )
-                ) {
-                    echo "Le transfert s'est bien deroule";
-                } else
-                    echo "erreur sur le transfert";
-            }
-        }
-    }
+
     function createchar()
     {
 //création
