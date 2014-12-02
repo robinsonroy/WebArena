@@ -29,21 +29,20 @@ class ArenaController extends AppController
         $this->set('fighters', $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id")))));
         $user_fighter = $this->Fighter->find('all', array('conditions' => array('Fighter.player_id' => $this->Session->read("Auth.User.id"))));
         $this->set('fighter', $user_fighter);
+        $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
+        $this->set('choix_level', $level_possible);
         if (!empty($user_fighter)) {
 //Recherche du level
-            $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
-            $this->set('choix_level', $level_possible);
+//            $level_possible = $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']);
+//            $this->set('choix_level', $level_possible);
             $this->set('imageName', $this->Fighter->chercherAvatar($user_fighter[0]['Fighter']['id']));
         }
         if ($this->request->is('post')) {
             if (isset($this->request->data['ChangeLevel'])) {
+                if( $this->Fighter->determinerNiveau($user_fighter[0]['Fighter']))
                 $this->Fighter->changeLevel($level_possible, $user_fighter[0]['Fighter']['id'], $this->request->data['ChangeLevel']['skill']);
-                if ($this->request->data['ChangeLevel']['skill'] == 'Force') {
-                    $user_fighter[0]['Fighter']['skill_strength'] = $user_fighter[0]['Fighter']['skill_strength'] + 1;
-                }
-                if ($this->request->data['ChangeLevel']['skill'] == 'Vue') {
-                    $user_fighter[0]['Fighter']['skill_sight'] = $user_fighter[0]['Fighter']['skill_sight'] + 3;
-                }
+               
+                
             }
 //Récupération du résultat du formulaire
             $fighter_id = $user_fighter[0]['Fighter']['id'];
@@ -66,6 +65,7 @@ class ArenaController extends AppController
             }
             $this->set('raw', $user_fighter);
         }
+        
     }
     
     public function diary()

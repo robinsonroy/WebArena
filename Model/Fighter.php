@@ -152,7 +152,7 @@ class Fighter extends AppModel {
     //0 sinon
     function determinerNiveau($fighter) {
         $niveau_actuel = $fighter['level'];
-
+        
         //tous les 4pts d'xp, le fighter monte de niveau
 
         $niveau_possible = $fighter['xp'] / 4;
@@ -526,6 +526,8 @@ class Fighter extends AppModel {
 
         $this->saveField('level', $level);
         $this->saveField('current_health', $datas['Fighter']['skill_health']);
+      
+        $this->save();
     }
 
     function findFighterWithName($name) {
